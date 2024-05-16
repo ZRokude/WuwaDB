@@ -1,0 +1,7 @@
+﻿body {
+}
+.app-bar-background {
+    background-image: url('Discord-Asset/Header.png');
+    background-size: cover;
+    background-position: center;
+}
