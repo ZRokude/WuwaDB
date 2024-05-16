@@ -1,0 +1,25 @@
+﻿<MudAppBar>
+    <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())"/>
+    <MudText Typo="Typo.h5" Class="ml-3">Wuwa DB</MudText>
+    <MudSpacer/>
+    <MudIconButton>
+        <MudAvatar>
+            <MudImage Src="/Discord-Asset/WWI_logo.png" Height="55" Width="55" ObjectPosition="ObjectPosition.Right"/>
+        </MudAvatar>
+    </MudIconButton>
+</MudAppBar>
+
+<MudDrawer Height="100vh" @bind-Open="drawerState" Elevation="0">
+    <NavMenu />
+</MudDrawer>
+)
+@code
+{
+    bool drawerState = false;
+
+    void DrawerToggle()
+    {
+        drawerState = !drawerState;
+
+    }
+}
