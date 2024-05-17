@@ -1,10 +1,10 @@
 ﻿
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using WuwaDB.Server.Entities.Account;
-using WuwaDB.Server.Entities.Character;
+using WuwaDB.DBAccess.Entities.Account;
+using WuwaDB.DBAccess.Entities.Character;
 
-namespace WuwaDB.Server.DataContext
+namespace WuwaDB.DBAccess.DataContext
 {
     public class WuwaDbContext : DbContext
     {

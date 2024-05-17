@@ -2,8 +2,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using MudBlazor.Services;
 using WuwaDB.Components;
-using WuwaDB.Server.DataContext;
-using WuwaDB.Server.Repository;
+using WuwaDB.DBAccess.DataContext;
+using WuwaDB.DBAccess.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
