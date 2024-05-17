@@ -1,10 +1,11 @@
-﻿
+﻿@using InputType = MudBlazor.InputType
+
 
 <MudDialog>
     <DialogContent>
         <MudTextField T="string" Label="Username" Variant="Variant.Filled" @bind-Value="model.Username">
         </MudTextField>
-        <MudTextField T="string" Label="Password" Variant="Variant.Filled" @bind-Value="model.Password">
+        <MudTextField T="string" InputType="InputType.Password" Label="Password" Variant="Variant.Filled" @bind-Value="model.Password">
         </MudTextField>
     </DialogContent>
     <DialogActions>
