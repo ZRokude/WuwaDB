@@ -3,6 +3,11 @@ using Microsoft.AspNetCore.Components;
 using WuwaDB.Server.Repository;
 using WuwaDB.Server.Entities.Account;
 using BC = BCrypt.Net.BCrypt;
+using MudBlazor;
+using WuwaDB.Authentication;
+using System.Data;
+using WuwaDB.DBAccess.Enum;
+using Microsoft.AspNetCore.Authorization.Infrastructure;
 namespace WuwaDB.Components.Pages
 {
     public partial class Login
@@ -11,7 +16,27 @@ namespace WuwaDB.Components.Pages
         [Inject] private NavigationManager navigationManager { get; set; } = default!;
         [Inject] private UserRepository UserRepository { get; set; }
         private Account Account { get; set; }
+        [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+        [Parameter] public string ContentText { get; set; }
 
+
+
+        private async void Submit()
+        {
+            Account? UserAccount = await UserRepository.GetUserDataAsync(Account.Username);
+
+            if (UserAccount == null || !BC.EnhancedVerify(model.Password, UserAccount.Password))
+            {
+                error = "Email is not found";
+                return;
+            }
+            await Authenticate(UserAccount);
+            MudDialog.Close(DialogResult.Ok(true));
+        }
+        void Cancel()
+        {
+            MudDialog.Cancel();
+        }
         public class Model
         {
             public string Username = string.Empty, Password = string.Empty;
@@ -21,32 +46,27 @@ namespace WuwaDB.Components.Pages
 
         private Model model = new Model();
 
-        private async Task Authenticate()
+        private async Task Authenticate(Account UserAccount)
         {
-            Account? UserAccount = await UserRepository.GetUserDataAsync(Account.Username);
-
-            if (UserAccount == null || !BC.EnhancedVerify(model.Password, UserAccount.Password))
+            CustomAuthentication customAuthentication = (CustomAuthentication)StateProvider;
+            await customAuthentication.UpdateAuthenticationState(new LoginSession()
             {
-                error = "Email is not found";
-                return;
+                Username = UserAccount.Username,
+                Role = UserAccount.Roles.ToList()
+            });
+            
+            if (UserAccount.Roles.Any(role => role.Name != null))
+            {
+                navigationManager.NavigateTo("/", true);
+
+            }
+            else
+            {
+                navigationManager.NavigateTo("/", true);
             }
 
 
-            //CustomAuthentication customAuthentication = (CustomAuthentication)StateProvider;
-            //await customAuthentication.UpdateAuthenticationState(new UserSession()
-            //{
-            //    Email = UserAccount.Email,
-            //    Role = UserAccount.Role.ToString(),
-            //});
-            //if (UserAccount.Role == Roles.Admin)
-            //{
-            //    navigationManager.NavigateTo("/", true);
 
-            //}
-            //else
-            //{
-            //    navigationManager.NavigateTo("/", true);
-            //}
 
 
         }

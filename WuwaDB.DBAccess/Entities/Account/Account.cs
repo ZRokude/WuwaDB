@@ -14,6 +14,6 @@ namespace WuwaDB.Server.Entities.Account
 
         //Navigation
 
-        public ICollection<Account_Role> AccountRole { get; set; }
+        public ICollection<Role> Roles { get; set; }
     }
 }

@@ -28,9 +28,9 @@ namespace WuwaDB.Server.Repository
         public async Task<Account?> GetUserDataAsync(string Username)
         {
             await using WuwaDbContext context = await _context.CreateDbContextAsync();
-            return await context.Accounts.FirstOrDefaultAsync(x => x.Username == Username);
+            return await context.Accounts.Include(c=>c.Roles).FirstOrDefaultAsync(x => x.Username == Username);
 
-            ;
+            
         }
 
     }
