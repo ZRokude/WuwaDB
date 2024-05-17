@@ -3,14 +3,16 @@
 <MudDialogProvider/>
 <MudSnackbarProvider/>
 
-<MudLayout class="body-background">
+<MudLayout>
     <HeaderSidebar/>
     <div style="position: absolute; top: 0; left: 0; bottom: 0; right: 0;">
-        <div class="body-background">
-            <MudMainContent>
+        <MudMainContent>
+            <div class="body-background">
                 @Body
-            </MudMainContent>
-        </div>
+            </div>
+        </MudMainContent>
+
+
     </div>
 
 </MudLayout>

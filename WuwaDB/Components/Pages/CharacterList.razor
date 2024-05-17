@@ -1,0 +1,46 @@
+﻿@page "/Character/List"
+
+<PageTitle>Character List</PageTitle>
+
+<div>
+    <MudContainer Class="mt-10">
+        <MudGrid Justify="Justify.Center">
+            @for (int i = 0; i <= 30; i++)
+            {
+                <MudItem Style="width:10rem;" sm="2">
+                    <MudLink Class="hover-effect" Href="/Character/Danjin">
+                        <MudCard Style="background-color:transparent;" Class="expand-hover" Elevation="15">
+                            <MudCardMedia Image="danjin.png">
+                            </MudCardMedia>
+                            <MudCardContent>
+                                <MudStack Justify="Justify.Center" Spacing="0">
+                                    <MudStack Row="true" Justify="Justify.Center" Wrap="Wrap.Wrap" AlignItems="AlignItems.Center">
+                                        <MudTooltip Text="Havoc" Color="Color.Dark" Placement="Placement.Bottom">
+                                            <MudIconButton Size="Size.Small">
+                                                <MudAvatar Size="Size.Small" Variant="Variant.Filled">
+                                                    <MudImage Fluid="true" Src="/Element/Wuthering-Waves-Havoc.png" />
+                                                </MudAvatar>
+                                            </MudIconButton>
+                                        </MudTooltip>
+                                        <MudTooltip Text="Katana" Color="Color.Dark" Placement="Placement.Bottom">
+                                            <MudIconButton Size="Size.Small">
+                                                <MudAvatar Size="Size.Small">
+                                                    <MudImage Fluid="true" Src="/Weapon/Sword/EmeraldOfGenesis.png" />
+                                                </MudAvatar>
+                                            </MudIconButton>
+                                        </MudTooltip>
+                                    </MudStack>
+                                    <MudText Elevation="0" Style="font-family:UnifrakturMaguntia" Typo="Typo.h6" Class="text-center">Danjin</MudText>
+                                </MudStack>
+                            </MudCardContent>
+                        </MudCard>
+                    </MudLink>
+                </MudItem>
+            }
+
+        </MudGrid>
+    </MudContainer>
+</div>
+@code {
+
+}
