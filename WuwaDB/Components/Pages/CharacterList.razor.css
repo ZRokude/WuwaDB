@@ -1,0 +1,21 @@
+﻿@font-face {
+    font-family: UnifrakturMaguntia;
+    src: url('/ttf/UnifrakturMaguntia.ttf') format('truetype'),
+}
+
+::deep .expand-hover {
+    transition: all .3s ease-in-out;
+}
+
+    ::deep .expand-hover:hover {
+        text-decoration: none;
+        -webkit-transform: scale(1.2);
+        transform: scale(1.2);
+        box-shadow: 0 0 10px #ffcc00;
+        transform: scale(1.05);
+        background-color: rgba(255, 204, 0, 0.5) !important;
+    }
+
+.mud-card-header-actions {
+    align-self: center !important;
+}

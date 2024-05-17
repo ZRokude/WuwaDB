@@ -3,15 +3,13 @@
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
+    background-attachment: fixed;
     height: 100vh;
     min-height: 100vh;
     width: 100%;
     min-width: 100%;
     position: absolute;
-    .page {
-    position: relative;
-    display: flex;
-    flex-direction: column;
+    overflow: auto;
 }
 
 main {
