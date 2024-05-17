@@ -5,11 +5,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using WuwaDB.Server.DataContext;
-using WuwaDB.Server.Entities.Account;
-using WuwaDB.Server.Entities.Character;
+using WuwaDB.DBAccess.DataContext;
+using WuwaDB.DBAccess.Entities.Account;
+using WuwaDB.DBAccess.Entities.Character;
 
-namespace WuwaDB.Server.Repository
+namespace WuwaDB.DBAccess.Repository
 {
     public class UserRepository
     {

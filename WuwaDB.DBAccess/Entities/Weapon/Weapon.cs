@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WuwaDB.Server.Entities.Weapon
+namespace WuwaDB.DBAccess.Entities.Weapon
 {
     public class Weapon
     {

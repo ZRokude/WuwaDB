@@ -1,4 +1,4 @@
-﻿using WuwaDB.Server.Entities.Account;
+﻿using WuwaDB.DBAccess.Entities.Account;
 
 namespace WuwaDB.Authentication
 {

@@ -4,7 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WuwaDB.Server.Entities.Account
+namespace WuwaDB.DBAccess.Entities.Account
+
 {
     public class Account
     {

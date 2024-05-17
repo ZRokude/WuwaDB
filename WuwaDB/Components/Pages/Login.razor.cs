@@ -1,12 +1,12 @@
 ﻿using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components;
-using WuwaDB.Server.Repository;
-using WuwaDB.Server.Entities.Account;
+using WuwaDB.DBAccess.Repository;
+using WuwaDB.DBAccess.Entities.Account;
 using BC = BCrypt.Net.BCrypt;
 using MudBlazor;
 using WuwaDB.Authentication;
 using System.Data;
-using WuwaDB.DBAccess.Enum;
+
 using Microsoft.AspNetCore.Authorization.Infrastructure;
 namespace WuwaDB.Components.Pages
 {

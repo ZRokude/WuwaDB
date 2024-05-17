@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using WuwaDB.Server.Enum;
+using WuwaDB.DBAccess.Enum;
 
-namespace WuwaDB.Server.Entities.Character
+namespace WuwaDB.DBAccess.Entities.Character
 {
     public class Character
     {

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WuwaDB.Server.Entities.Character
+namespace WuwaDB.DBAccess.Entities.Character
 {
     public class Character_Skill_Value
     {
