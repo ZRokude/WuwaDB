@@ -13,6 +13,6 @@ namespace WuwaDB.Server.Entities.Account
 
         //Navigation
 
-        public ICollection<Account_Role> AccountRoles { get; set; }
+        public ICollection<Account> Accounts { get; set; }
     }
 }

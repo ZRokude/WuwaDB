@@ -1,5 +1,9 @@
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using MudBlazor.Services;
 using WuwaDB.Components;
+using WuwaDB.Server.DataContext;
+using WuwaDB.Server.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +13,20 @@ builder.Services.AddRazorComponents()
 
 builder.Services.AddMudServices();
 builder.Services.AddMvc();
+builder.Services.AddCascadingAuthenticationState();
+builder.Services.AddDbContextFactory<WuwaDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.")));
+builder.Services.AddScoped<UserRepository>();
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultScheme = IdentityConstants.ApplicationScheme;
+    options.DefaultSignInScheme = IdentityConstants.ExternalScheme;
+})
+    .AddIdentityCookies();
+
+builder.Services.AddMudServices(x =>
+    x.PopoverOptions.ThrowOnDuplicateProvider = false);
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

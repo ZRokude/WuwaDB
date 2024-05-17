@@ -1,16 +1,23 @@
-﻿using MudBlazor;
+﻿using Microsoft.AspNetCore.Components;
+using MudBlazor;
 using WuwaDB.Components.Pages;
 
 namespace WuwaDB.Components.Layout
 {
     public partial class NavMenu
     {
-        public IDialogService DialogService { get; set; }
-        private void OpenDialog()
+        [Inject] public IDialogService DialogService { get; set; }
+        private async Task OpenDialog()
         {
             var options = new DialogOptions { CloseOnEscapeKey = true };
-            DialogService.Show<Login>();
+            var parameters = new DialogParameters<Login>();
+            parameters.Add(x => x.ContentText, "SimpleDialog");
+            var dialog = await DialogService.ShowAsync<Login>("Login",parameters, options);
+            var result = await dialog.Result;
+
         }
+
+
 
     }
 }
