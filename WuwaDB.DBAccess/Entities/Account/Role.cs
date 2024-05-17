@@ -12,7 +12,6 @@ namespace WuwaDB.DBAccess.Entities.Account
         public string Name { get; set; }
 
         //Navigation
-
         public ICollection<Account> Accounts { get; set; }
     }
 }

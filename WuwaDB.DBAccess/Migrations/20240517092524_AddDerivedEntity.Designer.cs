@@ -12,8 +12,8 @@ using WuwaDB.DBAccess.DataContext;
 namespace WuwaDB.DBAccess.Migrations
 {
     [DbContext(typeof(WuwaDbContext))]
-    [Migration("20240517035046_Init")]
-    partial class Init
+    [Migration("20240517092524_AddDerivedEntity")]
+    partial class AddDerivedEntity
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,7 +25,7 @@ namespace WuwaDB.DBAccess.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("WuwaDB.Server.Entities.Account.Account", b =>
+            modelBuilder.Entity("WuwaDB.DBAccess.Entities.Account.Account", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -40,11 +40,18 @@ namespace WuwaDB.DBAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid>("RoleId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("Username")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("RoleId");
+
+                    b.HasIndex("Username");
 
                     b.ToTable("Accounts", (string)null);
 
@@ -53,22 +60,7 @@ namespace WuwaDB.DBAccess.Migrations
                     b.UseTphMappingStrategy();
                 });
 
-            modelBuilder.Entity("WuwaDB.Server.Entities.Account.Account_Role", b =>
-                {
-                    b.Property<Guid>("AccountId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("RoleId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("AccountId", "RoleId");
-
-                    b.HasIndex("RoleId");
-
-                    b.ToTable("AccountRoles");
-                });
-
-            modelBuilder.Entity("WuwaDB.Server.Entities.Account.Role", b =>
+            modelBuilder.Entity("WuwaDB.DBAccess.Entities.Account.Role", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -83,7 +75,7 @@ namespace WuwaDB.DBAccess.Migrations
                     b.ToTable("Roles");
                 });
 
-            modelBuilder.Entity("WuwaDB.Server.Entities.Character.Character", b =>
+            modelBuilder.Entity("WuwaDB.DBAccess.Entities.Character.Character", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -105,7 +97,7 @@ namespace WuwaDB.DBAccess.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("Rarirty")
                         .HasColumnType("int");
@@ -115,10 +107,12 @@ namespace WuwaDB.DBAccess.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Name");
+
                     b.ToTable("Characters");
                 });
 
-            modelBuilder.Entity("WuwaDB.Server.Entities.Character.Character_Skill", b =>
+            modelBuilder.Entity("WuwaDB.DBAccess.Entities.Character.Character_Skill", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -133,16 +127,18 @@ namespace WuwaDB.DBAccess.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CharacterId");
 
+                    b.HasIndex("Name");
+
                     b.ToTable("CharacterSkills");
                 });
 
-            modelBuilder.Entity("WuwaDB.Server.Entities.Character.Character_Skill_Value", b =>
+            modelBuilder.Entity("WuwaDB.DBAccess.Entities.Character.Character_Skill_Value", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -159,54 +155,48 @@ namespace WuwaDB.DBAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CharacterSkillId");
+                    b.HasIndex("CharacterSkillId", "SkillValueNumber");
 
                     b.ToTable("CharacterSkillValues");
                 });
 
-            modelBuilder.Entity("WuwaDB.Server.Entities.Account.Admin", b =>
+            modelBuilder.Entity("WuwaDB.DBAccess.Entities.Account.Admin", b =>
                 {
-                    b.HasBaseType("WuwaDB.Server.Entities.Account.Account");
+                    b.HasBaseType("WuwaDB.DBAccess.Entities.Account.Account");
 
                     b.HasDiscriminator().HasValue("Admin");
                 });
 
-            modelBuilder.Entity("WuwaDB.Server.Entities.Account.User", b =>
+            modelBuilder.Entity("WuwaDB.DBAccess.Entities.Account.User", b =>
                 {
-                    b.HasBaseType("WuwaDB.Server.Entities.Account.Account");
+                    b.HasBaseType("WuwaDB.DBAccess.Entities.Account.Account");
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
 
+                    b.HasIndex("Email");
+
                     b.HasDiscriminator().HasValue("User");
                 });
 
-            modelBuilder.Entity("WuwaDB.Server.Entities.Account.Account_Role", b =>
+            modelBuilder.Entity("WuwaDB.DBAccess.Entities.Account.Account", b =>
                 {
-                    b.HasOne("WuwaDB.Server.Entities.Account.Account", "Account")
-                        .WithMany("AccountRole")
-                        .HasForeignKey("AccountId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("WuwaDB.Server.Entities.Account.Role", "Role")
-                        .WithMany("AccountRoles")
+                    b.HasOne("WuwaDB.DBAccess.Entities.Account.Role", "Role")
+                        .WithMany("Accounts")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Account");
-
                     b.Navigation("Role");
                 });
 
-            modelBuilder.Entity("WuwaDB.Server.Entities.Character.Character_Skill", b =>
+            modelBuilder.Entity("WuwaDB.DBAccess.Entities.Character.Character_Skill", b =>
                 {
-                    b.HasOne("WuwaDB.Server.Entities.Character.Character", "Character")
+                    b.HasOne("WuwaDB.DBAccess.Entities.Character.Character", "Character")
                         .WithMany("CharacterSkills")
                         .HasForeignKey("CharacterId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -215,9 +205,9 @@ namespace WuwaDB.DBAccess.Migrations
                     b.Navigation("Character");
                 });
 
-            modelBuilder.Entity("WuwaDB.Server.Entities.Character.Character_Skill_Value", b =>
+            modelBuilder.Entity("WuwaDB.DBAccess.Entities.Character.Character_Skill_Value", b =>
                 {
-                    b.HasOne("WuwaDB.Server.Entities.Character.Character_Skill", "CharacterSkill")
+                    b.HasOne("WuwaDB.DBAccess.Entities.Character.Character_Skill", "CharacterSkill")
                         .WithMany("CharacterSkillValues")
                         .HasForeignKey("CharacterSkillId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -226,22 +216,17 @@ namespace WuwaDB.DBAccess.Migrations
                     b.Navigation("CharacterSkill");
                 });
 
-            modelBuilder.Entity("WuwaDB.Server.Entities.Account.Account", b =>
+            modelBuilder.Entity("WuwaDB.DBAccess.Entities.Account.Role", b =>
                 {
-                    b.Navigation("AccountRole");
+                    b.Navigation("Accounts");
                 });
 
-            modelBuilder.Entity("WuwaDB.Server.Entities.Account.Role", b =>
-                {
-                    b.Navigation("AccountRoles");
-                });
-
-            modelBuilder.Entity("WuwaDB.Server.Entities.Character.Character", b =>
+            modelBuilder.Entity("WuwaDB.DBAccess.Entities.Character.Character", b =>
                 {
                     b.Navigation("CharacterSkills");
                 });
 
-            modelBuilder.Entity("WuwaDB.Server.Entities.Character.Character_Skill", b =>
+            modelBuilder.Entity("WuwaDB.DBAccess.Entities.Character.Character_Skill", b =>
                 {
                     b.Navigation("CharacterSkillValues");
                 });

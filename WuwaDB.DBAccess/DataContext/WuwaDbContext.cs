@@ -13,9 +13,10 @@ namespace WuwaDB.DBAccess.DataContext
             : base(options)
         {
         }
+        public DbSet<User> Users { get; set; }
+        public DbSet<Admin>Admins { get; set; }
         public DbSet<Account> Accounts { get; set; }
         public DbSet<Role> Roles { get; set; }
-        public DbSet<Account_Role> AccountRoles { get; set; }
         public DbSet<Character> Characters { get; set; }
         public DbSet<Character_Skill> CharacterSkills { get; set; }
         public DbSet<Character_Skill_Value> CharacterSkillValues { get; set; }
@@ -30,12 +31,18 @@ namespace WuwaDB.DBAccess.DataContext
                 .HasValue<Admin>("Admin")
                 .HasValue<User>("User");
 
-            modelBuilder.Entity<Account_Role>()
-                .HasKey(c => new
-                {
-                    c.AccountId,
-                    c.RoleId
-                });
+            modelBuilder.Entity<Account>()
+                .HasIndex(c => c.Username);
+            modelBuilder.Entity<User>()
+                .HasIndex(c => c.Email);
+            modelBuilder.Entity<Character>()
+                .HasIndex(c => c.Name);
+            modelBuilder.Entity<Character_Skill>()
+                .HasIndex(c => c.Name);
+            modelBuilder.Entity<Character_Skill_Value>()
+                .HasIndex(c => new { c.CharacterSkillId,c.SkillValueNumber});
+
+
         }
         
     }

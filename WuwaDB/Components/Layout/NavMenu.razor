@@ -11,14 +11,21 @@
                 Character List
             </MudText>
         </MudNavLink>
-       <MudNavLink Href="/Weapon/List" Icon="@Katana2">
+        <MudNavLink Href="/Weapon/List" Icon="@Katana2">
             <MudText Color="@Color.Secondary">
                 Weapon List
             </MudText>
-       </MudNavLink>
-       <MudIconButton @onclick="OpenDialog" Icon="@Icons.Material.Filled.Login" Color="Color.Primary">
-           Login
-       </MudIconButton>
+        </MudNavLink>
+        <MudNavLink @onclick="OpenLoginDialog" Icon="@Icons.Material.Outlined.Login" IconColor="Color.Primary" >
+            <MudText Color="@Color.Secondary">
+                Login
+            </MudText>
+        </MudNavLink>
+        <MudNavLink @onclick="OpenRegisterDialog" Icon="@Icons.Material.Outlined.Create" IconColor="Color.Primary" >
+        <MudText Color="@Color.Secondary">
+            Register
+        </MudText>
+        </MudNavLink>
     </MudNavMenu>
 </MudPaper>
 

@@ -32,6 +32,7 @@ namespace WuwaDB.Components.Pages
             }
             await Authenticate(UserAccount);
             MudDialog.Close(DialogResult.Ok(true));
+            
         }
         void Cancel()
         {
@@ -52,10 +53,10 @@ namespace WuwaDB.Components.Pages
             await customAuthentication.UpdateAuthenticationState(new LoginSession()
             {
                 Username = UserAccount.Username,
-                Role = UserAccount.Roles.ToList()
+                Role = UserAccount.Role.ToString()
             });
             
-            if (UserAccount.Roles.Any(role => role.Name != null))
+            if (UserAccount is Admin)
             {
                 navigationManager.NavigateTo("/", true);
 

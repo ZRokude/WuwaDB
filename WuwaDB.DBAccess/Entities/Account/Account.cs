@@ -13,8 +13,9 @@ namespace WuwaDB.DBAccess.Entities.Account
         public string Username { get; set; }
         public string Password { get; set; }
 
-        //Navigation
+        public Guid RoleId { get; set; }
 
-        public ICollection<Role> Roles { get; set; }
+        //Navigation
+        public Role Role { get; set; }
     }
 }
