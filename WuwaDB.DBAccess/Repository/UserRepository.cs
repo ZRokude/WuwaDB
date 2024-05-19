@@ -12,7 +12,7 @@ using WuwaDB.DBAccess.Entities.Character;
 using System.Security.Principal;
 using System.Reflection;
 using MudBlazor.Interfaces;
-
+using BC = BCrypt.Net.BCrypt;
 namespace WuwaDB.DBAccess.Repository
 {
     public class UserRepository
@@ -34,11 +34,22 @@ namespace WuwaDB.DBAccess.Repository
             await using WuwaDbContext context = await _context.CreateDbContextAsync();
             return await context.Accounts.Include(c => c.Role).FirstOrDefaultAsync(x => x.Username == Username);
         }
-
-        public async Task CreateUserDataAsync(string username, string password, string role, string email, bool emailConfirmed)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="username"></param>
+        /// <param name="password"></param>
+        /// <param name="role"></param>
+        /// <param name="additionalProp"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentException"></exception>
+        public async Task CreateUserDataAsync(string username, string password, string role, string[] additionalProp)
         {
+            int i = 0;
+            //Create DbContext of WuwaDBContext
             await using WuwaDbContext context = await _context.CreateDbContextAsync();
             
+            //Checking if account has already there if yes then decline the function
             var existingAccount = await context.Accounts
                 .FirstOrDefaultAsync(u => u.Username == username);
             // Find or create the new role
@@ -48,20 +59,46 @@ namespace WuwaDB.DBAccess.Repository
                 existingRole = new Role { Name = role };
                 await context.Roles.AddAsync(existingRole);
             }
+            //Get the entitytype based of role name
             var entityType = Type.GetType($"WuwaDB.DBAccess.Entities.Account.{existingRole.Name}");
             if (entityType == null)
             {
                 throw new ArgumentException($"No entity model found for role name: {existingRole.Name}");
             }
+            //Create instance of inherited Account entity based on entityType
             var account = (Account)Activator.CreateInstance(entityType);
+            //Add the inherited class value 
             account.Username = username;
             account.RoleId = existingRole.Id;
-            account.Password = password;
-            var dbSetName = existingRole.Name + "s";
-            var dbSet = context.Set<Account>(dbSetName);
-            dbSet.AddAsync(account);
+            account.Password = BC.EnhancedHashPassword(password, 10);
+            var dbSetName = existingRole.Name;
+            //Add the additional class value from derrived class
+            foreach (var prop in entityType.GetProperties())
+            {
+                if (prop.Name != nameof(Account.Username) &&
+                    prop.Name != nameof(Account.RoleId) &&
+                    prop.Name != nameof(Account.Password))
+                {
+                    if (prop.PropertyType == typeof(string))
+                    {
+                        prop.SetValue(account, additionalProp[i++].ToString());
+                    }
+                    if (prop.PropertyType == typeof(bool))
+                    {
+                        if (bool.TryParse(additionalProp[i++], out bool boolValue))
+                            prop.SetValue(account, boolValue);
+                    }
+                    if (prop.PropertyType == typeof(int))
+                    {
+                        if (int.TryParse(additionalProp[i++], out int intValue))
+                            prop.SetValue(account, intValue);
+                    }
+                }
+            }
+            // Add the new account to the DbSet
+            await context.AddAsync(account);
             await context.SaveChangesAsync();
-           
+
 
         }
 

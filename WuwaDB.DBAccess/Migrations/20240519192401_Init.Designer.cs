@@ -12,8 +12,8 @@ using WuwaDB.DBAccess.DataContext;
 namespace WuwaDB.DBAccess.Migrations
 {
     [DbContext(typeof(WuwaDbContext))]
-    [Migration("20240517092524_AddDerivedEntity")]
-    partial class AddDerivedEntity
+    [Migration("20240519192401_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -82,14 +82,12 @@ namespace WuwaDB.DBAccess.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Element")
                         .HasColumnType("int");
 
                     b.Property<string>("Image")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<byte[]>("ImageFile")
@@ -99,7 +97,7 @@ namespace WuwaDB.DBAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("Rarirty")
+                    b.Property<int>("Rarity")
                         .HasColumnType("int");
 
                     b.Property<int>("Weapon")
@@ -138,7 +136,32 @@ namespace WuwaDB.DBAccess.Migrations
                     b.ToTable("CharacterSkills");
                 });
 
-            modelBuilder.Entity("WuwaDB.DBAccess.Entities.Character.Character_Skill_Value", b =>
+            modelBuilder.Entity("WuwaDB.DBAccess.Entities.Character.Character_Skill_Level", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CharacterSkillPerformedId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("SkillLevel")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SkillPercentage")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("SkillPerformedId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CharacterSkillPerformedId");
+
+                    b.ToTable("CharacterSkilllevels");
+                });
+
+            modelBuilder.Entity("WuwaDB.DBAccess.Entities.Character.Character_Skill_Perform", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -147,17 +170,58 @@ namespace WuwaDB.DBAccess.Migrations
                     b.Property<Guid>("CharacterSkillId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("SkillValue")
-                        .HasColumnType("int");
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("SkillValueNumber")
-                        .HasColumnType("int");
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CharacterSkillId", "SkillValueNumber");
+                    b.HasIndex("CharacterSkillId");
 
-                    b.ToTable("CharacterSkillValues");
+                    b.ToTable("Character_Skill_Perform");
+                });
+
+            modelBuilder.Entity("WuwaDB.DBAccess.Entities.Character.VoiceActor", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CharacterId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("LanguageId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CharacterId");
+
+                    b.HasIndex("LanguageId");
+
+                    b.ToTable("VoiceActor");
+                });
+
+            modelBuilder.Entity("WuwaDB.DBAccess.Entities.Shared.Language", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Language");
                 });
 
             modelBuilder.Entity("WuwaDB.DBAccess.Entities.Account.Admin", b =>
@@ -205,15 +269,45 @@ namespace WuwaDB.DBAccess.Migrations
                     b.Navigation("Character");
                 });
 
-            modelBuilder.Entity("WuwaDB.DBAccess.Entities.Character.Character_Skill_Value", b =>
+            modelBuilder.Entity("WuwaDB.DBAccess.Entities.Character.Character_Skill_Level", b =>
+                {
+                    b.HasOne("WuwaDB.DBAccess.Entities.Character.Character_Skill_Perform", "CharacterSkillPerformed")
+                        .WithMany()
+                        .HasForeignKey("CharacterSkillPerformedId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CharacterSkillPerformed");
+                });
+
+            modelBuilder.Entity("WuwaDB.DBAccess.Entities.Character.Character_Skill_Perform", b =>
                 {
                     b.HasOne("WuwaDB.DBAccess.Entities.Character.Character_Skill", "CharacterSkill")
-                        .WithMany("CharacterSkillValues")
+                        .WithMany("CharacterSkillPerforms")
                         .HasForeignKey("CharacterSkillId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("CharacterSkill");
+                });
+
+            modelBuilder.Entity("WuwaDB.DBAccess.Entities.Character.VoiceActor", b =>
+                {
+                    b.HasOne("WuwaDB.DBAccess.Entities.Character.Character", "Character")
+                        .WithMany("VoiceActors")
+                        .HasForeignKey("CharacterId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("WuwaDB.DBAccess.Entities.Shared.Language", "Language")
+                        .WithMany("VoiceActors")
+                        .HasForeignKey("LanguageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Character");
+
+                    b.Navigation("Language");
                 });
 
             modelBuilder.Entity("WuwaDB.DBAccess.Entities.Account.Role", b =>
@@ -224,11 +318,18 @@ namespace WuwaDB.DBAccess.Migrations
             modelBuilder.Entity("WuwaDB.DBAccess.Entities.Character.Character", b =>
                 {
                     b.Navigation("CharacterSkills");
+
+                    b.Navigation("VoiceActors");
                 });
 
             modelBuilder.Entity("WuwaDB.DBAccess.Entities.Character.Character_Skill", b =>
                 {
-                    b.Navigation("CharacterSkillValues");
+                    b.Navigation("CharacterSkillPerforms");
+                });
+
+            modelBuilder.Entity("WuwaDB.DBAccess.Entities.Shared.Language", b =>
+                {
+                    b.Navigation("VoiceActors");
                 });
 #pragma warning restore 612, 618
         }

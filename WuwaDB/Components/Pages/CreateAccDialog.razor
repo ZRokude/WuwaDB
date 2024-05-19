@@ -1,6 +1,5 @@
-﻿@using InputType = MudBlazor.InputType
+﻿
 @using WuwaDB.DBAccess.Entities.Account
-@using MudBlazor.Extensions
 <MudDialog>
     <DialogContent>
         <MudSelect T="string" Label="Role" @bind-Value="authModel.Role">
@@ -9,7 +8,7 @@
         </MudSelect>
         @if (authModel.Role == "User")
         {
-            <MudTextField T="string" Label="Email" InputType="InputType.Email" @bind-Value="authModel.Email"/>
+            <MudTextField T="string" Label="Email" InputType="MudBlazor.InputType.Email" @bind-Value="authModel.Email"/>
         }
         <MudTextField T="string" Label="Username" @bind-Value="authModel.Username" />
         <MudTextField T="string" Label="Password" @bind-Value="authModel.Password" />

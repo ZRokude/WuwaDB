@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
 using System.Security.Claims;
 using System.Security.Principal;
+using System.Diagnostics;
 
 namespace WuwaDB.Authentication
 {
@@ -12,7 +13,7 @@ namespace WuwaDB.Authentication
         public CustomAuthentication(ProtectedSessionStorage sessionStorage)
         {
             _sessionstorage = sessionStorage;
-        }
+        }  
 
         public override async Task<AuthenticationState> GetAuthenticationStateAsync()
         {
@@ -20,18 +21,22 @@ namespace WuwaDB.Authentication
             {
                 ProtectedBrowserStorageResult<LoginSession> loginSessionResult = await _sessionstorage.GetAsync<LoginSession>("LoginSession");
                 LoginSession? loginSession = loginSessionResult.Success ? loginSessionResult.Value : null;
+                if (loginSession == null) return await Task.FromResult(new AuthenticationState(_guest));
+                ClaimsPrincipal ClaimsPrincipal = new(new ClaimsIdentity(new List<Claim>
+                    {
+                        new Claim(ClaimTypes.Name, loginSession.Username),
+                        new Claim(ClaimTypes.Role, loginSession.Role)
+                    },
+                    "CustomAuth"
+                ));
 
-                ClaimsIdentity identity = new ClaimsIdentity(new List<Claim>
-                {
-                    new Claim(ClaimTypes.UserData, loginSession.Username)
-                }, "CustomAuth");
 
                 // Iterate over each role in the LoginSession and add a claim for it
-                foreach (var role in loginSession.Role)
-                {
-                    identity.AddClaim(new Claim(ClaimTypes.Role, role.ToString()));
-                }
-                ClaimsPrincipal ClaimsPrincipal = new ClaimsPrincipal(identity);
+                //foreach (var role in loginSession.Role)
+                //{
+                //    identity.AddClaim(new Claim(ClaimTypes.Role, role.ToString()));
+                //}
+                //ClaimsPrincipal ClaimsPrincipal = new ClaimsPrincipal(identity);
                 return await Task.FromResult(new AuthenticationState(ClaimsPrincipal));
             }
             catch
@@ -47,26 +52,28 @@ namespace WuwaDB.Authentication
 
             if (loginSession != null)
             {
-                await _sessionstorage.SetAsync("loginSession", loginSession);
+                await _sessionstorage.SetAsync("LoginSession", loginSession);
+
                 // Initialize a ClaimsIdentity with the username
-                ClaimsIdentity identity = new ClaimsIdentity(new List<Claim>
-                {
-                     new Claim(ClaimTypes.UserData, loginSession.Username)
-                }, "CustomAuth");
+                claimsPrincipal = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim> {
+                new Claim(ClaimTypes.Name , loginSession.Username),
+                new Claim (ClaimTypes.Role, loginSession.Role)
+                }));
+
 
                 // Iterate over each role in the login session and add it as a claim
-                foreach (var role in loginSession.Role)
-                {
-                    identity.AddClaim(new Claim(ClaimTypes.Role, role.ToString()));
-                }
+                //foreach (var role in loginSession.Role)
+                //{
+                //    identity.AddClaim(new Claim(ClaimTypes.Role, role.ToString()));
+                //}
 
-                // Create a ClaimsPrincipal with the populated identity
-                claimsPrincipal = new ClaimsPrincipal(identity);
+                //// Create a ClaimsPrincipal with the populated identity
+                //claimsPrincipal = new ClaimsPrincipal(identity);
 
             }
             else
             {
-                await _sessionstorage.DeleteAsync("loginSession");
+                await _sessionstorage.DeleteAsync("LoginSession");
                 claimsPrincipal = _guest;
             }
             NotifyAuthenticationStateChanged(Task.FromResult(new AuthenticationState(claimsPrincipal)));
