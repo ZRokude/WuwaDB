@@ -1,11 +1,10 @@
 ﻿@using System.Diagnostics
-@implements IDisposable
+@* @implements IDisposable *@
 @inject NavigationManager NavigationManager
-<link href="https://use.fontawesome.com/releases/v5.14.0/css/all.css" rel="stylesheet">
 
 <MudPaper Style="background-color:#6F6D6D;" Width="240px" Class="d-inline-flex" Elevation="0">
-    <MudNavMenu Class="mud-width-full" Margin="Margin.Dense">
-        <MudDivider Class="my-10"/>
+    <MudNavMenu Class="mud-width-full" Margin="Margin.None">
+        <MudImage Src="Danjin_Angry_Chibi.png" Fluid="true" ObjectFit="ObjectFit.Cover" ObjectPosition="ObjectPosition.Center" Style="padding-bottom:2rem;"/>
         <MudNavLink Href="/Character/List" Icon="@Icons.Material.Outlined.Groups2" IconColor="Color.Primary">
             <MudText Color="@Color.Secondary">
                 Character List
@@ -21,11 +20,30 @@
                 Login
             </MudText>
         </MudNavLink>
-        <MudNavLink @onclick="OpenRegisterDialog" Icon="@Icons.Material.Outlined.Create" IconColor="Color.Primary" >
-        <MudText Color="@Color.Secondary">
-            Register
-        </MudText>
+        <Microsoft.AspNetCore.Components.Authorization.AuthorizeView Roles="Admin">
+            <Authorized>
+                <MudNavLink @onclick="OpenRegisterDialog" Icon="@Icons.Material.Outlined.Create" IconColor="Color.Primary">
+                    <MudText Color="@Color.Secondary">
+                        Register
+                    </MudText>
+                </MudNavLink>
+            </Authorized>
+        </Microsoft.AspNetCore.Components.Authorization.AuthorizeView>
+        <Microsoft.AspNetCore.Components.Authorization.AuthorizeView>
+            <Authorized>
+                <MudNavLink @onclick="LogOutAsync" Icon="@Icons.Material.Outlined.Create" IconColor="Color.Primary">
+                    <MudText Color="@Color.Secondary">
+                        LogOut
+                    </MudText>
+                </MudNavLink>
+            </Authorized>
+        </Microsoft.AspNetCore.Components.Authorization.AuthorizeView>
+        <MudNavLink @onclick="OpenCreateChar" IconColor="Color.Primary">
+            <MudText Color="@Color.Secondary">
+                Create Character
+            </MudText>
         </MudNavLink>
+        
     </MudNavMenu>
 </MudPaper>
 
@@ -35,10 +53,12 @@
 
     const string Katana = @"<svg xmlns=""http://www.w3.org/2000/svg"" viewBox=""0 0 24 24""><title>fencing</title><path d=""M4.5 17.42L5.58 18.5L3.28 20.78C3 21.07 2.5 21.07 2.22 20.78S1.93 20 2.22 19.72L4.5 17.42M18.29 5.42L18.29 4L12 10.29L5.71 4L5.71 5.42L11.29 11L7.5 14.81C6.32 13.97 4.68 14.07 3.63 15.12L7.88 19.37C8.93 18.32 9.03 16.68 8.2 15.5L18.29 5.42M21.78 19.72L19.5 17.42L18.42 18.5L20.72 20.78C21 21.07 21.5 21.07 21.78 20.78S22.07 20 21.78 19.72M16.5 14.81L13.42 11.71L12.71 12.42L15.81 15.5C14.97 16.68 15.07 18.32 16.12 19.37L20.37 15.12C19.32 14.07 17.68 13.97 16.5 14.81Z"" /></svg>";
     const string Katana2 = @"<svg viewBox=""-51.2 -51.2 614.40 614.40"" xmlns=""http://www.w3.org/2000/svg"" fill=""#000000"" transform=""matrix(1, 0, 0, 1, 0, 0)rotate(0)""><g id=""SVGRepo_bgCarrier"" stroke-width=""0""></g><g id=""SVGRepo_tracerCarrier"" stroke-linecap=""round"" stroke-linejoin=""round"" stroke=""#f33f3f"" stroke-width=""34.816""><path fill=""#000000"" d=""M482.403 42.826c-10.537-8.76-24.84-4.167-43.264 11.643-76.1 65.307-202.78 179.14-282.432 269.103l21.07 21.07c82.21-87.285 203.37-205.524 304.625-301.817zm-338.477 293.42l-17.17 17.028 22.302 22.303c5.313-5.817 10.787-11.75 16.41-17.79zm-56.796.03l-12.728 12.728 79.196 79.196 12.728-12.728zm2.942 54.185l-60.475 60.475c.372 11.49 10.708 22.336 22.628 22.627l60.474-60.474-8.137-8.136c2.657 4.264 2.84 8.705.457 11.097-3.124 3.123-9.554 1.758-14.363-3.05 4.808 4.808 6.174 11.24 3.05 14.363-3.125 3.124-9.555 1.76-14.364-3.05 4.81 4.81 6.174 11.24 3.05 14.363-3.124 3.125-9.555 1.76-14.363-3.05 4.808 4.81 6.173 11.24 3.05 14.364-3.125 3.124-9.556 1.76-14.364-3.05 4.808 4.81 6.174 11.24 3.05 14.364-3.125 3.124-9.555 1.76-14.364-3.05-4.808-4.808-6.173-11.24-3.05-14.363 3.125-3.123 9.556-1.758 14.364 3.05-4.808-4.808-6.173-11.238-3.05-14.362 3.125-3.125 9.555-1.76 14.364 3.05-4.81-4.81-6.174-11.24-3.05-14.364 3.125-3.124 9.555-1.76 14.363 3.05-4.808-4.81-6.173-11.24-3.05-14.364 3.125-3.124 9.556-1.76 14.364 3.05-4.808-4.81-6.173-11.24-3.05-14.364 2.39-2.383 6.828-2.202 11.09.45z""></path></g><g id=""SVGRepo_iconCarrier""><path fill=""#000000"" d=""M482.403 42.826c-10.537-8.76-24.84-4.167-43.264 11.643-76.1 65.307-202.78 179.14-282.432 269.103l21.07 21.07c82.21-87.285 203.37-205.524 304.625-301.817zm-338.477 293.42l-17.17 17.028 22.302 22.303c5.313-5.817 10.787-11.75 16.41-17.79zm-56.796.03l-12.728 12.728 79.196 79.196 12.728-12.728zm2.942 54.185l-60.475 60.475c.372 11.49 10.708 22.336 22.628 22.627l60.474-60.474-8.137-8.136c2.657 4.264 2.84 8.705.457 11.097-3.124 3.123-9.554 1.758-14.363-3.05 4.808 4.808 6.174 11.24 3.05 14.363-3.125 3.124-9.555 1.76-14.364-3.05 4.81 4.81 6.174 11.24 3.05 14.363-3.124 3.125-9.555 1.76-14.363-3.05 4.808 4.81 6.173 11.24 3.05 14.364-3.125 3.124-9.556 1.76-14.364-3.05 4.808 4.81 6.174 11.24 3.05 14.364-3.125 3.124-9.555 1.76-14.364-3.05-4.808-4.808-6.173-11.24-3.05-14.363 3.125-3.123 9.556-1.758 14.364 3.05-4.808-4.808-6.173-11.238-3.05-14.362 3.125-3.125 9.555-1.76 14.364 3.05-4.81-4.81-6.174-11.24-3.05-14.364 3.125-3.124 9.555-1.76 14.363 3.05-4.808-4.81-6.173-11.24-3.05-14.364 3.125-3.124 9.556-1.76 14.364 3.05-4.808-4.81-6.173-11.24-3.05-14.364 2.39-2.383 6.828-2.202 11.09.45z""></path></g></svg>";
-    protected override void OnInitialized()
+   
+    protected override async void OnInitialized()
     {
         // currentUrl = NavigationManager.ToBaseRelativePath(NavigationManager.Uri);
         NavigationManager.LocationChanged += OnLocationChanged;
+       
     }
 
     private void OnLocationChanged(object? sender, LocationChangedEventArgs e)
@@ -47,9 +67,9 @@
         StateHasChanged();
     }
 
-    public void Dispose()
-    {
-        NavigationManager.LocationChanged -= OnLocationChanged;
-    }
+    // public void Dispose()
+    // {
+    //     NavigationManager.LocationChanged -= OnLocationChanged;
+    // }
 }
 

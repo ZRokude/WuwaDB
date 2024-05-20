@@ -6,16 +6,15 @@ using System.Threading.Tasks;
 
 namespace WuwaDB.DBAccess.Entities.Character
 {
-    public class Character_Skill_Value
+    public class Character_Skill_Perform
     {
         public Guid Id { get; set; }
         public Guid CharacterSkillId { get; set; }
-        public int SkillValue { get; set; }
-        public int SkillValueNumber { get; set; }
-
-        //Navigation
-
+        public string Name { get; set; }
+        public string? Description { get; set; }
+        //Nav
         public Character_Skill CharacterSkill { get; set; }
+        public ICollection<Character_Skill_Perform_Level> CharacterSkillPerformLevels { get; set; }
 
     }
 }

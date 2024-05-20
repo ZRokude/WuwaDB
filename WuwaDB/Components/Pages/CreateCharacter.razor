@@ -1,0 +1,40 @@
+﻿@using WuwaDB.DBAccess.Entities.Account
+@using MudBlazor.Extensions
+@using WuwaDB.DBAccess.Enum
+<MudDialog>
+    <DialogContent>
+        <MudAutocomplete T="string" Variant="Variant.Text"
+                         Label="Character Name">
+        </MudAutocomplete>
+        <MudSelect T="ElementType" Label="Element" Variant="Variant.Text">
+            @foreach(ElementType element in Enum.GetValues(typeof(ElementType)))
+            {
+                <MudSelectItem Value="@element"> @element.ToString()</MudSelectItem>
+            }
+        </MudSelect>
+        <MudSelect T="WeaponType" Label="Weapon" Variant="Variant.Text">
+            @foreach(WeaponType weapon in Enum.GetValues(typeof(WeaponType)))
+            {
+                <MudSelectItem Value="weapon">@weapon.ToString()</MudSelectItem>
+            }
+        </MudSelect>
+        <MudSelect T="RarityType" Label="Rarity" Variant="Variant.Text">
+            @foreach (RarityType rarity in Enum.GetValues(typeof(RarityType)))
+            {
+                <MudSelectItem Value="rarity">@rarity.ToString()</MudSelectItem>
+            }
+        </MudSelect>
+        <MudTextField T="string" AutoGrow="true" Label="Description">
+        </MudTextField>
+        <MudTextField T="string">
+
+        </MudTextField>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">Cancel</MudButton>
+        <MudButton Color="Color.Primary" OnClick="Submit">Ok</MudButton>
+    </DialogActions>
+</MudDialog>
+@code {
+
+}
