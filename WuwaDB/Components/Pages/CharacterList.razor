@@ -10,27 +10,31 @@
                 <MudItem Style="width:13rem;max-width:20rem;">
                     <MudLink Class="hover-effect" Href="/Character/Danjin">
                         <MudCard Style="background-color:transparent;" Class="expand-hover" Elevation="15">
-                            <MudCardMedia Image="danjin.png">
-                            </MudCardMedia>
-                            <MudCardContent Class="p-0">
+                            <MudCardHeader>
+                                <MudImage Src="Danjin_Icon2.png" Fluid="true" ObjectFit="ObjectFit.Cover"/>
+                            </MudCardHeader>
+                            <MudCardContent Class="p-0 text-center" >
                                 <MudStack Justify="Justify.Center" Spacing="0">
                                     <MudStack Row="true" Justify="Justify.Center" Wrap="Wrap.Wrap" AlignItems="AlignItems.Center">
                                         <MudTooltip Text="Havoc" Color="Color.Dark" Placement="Placement.Bottom">
                                             <MudIconButton Size="Size.Small">
-                                                <MudAvatar Size="Size.Small" Variant="Variant.Filled">
+                                                <MudAvatar Size="Size.Medium" Variant="Variant.Filled">
                                                     <MudImage Fluid="true" Src="/Element/Wuthering-Waves-Havoc.png" />
                                                 </MudAvatar>
                                             </MudIconButton>
                                         </MudTooltip>
                                         <MudTooltip Text="Katana" Color="Color.Dark" Placement="Placement.Bottom">
                                             <MudIconButton Size="Size.Small">
-                                                <MudAvatar Size="Size.Small">
+                                                <MudAvatar Size="Size.Medium">
                                                     <MudImage Fluid="true" Src="/Weapon/Sword/EmeraldOfGenesis.png" />
                                                 </MudAvatar>
                                             </MudIconButton>
                                         </MudTooltip>
                                     </MudStack>
-                                    <MudText Elevation="0" Style="font-family:UnifrakturMaguntia" Typo="Typo.h6" Class="text-center">Danjin</MudText>
+                                    <MudTooltip RootStyle="width:unset!important;" Text="Danjin" Color="Color.Dark" Placement="Placement.Bottom" Class="text-center">
+                                        <MudText Elevation="0" Style="font-family:UnifrakturMaguntia;overflow:hidden;"
+                                                 Typo="Typo.h6" Class="text-center">Danjin</MudText>
+                                    </MudTooltip>
                                 </MudStack>
                             </MudCardContent>
                         </MudCard>

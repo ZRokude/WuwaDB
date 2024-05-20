@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WuwaDB.DBAccess.DataContext;
 
@@ -11,9 +12,11 @@ using WuwaDB.DBAccess.DataContext;
 namespace WuwaDB.DBAccess.Migrations
 {
     [DbContext(typeof(WuwaDbContext))]
-    partial class WuwaDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240520045616_Init")]
+    partial class Init
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -117,12 +120,7 @@ namespace WuwaDB.DBAccess.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<byte[]>("ImageFile")
-                        .HasColumnType("varbinary(max)");
-
-                    b.Property<string>("ImageName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
@@ -181,46 +179,6 @@ namespace WuwaDB.DBAccess.Migrations
                     b.HasIndex("CharacterSkillPerformId");
 
                     b.ToTable("CharacterSkillPerformLevels");
-                });
-
-            modelBuilder.Entity("WuwaDB.DBAccess.Entities.Character.Character_Stats_Base", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("ATK")
-                        .HasColumnType("int");
-
-                    b.Property<Guid>("CharacterId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<float>("Critical_Damage")
-                        .HasColumnType("real");
-
-                    b.Property<float>("Critical_Rate")
-                        .HasColumnType("real");
-
-                    b.Property<int>("DEF")
-                        .HasColumnType("int");
-
-                    b.Property<float>("Energy_Regen")
-                        .HasColumnType("real");
-
-                    b.Property<int>("HP")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Max_Resonance_Energy")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Max_Stamina")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CharacterId");
-
-                    b.ToTable("CharacterStatsBases");
                 });
 
             modelBuilder.Entity("WuwaDB.DBAccess.Entities.Character.VoiceActor", b =>
@@ -330,17 +288,6 @@ namespace WuwaDB.DBAccess.Migrations
                     b.Navigation("CharacterSkillPerform");
                 });
 
-            modelBuilder.Entity("WuwaDB.DBAccess.Entities.Character.Character_Stats_Base", b =>
-                {
-                    b.HasOne("WuwaDB.DBAccess.Entities.Character.Character", "Character")
-                        .WithMany("CharacterStatBases")
-                        .HasForeignKey("CharacterId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Character");
-                });
-
             modelBuilder.Entity("WuwaDB.DBAccess.Entities.Character.VoiceActor", b =>
                 {
                     b.HasOne("WuwaDB.DBAccess.Entities.Character.Character", "Character")
@@ -368,8 +315,6 @@ namespace WuwaDB.DBAccess.Migrations
             modelBuilder.Entity("WuwaDB.DBAccess.Entities.Character.Character", b =>
                 {
                     b.Navigation("CharacterSkills");
-
-                    b.Navigation("CharacterStatBases");
 
                     b.Navigation("VoiceActors");
                 });

@@ -20,11 +20,16 @@ namespace WuwaDB.Components.Pages
         string[] additionalProp { get; set; }
         public int additionalPropCount = 0;
 
-        protected override void OnInitialized()
-        {
-            // Initialize additionalProp with a size
-            additionalProp = new string[20];
-        }
+        //protected override void OnInitialized()
+        //{
+        //    // Initialize additionalProp with a size
+        //    additionalProp = new string[20];
+        //}
+
+        /// <summary>
+        /// Submit when creating acc for other people as admin with the the current role you can choose
+        /// </summary>
+        /// <returns></returns>
         private async Task Submit()
         {
             var authModelProperties = authModel.GetType().GetProperties();
@@ -45,13 +50,8 @@ namespace WuwaDB.Components.Pages
             await UserRepository.CreateUserDataAsync(authModel.Username, authModel.Password, authModel.Role, additionalProp);
             StateHasChanged();
             MudDialog.Close(DialogResult.Ok(true));
-            
         }
-        private async void Cancel()
-        {
-            MudDialog.Close();
-        }
-
+        private async void Cancel() => MudDialog.Close();
         public class AuthModel
         {
             [Required(ErrorMessage = "Username is invalid, please fill the username ")]

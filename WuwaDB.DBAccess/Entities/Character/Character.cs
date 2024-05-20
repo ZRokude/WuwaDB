@@ -20,5 +20,6 @@ namespace WuwaDB.DBAccess.Entities.Character
 
         public ICollection<Character_Skill> CharacterSkills { get; set; }
         public ICollection<VoiceActor> VoiceActors { get; set; }
+        public ICollection<Character_Stats_Base> CharacterStatBases { get; set; }
     }
 }

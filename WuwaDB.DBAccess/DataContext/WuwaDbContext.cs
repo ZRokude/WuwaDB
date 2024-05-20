@@ -4,6 +4,8 @@ using Microsoft.Extensions.Configuration;
 using WuwaDB.DBAccess.Entities.Account;
 using WuwaDB.DBAccess.Entities.Character;
 
+
+
 namespace WuwaDB.DBAccess.DataContext
 {
     public class WuwaDbContext : DbContext
@@ -19,8 +21,9 @@ namespace WuwaDB.DBAccess.DataContext
         public DbSet<Role> Roles { get; set; }
         public DbSet<Character> Characters { get; set; }
         public DbSet<Character_Skill> CharacterSkills { get; set; }
-        public DbSet<Character_Skill_Level> CharacterSkilllevels { get; set; }
- 
+        public DbSet<Character_Skill_Perform_Level> CharacterSkillPerformLevels { get; set; }
+        public DbSet<Character_Skill_Perform> CharacterSkillPerforms { get; set; }
+        public DbSet<Character_Stats_Base> CharacterStatsBases { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder) 
         {
             base.OnModelCreating(modelBuilder);
@@ -39,8 +42,9 @@ namespace WuwaDB.DBAccess.DataContext
                 .HasIndex(c => c.Name);
             modelBuilder.Entity<Character_Skill>()
                 .HasIndex(c => c.Name);
-            //modelBuilder.Entity<Character_Skill_Value>()
-            //    .HasIndex(c => new { c.CharacterSkillId,c.SkillValueNumber});
+            
+
+            
 
 
         }

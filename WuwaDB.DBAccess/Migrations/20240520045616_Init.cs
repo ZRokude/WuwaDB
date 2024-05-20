@@ -123,7 +123,7 @@ namespace WuwaDB.DBAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Character_Skill_Perform",
+                name: "CharacterSkillPerforms",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -133,9 +133,9 @@ namespace WuwaDB.DBAccess.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Character_Skill_Perform", x => x.Id);
+                    table.PrimaryKey("PK_CharacterSkillPerforms", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Character_Skill_Perform_CharacterSkills_CharacterSkillId",
+                        name: "FK_CharacterSkillPerforms_CharacterSkills_CharacterSkillId",
                         column: x => x.CharacterSkillId,
                         principalTable: "CharacterSkills",
                         principalColumn: "Id",
@@ -143,22 +143,21 @@ namespace WuwaDB.DBAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "CharacterSkilllevels",
+                name: "CharacterSkillPerformLevels",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    SkillPerformedId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    SkillLevel = table.Column<int>(type: "int", nullable: false),
-                    SkillPercentage = table.Column<int>(type: "int", nullable: false),
-                    CharacterSkillPerformedId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    CharacterSkillPerformId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Level = table.Column<int>(type: "int", nullable: false),
+                    Value = table.Column<double>(type: "float", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CharacterSkilllevels", x => x.Id);
+                    table.PrimaryKey("PK_CharacterSkillPerformLevels", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_CharacterSkilllevels_Character_Skill_Perform_CharacterSkillPerformedId",
-                        column: x => x.CharacterSkillPerformedId,
-                        principalTable: "Character_Skill_Perform",
+                        name: "FK_CharacterSkillPerformLevels_CharacterSkillPerforms_CharacterSkillPerformId",
+                        column: x => x.CharacterSkillPerformId,
+                        principalTable: "CharacterSkillPerforms",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -179,19 +178,19 @@ namespace WuwaDB.DBAccess.Migrations
                 column: "Username");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Character_Skill_Perform_CharacterSkillId",
-                table: "Character_Skill_Perform",
-                column: "CharacterSkillId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Characters_Name",
                 table: "Characters",
                 column: "Name");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CharacterSkilllevels_CharacterSkillPerformedId",
-                table: "CharacterSkilllevels",
-                column: "CharacterSkillPerformedId");
+                name: "IX_CharacterSkillPerformLevels_CharacterSkillPerformId",
+                table: "CharacterSkillPerformLevels",
+                column: "CharacterSkillPerformId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CharacterSkillPerforms_CharacterSkillId",
+                table: "CharacterSkillPerforms",
+                column: "CharacterSkillId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_CharacterSkills_CharacterId",
@@ -221,7 +220,7 @@ namespace WuwaDB.DBAccess.Migrations
                 name: "Accounts");
 
             migrationBuilder.DropTable(
-                name: "CharacterSkilllevels");
+                name: "CharacterSkillPerformLevels");
 
             migrationBuilder.DropTable(
                 name: "VoiceActor");
@@ -230,7 +229,7 @@ namespace WuwaDB.DBAccess.Migrations
                 name: "Roles");
 
             migrationBuilder.DropTable(
-                name: "Character_Skill_Perform");
+                name: "CharacterSkillPerforms");
 
             migrationBuilder.DropTable(
                 name: "Language");

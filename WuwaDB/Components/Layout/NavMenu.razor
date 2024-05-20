@@ -1,11 +1,10 @@
 ﻿@using System.Diagnostics
 @* @implements IDisposable *@
 @inject NavigationManager NavigationManager
-<link href="https://use.fontawesome.com/releases/v5.14.0/css/all.css" rel="stylesheet">
 
 <MudPaper Style="background-color:#6F6D6D;" Width="240px" Class="d-inline-flex" Elevation="0">
-    <MudNavMenu Class="mud-width-full" Margin="Margin.Dense">
-        <MudDivider Class="my-10"/>
+    <MudNavMenu Class="mud-width-full" Margin="Margin.None">
+        <MudImage Src="Danjin_Angry_Chibi.png" Fluid="true" ObjectFit="ObjectFit.Cover" ObjectPosition="ObjectPosition.Center" Style="padding-bottom:2rem;"/>
         <MudNavLink Href="/Character/List" Icon="@Icons.Material.Outlined.Groups2" IconColor="Color.Primary">
             <MudText Color="@Color.Secondary">
                 Character List
