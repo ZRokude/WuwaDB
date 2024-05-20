@@ -101,7 +101,12 @@ namespace WuwaDB.DBAccess.Repository
 
 
         }
-
+        public async Task<List<Character>> GetCharacterAsync()
+        {
+            //Create DbContext of WuwaDBContext
+            await using WuwaDbContext context = await _context.CreateDbContextAsync();
+            return await context.Characters.ToListAsync(); 
+        }
 
     }
 }

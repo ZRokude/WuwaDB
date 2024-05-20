@@ -22,4 +22,9 @@
     <ProjectReference Include="..\WuwaDB.DBAccess\WuwaDB.DBAccess.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\Character_Card\" />
+    <Folder Include="wwwroot\Character_Icon\" />
+  </ItemGroup>
+
 </Project>
