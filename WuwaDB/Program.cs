@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using MudBlazor.Services;
@@ -19,9 +20,11 @@ builder.Services.AddCascadingAuthenticationState();
 builder.Services.AddDbContextFactory<WuwaDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.")));
 builder.Services.AddScoped<UserRepository>();
+builder.Services.AddScoped<AdminRepository>();
 builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthentication>();
 builder.Services.AddScoped<CustomAuthentication>();
 builder.Services.AddAuthenticationCore();
+
 builder.Services.AddLogging(config =>
 {
     config.AddConsole();

@@ -1,38 +1,47 @@
-﻿@using WuwaDB.DBAccess.Entities.Account
+﻿    @using WuwaDB.DBAccess.Entities.Account
 @using MudBlazor.Extensions
 @using WuwaDB.DBAccess.Enum
 <MudDialog>
     <DialogContent>
-        <MudAutocomplete T="string" Variant="Variant.Text"
-                         Label="Character Name">
-        </MudAutocomplete>
-        <MudSelect T="ElementType" Label="Element" Variant="Variant.Text">
+        <MudTextField T="string" Variant="Variant.Text" Label="Character Name" @bind-Value="Character.Name"/>
+        <MudSelect T="ElementType" Label="Element" Variant="Variant.Text" @bind-Value="Character.Element">
             @foreach(ElementType element in Enum.GetValues(typeof(ElementType)))
             {
                 <MudSelectItem Value="@element"> @element.ToString()</MudSelectItem>
             }
         </MudSelect>
-        <MudSelect T="WeaponType" Label="Weapon" Variant="Variant.Text">
+        <MudSelect T="WeaponType" Label="Weapon" Variant="Variant.Text" @bind-Value="Character.Weapon">
             @foreach(WeaponType weapon in Enum.GetValues(typeof(WeaponType)))
             {
                 <MudSelectItem Value="weapon">@weapon.ToString()</MudSelectItem>
             }
         </MudSelect>
-        <MudSelect T="RarityType" Label="Rarity" Variant="Variant.Text">
+        <MudSelect T="RarityType" Label="Rarity" Variant="Variant.Text" @bind-Value="Character.Rarity">
             @foreach (RarityType rarity in Enum.GetValues(typeof(RarityType)))
             {
                 <MudSelectItem Value="rarity">@rarity.ToString()</MudSelectItem>
             }
         </MudSelect>
-        <MudTextField T="string" AutoGrow="true" Label="Description">
+        <MudTextField T="string" AutoGrow="true" Label="Description" @bind-Value="Character.Description">
         </MudTextField>
-        <MudTextField T="string">
-
-        </MudTextField>
+        <MudFileUpload Context="MudUpload" T="IBrowserFile" OnFilesChanged="OnFilesChanged" MaximumFileCount="20971520" Accept=".png, .jpg, .jpeg">
+            <ButtonTemplate Context="MudUpload" >
+                <MudFab HtmlTag="label"
+                        Color="Color.Success"
+                        Icon="@Icons.Material.Filled.AttachFile"
+                        for="@MudUpload.Id" />
+            </ButtonTemplate>
+            <SelectedTemplate>
+                @if (file is not null)
+                {
+                    <MudText> @file.Name @file.Size</MudText>
+                }
+            </SelectedTemplate>
+        </MudFileUpload>
     </DialogContent>
     <DialogActions>
-        <MudButton OnClick="Cancel">Cancel</MudButton>
-        <MudButton Color="Color.Primary" OnClick="Submit">Ok</MudButton>
+        <MudButton OnClick="Cancel" Variant="Variant.Filled">Cancel</MudButton>
+        <MudButton Color="Color.Primary" Variant="Variant.Filled" OnClick="Submit">Create</MudButton>
     </DialogActions>
 </MudDialog>
 @code {
