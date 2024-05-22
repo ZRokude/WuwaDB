@@ -1,13 +1,29 @@
 ﻿@page "/Character/{CharacterName}"
 @using WuwaDB.DBAccess.Entities.Character
 <div>
-    <MudContainer Class="mt-10">
-        <MudPaper Style="background-image:unset!important;" Class="d-inline-flex">
+    <MudContainer Class="mt-10 w-100" >
+        <MudGrid Justify="Justify.SpaceBetween" Spacing="6">
+            <MudItem>
+                 <div class="character-card-container">
+                    <MudCardMedia Image="@($"/Character_Model/yinlin.png")" Class="character-card bg-color-transparent"/>
+                 </div>
+            </MudItem>
+            <MudItem>
+                <MudStack AlignItems="AlignItems.End" Spacing="10">
+                    <MudPaper>
+                        <MudStack>
+                            <MudPaper>
 
-        </MudPaper>
-    </MudContainer>
+                            </MudPaper>
+                        </MudStack>
+                    </MudPaper>
+                </MudStack>
+            </MudItem>
+        </MudGrid>
+    </MudContainer> 
 </div>
 
 @code {
     
 }
+ 
