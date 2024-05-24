@@ -1,11 +1,24 @@
-﻿::deep .Character-Card {
+﻿::deep .character-card {
+    width: 100%!important;
+    height: 100%!important;
+    background-size: contain;
+    background-repeat: no-repeat;
     background-position: center;
-    background-attachment: fixed;
-    background-repeat:no-repeat;
-    height: 100vh;
-    min-height: 100vh;
-    width: 100%;
-    min-width: 100%;
-    position: absolute;
-    overflow: auto;
+   
+}
+
+::deep .character-card-container {
+    height: 80vh; 
+    width: 35vw; 
+    position: relative;
+    object-position:center;
+    position:fixed;
+
+}
+::deep .bg-color-transparent{
+    background-color:transparent!important;
+}
+
+@media {
+
 }

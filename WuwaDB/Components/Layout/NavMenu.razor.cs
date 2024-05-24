@@ -40,7 +40,7 @@ namespace WuwaDB.Components.Layout
             var options = new DialogOptions { CloseOnEscapeKey = true };
             var dialog = await DialogService.ShowAsync<CreateCharacter>("Create Character", options);
             var result = await dialog.Result;
-
+            NavigationManager.NavigateTo("/Character/List", true);
         }
 
     }
