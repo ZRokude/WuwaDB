@@ -13,6 +13,6 @@ namespace WuwaDB.DBAccess.Enum
         Glacio,
         Havoc,
         Electro,
-        Spectrum
+        Spectro
     }
 }
