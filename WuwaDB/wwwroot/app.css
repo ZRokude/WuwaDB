@@ -49,3 +49,10 @@ h1:focus {
 .darker-border-checkbox.form-check-input {
     border-color: #929292;
 }
+
+.bg-color-unset{
+    background-color:unset!important;
+}
+.bg-color-transparent{
+    background-color:transparent;
+}
