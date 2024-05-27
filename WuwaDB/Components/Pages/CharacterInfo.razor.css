@@ -15,9 +15,6 @@
     position:fixed;
 
 }
-::deep .bg-color-transparent{
-    background-color:transparent!important;
-}
 
 @media {
 
