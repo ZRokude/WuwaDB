@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WuwaDB.DBAccess.DataContext;
 
@@ -11,9 +12,11 @@ using WuwaDB.DBAccess.DataContext;
 namespace WuwaDB.DBAccess.Migrations
 {
     [DbContext(typeof(WuwaDbContext))]
-    partial class WuwaDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240526083353_FixSkillDetailRelations")]
+    partial class FixSkillDetailRelations
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -167,7 +170,7 @@ namespace WuwaDB.DBAccess.Migrations
 
                     b.HasIndex("CharacterSkillId");
 
-                    b.ToTable("CharacterSkillDetails");
+                    b.ToTable("Character_Skill_Details");
                 });
 
             modelBuilder.Entity("WuwaDB.DBAccess.Entities.Character.Character_Stats_Base", b =>
@@ -205,34 +208,6 @@ namespace WuwaDB.DBAccess.Migrations
                     b.HasIndex("CharacterId");
 
                     b.ToTable("CharacterStatsBases");
-                });
-
-            modelBuilder.Entity("WuwaDB.DBAccess.Entities.Character.Character_Stats_Growth_Property", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("AtkRatio")
-                        .HasColumnType("int");
-
-                    b.Property<int>("BreachLevel")
-                        .HasColumnType("int");
-
-                    b.Property<int>("DefRatio")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Level")
-                        .HasColumnType("int");
-
-                    b.Property<int>("LifeMaxRatio")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("CharacterStatsGrowthproperties");
                 });
 
             modelBuilder.Entity("WuwaDB.DBAccess.Entities.Character.VoiceActor", b =>

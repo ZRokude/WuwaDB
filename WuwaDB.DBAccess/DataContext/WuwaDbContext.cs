@@ -21,10 +21,10 @@ namespace WuwaDB.DBAccess.DataContext
         public DbSet<Role> Roles { get; set; }
         public DbSet<Character> Characters { get; set; }
         public DbSet<Character_Skill> CharacterSkills { get; set; }
-        public DbSet<Character_Skill_Perform_Level> CharacterSkillPerformLevels { get; set; }
-        public DbSet<Character_Skill_Perform> CharacterSkillPerforms { get; set; }
         public DbSet<Character_Stats_Base> CharacterStatsBases { get; set; }
-        protected override void OnModelCreating(ModelBuilder modelBuilder) 
+        public DbSet<Character_Skill_Detail> CharacterSkillDetails { get; set; }
+        public DbSet<Character_Stats_Growth_Property> CharacterStatsGrowthproperties { get; set; }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
@@ -42,12 +42,17 @@ namespace WuwaDB.DBAccess.DataContext
                 .HasIndex(c => c.Name);
             modelBuilder.Entity<Character_Skill>()
                 .HasIndex(c => c.Name);
-            
 
-            
+            //Relations
+            modelBuilder.Entity<Character_Skill_Detail>()
+                .HasOne(c => c.Character_Skill)
+                .WithMany(u => u.Character_Skill_Details)
+                .HasForeignKey(c => c.CharacterSkillId);
+
+
 
 
         }
-        
+
     }
 }

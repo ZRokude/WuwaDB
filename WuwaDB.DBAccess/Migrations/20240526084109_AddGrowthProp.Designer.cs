@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WuwaDB.DBAccess.DataContext;
 
@@ -11,9 +12,11 @@ using WuwaDB.DBAccess.DataContext;
 namespace WuwaDB.DBAccess.Migrations
 {
     [DbContext(typeof(WuwaDbContext))]
-    partial class WuwaDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240526084109_AddGrowthProp")]
+    partial class AddGrowthProp
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

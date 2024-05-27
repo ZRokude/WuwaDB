@@ -14,16 +14,14 @@ namespace WuwaDB.Components.Pages
         [Parameter]
         public string CharacterName { get; set; }
         public Character_Skill CharacterSkill { get; set; }
-        public Character_Skill_Perform  CharacterSkillPerform { get; set; }
-        public Character_Skill_Perform_Level CharacterSkillPerformLevel { get; set; }
 
         public Character_Stats_Base CharacterStats { get; set; }
         string BackgroundImageUrl;
-        protected override async void OnInitialized()
+        protected override void OnInitialized()
         {
             BackgroundImageUrl = "/Character_Model/yinlin.png";
-
             StateHasChanged();
+            
         }
     }
 }
