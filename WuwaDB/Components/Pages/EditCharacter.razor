@@ -1,5 +1,16 @@
 ﻿<MudDialog>
-
+    <DialogContent>
+        <MudTextField T="int" Variant="Variant.Outlined" Label="HP"/>
+        <MudTextField T="int" Variant="Variant.Outlined" Label="ATK"/>
+        <MudTextField T="int" Variant="Variant.Outlined" Label="Defense"/>
+        <MudTextField T="float" Variant="Variant.Outlined" Label="Crit Chance"/>
+        <MudTextField T="float" Variant="Variant.Outlined" Label="Crit DMG"/>
+        <MudTextField T="float" Variant="Variant.Outlined" Label="Energy Regen" />
+        <MudTextField T="int" Variant="Variant.Outlined" Label="Max Resonance Energy" />
+    </DialogContent>
+    <DialogActions>
+        <MudButton StartIcon="@Icons.Material.Filled.Sync" OnClick="StatsExistEvent">Save</MudButton>
+    </DialogActions>
 </MudDialog>
 
 @code {
