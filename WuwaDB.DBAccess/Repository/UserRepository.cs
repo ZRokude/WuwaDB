@@ -11,6 +11,7 @@ using WuwaDB.DBAccess.Entities.Account;
 using WuwaDB.DBAccess.Entities.Character;
 using System.Security.Principal;
 using System.Reflection;
+using System.Security.Cryptography.X509Certificates;
 using MudBlazor.Interfaces;
 using BC = BCrypt.Net.BCrypt;
 namespace WuwaDB.DBAccess.Repository
@@ -106,6 +107,17 @@ namespace WuwaDB.DBAccess.Repository
             //Create DbContext of WuwaDBContext
             await using WuwaDbContext context = await _context.CreateDbContextAsync();
             return await context.Characters.ToListAsync(); 
+        }
+
+        public async Task<Character_Stats_Base?> GetCharacterStatsBaseAsync(Guid charId)
+        {
+            await using WuwaDbContext context = await _context.CreateDbContextAsync();
+            return await context.CharacterStatsBases.FirstOrDefaultAsync(x=>x.CharacterId == charId);
+        } 
+        public async Task<Character> FindCharacterAsync(string name)
+        {
+            await using WuwaDbContext context = await _context.CreateDbContextAsync();
+            return await context.Characters.FirstOrDefaultAsync(x=>x.Name == name);
         }
 
     }
