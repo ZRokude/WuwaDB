@@ -18,8 +18,7 @@ namespace WuwaDB.Components.Pages
         private List<Character> CharList { get; set; } = new();
         protected override async void OnInitialized()
         {
-            CharList = await UserRepository.GetCharacterAsync();
-
+            CharList = await UserRepository.GetToListAsync<Character>();
             StateHasChanged();
         }
 

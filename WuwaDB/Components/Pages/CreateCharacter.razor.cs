@@ -59,7 +59,7 @@ namespace WuwaDB.Components.Pages
                     }
                 }
             }
-            await AdminRepository.CreateCharacter(Character);
+            await AdminRepository.SavesAsync(Character);
             StateHasChanged();
             MudDialog.Close(DialogResult.Ok(true));
         }

@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore.Internal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Identity.Client;
@@ -12,6 +13,7 @@ using WuwaDB.DBAccess.Entities.Character;
 using System.Security.Principal;
 using System.Reflection;
 using System.Security.Cryptography.X509Certificates;
+using Microsoft.AspNetCore.Components;
 using MudBlazor.Interfaces;
 using BC = BCrypt.Net.BCrypt;
 namespace WuwaDB.DBAccess.Repository
@@ -19,17 +21,11 @@ namespace WuwaDB.DBAccess.Repository
     public class UserRepository
     {
         private readonly IDbContextFactory<WuwaDbContext> _context;
-       
+        [Inject] private SharedRepository ShareRepository { get; set; } = new();
         public UserRepository(IDbContextFactory<WuwaDbContext> context)
         {
             _context = context;
         }
-        //public async Task<Character> GetCharacterAsync()
-        //{
-        //    var dbContext = await _context.CreateDbContextAsync();
-
-        //    return await dbContext.Characters.FindAsync();
-        //}
         public async Task<Account?> GetUserDataAsync(string Username)
         {
             await using WuwaDbContext context = await _context.CreateDbContextAsync();
@@ -44,77 +40,22 @@ namespace WuwaDB.DBAccess.Repository
         /// <param name="additionalProp"></param>
         /// <returns></returns>
         /// <exception cref="ArgumentException"></exception>
-        public async Task CreateUserDataAsync(string username, string password, string role, string[] additionalProp)
-        {
-            int i = 0;
-            //Create DbContext of WuwaDBContext
-            await using WuwaDbContext context = await _context.CreateDbContextAsync();
-            
-            //Checking if account has already there if yes then decline the function
-            var existingAccount = await context.Accounts
-                .FirstOrDefaultAsync(u => u.Username == username);
-            // Find or create the new role
-            var existingRole = await context.Roles.FirstOrDefaultAsync(r => r.Name == role);
-            if (existingRole == null)
-            {
-                existingRole = new Role { Name = role };
-                await context.Roles.AddAsync(existingRole);
-            }
-            //Get the entitytype based of role name
-            var entityType = Type.GetType($"WuwaDB.DBAccess.Entities.Account.{existingRole.Name}");
-            if (entityType == null)
-            {
-                throw new ArgumentException($"No entity model found for role name: {existingRole.Name}");
-            }
-            //Create instance of inherited Account entity based on entityType
-            var account = (Account)Activator.CreateInstance(entityType);
-            //Add the inherited class value 
-            account.Username = username;
-            account.RoleId = existingRole.Id;
-            account.Password = BC.EnhancedHashPassword(password, 10);
-            var dbSetName = existingRole.Name;
-            //Add the additional class value from derrived class
-            foreach (var prop in entityType.GetProperties())
-            {
-                if (prop.Name != nameof(Account.Username) &&
-                    prop.Name != nameof(Account.RoleId) &&
-                    prop.Name != nameof(Account.Password))
-                {
-                    if (prop.PropertyType == typeof(string))
-                    {
-                        prop.SetValue(account, additionalProp[i++].ToString());
-                    }
-                    if (prop.PropertyType == typeof(bool))
-                    {
-                        if (bool.TryParse(additionalProp[i++], out bool boolValue))
-                            prop.SetValue(account, boolValue);
-                    }
-                    if (prop.PropertyType == typeof(int))
-                    {
-                        if (int.TryParse(additionalProp[i++], out int intValue))
-                            prop.SetValue(account, intValue);
-                    }
-                }
-            }
-            // Add the new account to the DbSet
-            await context.AddAsync(account);
-            await context.SaveChangesAsync();
-
-
-        }
-        public async Task<List<Character>> GetCharacterAsync()
+        
+        public async Task<List<T>> GetToListAsync<T>() where T:class
         {
             //Create DbContext of WuwaDBContext
             await using WuwaDbContext context = await _context.CreateDbContextAsync();
-            return await context.Characters.ToListAsync(); 
+            return await context.Set<T>().ToListAsync(); 
         }
-
-        public async Task<Character_Stats_Base?> GetCharacterStatsBaseAsync(Guid charId)
+        
+        public async Task<T?> GetDataAsync<T>(object propertyFilter) where T : class
         {
             await using WuwaDbContext context = await _context.CreateDbContextAsync();
-            return await context.CharacterStatsBases.FirstOrDefaultAsync(x=>x.CharacterId == charId);
+            var lambdaProperty = ShareRepository.GetObjectProperty<T>(propertyFilter);
+            return await context.Set<T>().FirstOrDefaultAsync(lambdaProperty);
+
         } 
-        public async Task<Character> FindCharacterAsync(string name)
+        public async Task<Character?> FindCharacterAsync(string name)
         {
             await using WuwaDbContext context = await _context.CreateDbContextAsync();
             return await context.Characters.FirstOrDefaultAsync(x=>x.Name == name);
