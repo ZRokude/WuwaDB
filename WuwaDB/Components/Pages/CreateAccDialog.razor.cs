@@ -14,7 +14,7 @@ namespace WuwaDB.Components.Pages
 
         [Inject] private AuthenticationStateProvider StateProvider { get; set; }
         [Inject] private NavigationManager navigationManager { get; set; } = default!;
-        [Inject] private UserRepository UserRepository { get; set; }
+        [Inject] private AdminRepository AdminRepository { get; set; }
         [CascadingParameter] MudDialogInstance MudDialog { get; set; }
         public AuthModel authModel { get; set; } = new();
         string[] additionalProp { get; set; }
@@ -47,7 +47,7 @@ namespace WuwaDB.Components.Pages
                 additionalPropCount++;
             }
 
-            await UserRepository.CreateUserDataAsync(authModel.Username, authModel.Password, authModel.Role, additionalProp);
+            await AdminRepository.CreateUserDataAsync(authModel.Username, authModel.Password, authModel.Role, additionalProp);
             StateHasChanged();
             MudDialog.Close(DialogResult.Ok(true));
         }

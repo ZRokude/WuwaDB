@@ -8,25 +8,31 @@ namespace WuwaDB.Components.Pages
     public partial class EditCharacter
     {
         [Inject] private UserRepository UserRepository { get; set; }
+        [Inject] private AdminRepository AdminRepository { get; set; }
         [CascadingParameter] MudDialogInstance MudDialog { get; set; }
-        [Parameter] public Guid characterId { get; set; }
-        private Character_Stats_Base CharacterStats { get; set; }
-        private bool StatsExist;
+        [Parameter] public Guid CharacterId { get; set; }
+        private Character_Stats_Base CharacterStats { get; set; } = new();
+        private bool StatsExist = false;
         protected override async void OnInitialized()
         {
-            base.OnInitialized();
-
-            CharacterStats = await UserRepository.GetCharacterStatsBaseAsync(characterId);
+            var filterObject = new { CharacterId = CharacterId };
+            CharacterStats = await UserRepository.GetDataAsync<Character_Stats_Base>(filterObject);
             if (CharacterStats is not null)
                 StatsExist = true;
+            else
+                CharacterStats = new();
+                
+            StateHasChanged();
         }
 
         private async Task StatsExistEvent()
         {
             if (StatsExist is true)
-            {
-                UpdateCharacterStatsAsync();
-            }
+                await UpdateCharacterStatsAsync();
+            else
+                await AddCharacterStatsAsync();
+
+            MudDialog.Close(DialogResult.Ok(true));
         }
 
         private async Task UpdateCharacterStatsAsync()
@@ -35,7 +41,10 @@ namespace WuwaDB.Components.Pages
         }
         private async Task AddCharacterStatsAsync()
         {
-
+            CharacterStats.CharacterId = CharacterId;
+            await AdminRepository.SavesAsync(CharacterStats);
+            StateHasChanged();
+            
         }
     }
 }

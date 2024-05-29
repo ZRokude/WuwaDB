@@ -32,7 +32,7 @@ namespace WuwaDB.Components.Pages
         {
             var options = new DialogOptions { CloseOnEscapeKey = true };
             var parameters = new DialogParameters<EditCharacter>();
-            parameters.Add(x=> x.characterId, character.Id);
+            parameters.Add(x=> x.CharacterId, character.Id);
             var dialog = await DialogService.ShowAsync<EditCharacter>("Edit Character", parameters, options);
             var result = await dialog.Result;
         }
