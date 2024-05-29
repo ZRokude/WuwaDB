@@ -10,10 +10,12 @@ using WuwaDB.DBAccess.Entities.Character;
 using System.Dynamic;
 using WuwaDB.DBAccess.Entities.Account;
 using BC = BCrypt.Net.BCrypt;
+using Microsoft.AspNetCore.Components;
 namespace WuwaDB.DBAccess.Repository
 {
     public class AdminRepository
     {
+        [Inject] SharedRepository ShareRepository { get; set; } = new();
         private readonly IDbContextFactory<WuwaDbContext> _context;
 
         public AdminRepository(IDbContextFactory<WuwaDbContext> context)
