@@ -1,12 +1,12 @@
 ﻿<MudDialog>
     <DialogContent>
-        <MudTextField T="int" Variant="Variant.Outlined" Label="HP"/>
-        <MudTextField T="int" Variant="Variant.Outlined" Label="ATK"/>
-        <MudTextField T="int" Variant="Variant.Outlined" Label="Defense"/>
-        <MudTextField T="float" Variant="Variant.Outlined" Label="Crit Chance"/>
-        <MudTextField T="float" Variant="Variant.Outlined" Label="Crit DMG"/>
-        <MudTextField T="float" Variant="Variant.Outlined" Label="Energy Regen" />
-        <MudTextField T="int" Variant="Variant.Outlined" Label="Max Resonance Energy" />
+        <MudTextField T="int" Variant="Variant.Outlined" Label="HP" @bind-Value="CharacterStats.HP"/>
+        <MudTextField T="int" Variant="Variant.Outlined" Label="ATK" @bind-Value="CharacterStats.ATK" />     
+        <MudTextField T="int" Variant="Variant.Outlined" Label="Defense" @bind-Value="CharacterStats.DEF" />
+        <MudTextField T="float" Variant="Variant.Outlined" Label="Crit Chance" @bind-Value="CharacterStats.Critical_Rate" />
+        <MudTextField T="float" Variant="Variant.Outlined" Label="Crit DMG" @bind-Value="CharacterStats.Critical_Damage" />
+        <MudTextField T="float" Variant="Variant.Outlined" Label="Energy Regen" @bind-Value="CharacterStats.Energy_Regen" />
+        <MudTextField T="int" Variant="Variant.Outlined" Label="Max Resonance Energy" @bind-Value="CharacterStats.Max_Resonance_Energy" />
     </DialogContent>
     <DialogActions>
         <MudButton StartIcon="@Icons.Material.Filled.Sync" OnClick="StatsExistEvent">Save</MudButton>
