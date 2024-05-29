@@ -1,0 +1,21 @@
+﻿::deep .character-card {
+    width: 100%!important;
+    height: 100%!important;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+   
+}
+
+::deep .character-card-container {
+    height: 80vh; 
+    width: 35vw; 
+    position: relative;
+    object-position:center;
+    position:fixed;
+
+}
+
+@media {
+
+}

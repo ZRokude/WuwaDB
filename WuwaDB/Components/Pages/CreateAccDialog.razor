@@ -1,0 +1,24 @@
+﻿
+@using WuwaDB.DBAccess.Entities.Account
+<MudDialog>
+    <DialogContent>
+        <MudSelect T="string" Label="Role" @bind-Value="authModel.Role">
+            <MudSelectItem Value="@("User")"></MudSelectItem>
+            <MudSelectItem Value="@("Admin")"></MudSelectItem>
+        </MudSelect>
+        @if (authModel.Role == "User")
+        {
+            <MudTextField T="string" Label="Email" InputType="MudBlazor.InputType.Email" @bind-Value="authModel.Email"/>
+        }
+        <MudTextField T="string" Label="Username" @bind-Value="authModel.Username" />
+        <MudTextField T="string" Label="Password" @bind-Value="authModel.Password" />
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">Cancel</MudButton>
+        <MudButton Color="Color.Primary" OnClick="Submit">Ok</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+
+}

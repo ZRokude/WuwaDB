@@ -4,7 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WuwaDB.Server.Entities.Account
+namespace WuwaDB.DBAccess.Entities.Account
+
 {
     public class Account
     {
@@ -12,8 +13,9 @@ namespace WuwaDB.Server.Entities.Account
         public string Username { get; set; }
         public string Password { get; set; }
 
-        //Navigation
+        public Guid RoleId { get; set; }
 
-        public ICollection<Account_Role> AccountRole { get; set; }
+        //Navigation
+        public Role Role { get; set; }
     }
 }

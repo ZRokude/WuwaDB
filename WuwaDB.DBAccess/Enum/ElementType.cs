@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WuwaDB.Server.Enum
+namespace WuwaDB.DBAccess.Enum
 {
     public enum ElementType
     {
@@ -13,6 +13,6 @@ namespace WuwaDB.Server.Enum
         Glacio,
         Havoc,
         Electro,
-        Spectrum
+        Spectro
     }
 }

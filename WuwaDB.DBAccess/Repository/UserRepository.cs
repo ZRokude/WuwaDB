@@ -3,27 +3,63 @@ using Microsoft.EntityFrameworkCore.Internal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
-using WuwaDB.Server.DataContext;
-using WuwaDB.Server.Entities.Character;
-
-namespace WuwaDB.Server.Repository
+using Microsoft.Identity.Client;
+using WuwaDB.DBAccess.DataContext;
+using WuwaDB.DBAccess.Entities.Account;
+using WuwaDB.DBAccess.Entities.Character;
+using System.Security.Principal;
+using System.Reflection;
+using System.Security.Cryptography.X509Certificates;
+using Microsoft.AspNetCore.Components;
+using MudBlazor.Interfaces;
+using BC = BCrypt.Net.BCrypt;
+namespace WuwaDB.DBAccess.Repository
 {
     public class UserRepository
     {
         private readonly IDbContextFactory<WuwaDbContext> _context;
-       
+        [Inject] private SharedRepository ShareRepository { get; set; } = new();
         public UserRepository(IDbContextFactory<WuwaDbContext> context)
         {
             _context = context;
         }
-
-        public async Task<Character> GetCharacterAsync()
+        public async Task<Account?> GetUserDataAsync(string Username)
         {
-            var dbContext = await _context.CreateDbContextAsync();
-
-            return await dbContext.Characters.FindAsync();
+            await using WuwaDbContext context = await _context.CreateDbContextAsync();
+            return await context.Accounts.Include(c => c.Role).FirstOrDefaultAsync(x => x.Username == Username);
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="username"></param>
+        /// <param name="password"></param>
+        /// <param name="role"></param>
+        /// <param name="additionalProp"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentException"></exception>
+        
+        public async Task<List<T>> GetToListAsync<T>() where T:class
+        {
+            //Create DbContext of WuwaDBContext
+            await using WuwaDbContext context = await _context.CreateDbContextAsync();
+            return await context.Set<T>().ToListAsync(); 
+        }
+        
+        public async Task<T?> GetDataAsync<T>(object propertyFilter) where T : class
+        {
+            await using WuwaDbContext context = await _context.CreateDbContextAsync();
+            var lambdaProperty = ShareRepository.GetObjectProperty<T>(propertyFilter);
+            return await context.Set<T>().FirstOrDefaultAsync(lambdaProperty);
+
+        } 
+        public async Task<Character?> FindCharacterAsync(string name)
+        {
+            await using WuwaDbContext context = await _context.CreateDbContextAsync();
+            return await context.Characters.FirstOrDefaultAsync(x=>x.Name == name);
+        }
+
     }
 }

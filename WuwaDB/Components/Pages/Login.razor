@@ -1,9 +1,10 @@
 ﻿
-<PageTitle>Login</PageTitle>
-
 <MudDialog>
     <DialogContent>
-        Login
+        <MudTextField T="string" Label="Username" Variant="Variant.Filled" @bind-Value="model.Username">
+        </MudTextField>
+        <MudTextField T="string" InputType="MudBlazor.InputType.Password" Label="Password" Variant="Variant.Filled" @bind-Value="model.Password">
+        </MudTextField>
     </DialogContent>
     <DialogActions>
         <MudButton OnClick="Cancel">Cancel</MudButton>
@@ -12,8 +13,5 @@
 </MudDialog>
 
 @code {
-    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
-
-    void Submit() => MudDialog.Close(DialogResult.Ok(true));
-    void Cancel() => MudDialog.Cancel();
+    
 }

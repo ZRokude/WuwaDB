@@ -1,0 +1,34 @@
+﻿@page "/Character/{CharacterName}"
+@using WuwaDB.DBAccess.Entities.Character
+<div>
+    <MudContainer Class="mt-10 w-100" >
+        <MudToolBar>
+            <MudButton StartIcon="@Icons.Material.Filled.Settings" OnClick="OpenDialog">
+                Edit Character
+            </MudButton>
+        </MudToolBar>
+        <MudGrid Justify="Justify.SpaceBetween" Spacing="6">
+            <MudItem>
+                <div class="character-card-container">+-
+                    <MudCardMedia Image="@($"/Character_Model/{character.Name}.png")" Class="character-card bg-color-transparent"/>
+                </div>
+            </MudItem>     
+            <MudItem>
+                <MudStack AlignItems="AlignItems.End" Spacing="10">
+                    <MudPaper>
+                        <MudStack>
+                            <MudPaper>
+
+                            </MudPaper>
+                        </MudStack>
+                    </MudPaper>
+                </MudStack>
+            </MudItem>
+        </MudGrid>
+    </MudContainer> 
+</div>
+
+@code {
+    
+}
+ 

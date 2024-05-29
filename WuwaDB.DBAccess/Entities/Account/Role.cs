@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WuwaDB.Server.Entities.Account
+namespace WuwaDB.DBAccess.Entities.Account
 {
     public class Role
     {
@@ -12,7 +12,6 @@ namespace WuwaDB.Server.Entities.Account
         public string Name { get; set; }
 
         //Navigation
-
-        public ICollection<Account_Role> AccountRoles { get; set; }
+        public ICollection<Account> Accounts { get; set; }
     }
 }
