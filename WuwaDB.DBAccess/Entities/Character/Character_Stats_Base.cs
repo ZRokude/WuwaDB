@@ -13,10 +13,10 @@ namespace WuwaDB.DBAccess.Entities.Character
         public int HP { get; set; }
         public int ATK { get; set; }
         public int DEF { get; set; }
-        public float Critical_Rate { get; set; }
-        public float Critical_Damage { get; set; }
-        public float Energy_Regen { get; set; }
-        public int Max_Resonance_Energy { get; set; }
+        public double Critical_Rate { get; set; }
+        public double Critical_Damage { get; set; }
+        public double Energy_Regen { get; set; }
+        public double Max_Resonance_Energy { get; set; }
 
         //Nav
 

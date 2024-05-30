@@ -2,8 +2,10 @@
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
+using WuwaDB.Components.MudDialog;
 using WuwaDB.DBAccess.Repository;
 using WuwaDB.DBAccess.Entities.Character;
+using WuwaDB.DBAccess.Enum;
 
 namespace WuwaDB.Components.Pages
 {
@@ -35,6 +37,51 @@ namespace WuwaDB.Components.Pages
             parameters.Add(x=> x.CharacterId, character.Id);
             var dialog = await DialogService.ShowAsync<EditCharacter>("Edit Character", parameters, options);
             var result = await dialog.Result;
+            if (!result.Canceled)
+            {
+                switch (result.Data)
+                {
+                    case "Stat_Base":
+                        OpenDialogEditStat();
+                        break;
+                    case SkillType.Basic_Attack:
+                        OpenDialogSkill(SkillType.Basic_Attack);
+                        break;
+                    case SkillType.Resonance_Skill:
+                        OpenDialogSkill(SkillType.Resonance_Skill);
+                        break;
+                    case SkillType.Forte_Circuit:
+                        OpenDialogSkill(SkillType.Forte_Circuit);
+                        break;
+                    case SkillType.Resonance_Liberation:
+                        OpenDialogSkill(SkillType.Resonance_Liberation);
+                        break;
+                    case SkillType.Intro_Skill:
+                        OpenDialogSkill(SkillType.Intro_Skill);
+                        break;
+                    case SkillType.Outro_Skill:
+                        OpenDialogSkill(SkillType.Outro_Skill);
+                        break;
+                }
+            }
+        }
+
+        private async void OpenDialogEditStat()
+        {
+            var options = new DialogOptions { CloseOnEscapeKey = true };
+            var parameters = new DialogParameters<EditCharacterStats>();
+            parameters.Add(x => x.CharacterId, character.Id);
+            var dialog = await DialogService.ShowAsync<EditCharacterStats>("Edit Character Stats", parameters, options);
+        }
+
+        private async void OpenDialogSkill(SkillType type)
+        {
+            var skillType = string.Join("",
+                type.ToString().Split("_").Select(w => w.ToString().ToUpper() + w.Substring(1).ToLower()));
+            var options = new DialogOptions { CloseOnEscapeKey = true };
+            var parameters = new DialogParameters<EditCharacterStats>();
+            parameters.Add(x => x.CharacterId, character.Id);
+            var dialog = await DialogService.ShowAsync<EditCharacterStats>(skillType, parameters, options);
         }
     }
 }

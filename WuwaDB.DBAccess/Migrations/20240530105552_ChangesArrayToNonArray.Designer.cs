@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WuwaDB.DBAccess.DataContext;
 
@@ -11,9 +12,11 @@ using WuwaDB.DBAccess.DataContext;
 namespace WuwaDB.DBAccess.Migrations
 {
     [DbContext(typeof(WuwaDbContext))]
-    partial class WuwaDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240530105552_ChangesArrayToNonArray")]
+    partial class ChangesArrayToNonArray
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -122,7 +125,7 @@ namespace WuwaDB.DBAccess.Migrations
 
                     b.Property<string>("DescriptionName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<byte[]>("ImageFile")
                         .HasColumnType("varbinary(max)");
@@ -141,7 +144,7 @@ namespace WuwaDB.DBAccess.Migrations
 
                     b.HasIndex("Name");
 
-                    b.HasIndex("CharacterId", "Type", "DescriptionName")
+                    b.HasIndex("CharacterId", "Type")
                         .IsUnique();
 
                     b.ToTable("CharacterSkills");
@@ -158,15 +161,14 @@ namespace WuwaDB.DBAccess.Migrations
 
                     b.Property<string>("SkillDetailsName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<double>("SkillDetailsNum")
                         .HasColumnType("float");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CharacterSkillId", "SkillDetailsName")
-                        .IsUnique();
+                    b.HasIndex("CharacterSkillId");
 
                     b.ToTable("CharacterSkillDetails");
                 });

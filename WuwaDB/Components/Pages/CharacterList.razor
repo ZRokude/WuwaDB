@@ -1,10 +1,16 @@
 ﻿@page "/Character/List"
 
-<PageTitle>Character List</PageTitle>
+<PageTitle>
+    @if (CharList is null)
+    {
+        <MudProgressCircular Color="Color.Primary" Size="Size.Large" Indeterminate="true" />
+    }
+    Character List
+</PageTitle>
 
 <div>
     <MudContainer Class="mt-10">
-        <MudGrid Justify="Justify.Center" >
+        <MudGrid Justify="Justify.Center">
             @foreach (var Characters in CharList)
             {
                 <MudItem xl="2" xxl="2" xs="8" sm="4" md="3" lg="2">
@@ -12,12 +18,6 @@
                         <MudCard Style="background-color:transparent;" Class="expand-hover" Elevation="15">
                             <MudCardMedia Image="@($"/Character_Icon/{Characters.Image}")" Height="250">
                             </MudCardMedia>
-                           @*  <MudCardHeader>
-                                <CardHeaderContent>
-                                    <MudImage Src="@($"/Character_Icon/{Characters.Image}")" Fluid="true" ObjectFit="ObjectFit.Cover"
-                                              ObjectPosition="ObjectPosition.Center" Style="min-height:10rem!important; max-height:10rem!important;min-width:152px!important;" />
-                                </CardHeaderContent>
-                            </MudCardHeader> *@
                             <MudCardContent Class="p-0 text-center">
                                 <MudStack Justify="Justify.Center" Spacing="0">
                                     <MudStack Row="true" Justify="Justify.Center" Wrap="Wrap.Wrap" AlignItems="AlignItems.Center">
