@@ -26,7 +26,7 @@ namespace WuwaDB.Components.Pages
         {
             switch (weaponType)
             {
-                case WeaponType.TwoHandedSword:
+                case WeaponType.BroadBlade:
                     return "LustrousRazor";
                 case WeaponType.Gauntlets:
                     return "AbyssSurge";

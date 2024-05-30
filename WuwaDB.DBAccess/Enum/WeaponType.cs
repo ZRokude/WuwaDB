@@ -8,7 +8,7 @@ namespace WuwaDB.DBAccess.Enum
 {
     public enum WeaponType
     {
-        TwoHandedSword,
+        BroadBlade,
         Sword,
         Rectifier,
         Gun,
