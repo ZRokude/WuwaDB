@@ -43,7 +43,6 @@ namespace WuwaDB.DBAccess.Repository
         
         public async Task<List<T>> GetToListAsync<T>() where T:class
         {
-            //Create DbContext of WuwaDBContext
             await using WuwaDbContext context = await _context.CreateDbContextAsync();
             return await context.Set<T>().ToListAsync(); 
         }

@@ -7,7 +7,7 @@ using MudBlazor;
 using WuwaDB.DBAccess.Repository;
 
 
-namespace WuwaDB.Components.Pages
+namespace WuwaDB.Components.MudDialog
 {
     public partial class CreateAccDialog
     {
@@ -33,7 +33,7 @@ namespace WuwaDB.Components.Pages
         private async Task Submit()
         {
             var authModelProperties = authModel.GetType().GetProperties();
-            
+
             // Iterate through the properties and add them to the dictionary
             foreach (var property in authModelProperties)
             {

@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using MudBlazor;
 using System.Security.Claims;
 using WuwaDB.Authentication;
-using WuwaDB.Components.Pages;
+using WuwaDB.Components.MudDialog;
 
 namespace WuwaDB.Components.Layout
 {
@@ -40,7 +40,8 @@ namespace WuwaDB.Components.Layout
             var options = new DialogOptions { CloseOnEscapeKey = true };
             var dialog = await DialogService.ShowAsync<CreateCharacter>("Create Character", options);
             var result = await dialog.Result;
-            NavigationManager.NavigateTo("/Character/List", true);
+            if (!result.Canceled)
+                NavigationManager.NavigateTo("/Character/List", true);
         }
 
     }

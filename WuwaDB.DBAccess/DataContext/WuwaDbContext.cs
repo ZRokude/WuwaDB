@@ -49,8 +49,12 @@ namespace WuwaDB.DBAccess.DataContext
                 .WithMany(u => u.Character_Skill_Details)
                 .HasForeignKey(c => c.CharacterSkillId);
 
-
-
+            modelBuilder.Entity<Character_Skill>()
+                .HasIndex(c => new { c.CharacterId, c.Type, c.DescriptionName })
+                .IsUnique();
+            modelBuilder.Entity<Character_Skill_Detail>()
+                .HasIndex(c => new { c.CharacterSkillId, c.SkillDetailsName })
+                .IsUnique();
 
         }
 

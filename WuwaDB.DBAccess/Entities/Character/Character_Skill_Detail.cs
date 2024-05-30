@@ -12,8 +12,8 @@ namespace WuwaDB.DBAccess.Entities.Character
 
         public Guid CharacterSkillId { get; set; }
 
-        public string[] SkillDetailsNum { get; set; }
-        public string[] SkillDetailsName { get; set; }
+        public double SkillDetailsNum { get; set; }
+        public string SkillDetailsName { get; set; }
 
         //Nav
         public Character_Skill Character_Skill { get; set; }

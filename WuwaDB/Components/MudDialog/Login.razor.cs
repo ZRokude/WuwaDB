@@ -9,14 +9,14 @@ using System.Data;
 
 using Microsoft.AspNetCore.Authorization.Infrastructure;
 using System.Security.Claims;
-namespace WuwaDB.Components.Pages
+namespace WuwaDB.Components.MudDialog
 {
     public partial class Login
     {
         [Inject] private AuthenticationStateProvider StateProvider { get; set; }
         [Inject] private NavigationManager navigationManager { get; set; } = default!;
         [Inject] private UserRepository UserRepository { get; set; }
-        private Account Account { get; set; } =new Account();
+        private Account Account { get; set; } = new Account();
         [CascadingParameter] MudDialogInstance MudDialog { get; set; }
         [Parameter] public string ContentText { get; set; }
 
@@ -48,14 +48,14 @@ namespace WuwaDB.Components.Pages
             {
                 Username = Account.Username,
                 Role = Account.Role.Name.ToString()
-            }); 
+            });
 
             if (Account is Admin)
             {
                 var session = await customAuthentication.GetAuthenticationStateAsync();
                 Console.WriteLine(session.User.FindAll(ClaimTypes.Role));
                 navigationManager.NavigateTo("/", true);
-                
+
             }
             else
             {
@@ -77,7 +77,7 @@ namespace WuwaDB.Components.Pages
             public string Username = string.Empty, Password = string.Empty;
         }
 
-        
+
 
         private async Task Authenticate(Account UserAccount)
         {
@@ -87,7 +87,7 @@ namespace WuwaDB.Components.Pages
                 Username = UserAccount.Username,
                 Role = UserAccount.Role.ToString()
             });
-            
+
             if (UserAccount is Admin)
             {
                 navigationManager.NavigateTo("/", true);

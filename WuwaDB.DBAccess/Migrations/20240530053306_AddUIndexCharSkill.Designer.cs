@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WuwaDB.DBAccess.DataContext;
 
@@ -11,9 +12,11 @@ using WuwaDB.DBAccess.DataContext;
 namespace WuwaDB.DBAccess.Migrations
 {
     [DbContext(typeof(WuwaDbContext))]
-    partial class WuwaDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240530053306_AddUIndexCharSkill")]
+    partial class AddUIndexCharSkill
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -122,7 +125,7 @@ namespace WuwaDB.DBAccess.Migrations
 
                     b.Property<string>("DescriptionName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<byte[]>("ImageFile")
                         .HasColumnType("varbinary(max)");
@@ -141,7 +144,7 @@ namespace WuwaDB.DBAccess.Migrations
 
                     b.HasIndex("Name");
 
-                    b.HasIndex("CharacterId", "Type", "DescriptionName")
+                    b.HasIndex("CharacterId", "Type")
                         .IsUnique();
 
                     b.ToTable("CharacterSkills");
@@ -158,15 +161,15 @@ namespace WuwaDB.DBAccess.Migrations
 
                     b.Property<string>("SkillDetailsName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<double>("SkillDetailsNum")
-                        .HasColumnType("float");
+                    b.Property<string>("SkillDetailsNum")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CharacterSkillId", "SkillDetailsName")
-                        .IsUnique();
+                    b.HasIndex("CharacterSkillId");
 
                     b.ToTable("CharacterSkillDetails");
                 });
@@ -183,23 +186,23 @@ namespace WuwaDB.DBAccess.Migrations
                     b.Property<Guid>("CharacterId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<double>("Critical_Damage")
-                        .HasColumnType("float");
+                    b.Property<float>("Critical_Damage")
+                        .HasColumnType("real");
 
-                    b.Property<double>("Critical_Rate")
-                        .HasColumnType("float");
+                    b.Property<float>("Critical_Rate")
+                        .HasColumnType("real");
 
                     b.Property<int>("DEF")
                         .HasColumnType("int");
 
-                    b.Property<double>("Energy_Regen")
-                        .HasColumnType("float");
+                    b.Property<float>("Energy_Regen")
+                        .HasColumnType("real");
 
                     b.Property<int>("HP")
                         .HasColumnType("int");
 
-                    b.Property<double>("Max_Resonance_Energy")
-                        .HasColumnType("float");
+                    b.Property<int>("Max_Resonance_Energy")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
