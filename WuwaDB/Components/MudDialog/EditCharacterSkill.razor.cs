@@ -14,8 +14,8 @@ namespace WuwaDB.Components.MudDialog
         [CascadingParameter] MudDialogInstance MudDialog { get; set; }
         [Parameter] public Guid CharacterId { get; set; }
         [Parameter] public SkillType SkillType { get; set; }
+        [Inject] private IDialogService DialogService { get; set; }
         private Character_Skill CharacterSkill { get; set; } = new();
-        private Character_Skill_Detail CharacterSkillDetail { get; set; } = new();
         private bool SkillExist;
         protected override async void OnInitialized()
         {
@@ -36,14 +36,14 @@ namespace WuwaDB.Components.MudDialog
         {
             if (SkillExist is not true)
                 CharacterSkill.CharacterId = CharacterId;
-            await AdminRepository.SavesAsync(CharacterSkillDetail);
+            await AdminRepository.SavesAsync(CharacterSkill);
             StateHasChanged();
             MudDialog.Close(DialogResult.Ok(true));
         }
 
-        private async Task SaveCharacterSkillDetail()
+        private void OpenSkillDetailDialog()
         {
-
+            DialogService.Show<EditCharacterSkillDetail>("Character Skill Detail");
         }
     }
 }

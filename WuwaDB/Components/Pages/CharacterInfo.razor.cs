@@ -76,12 +76,12 @@ namespace WuwaDB.Components.Pages
 
         private async void OpenDialogSkill(SkillType type)
         {
-            var skillType = string.Join("",
-                type.ToString().Split("_").Select(w => w.ToString().ToUpper() + w.Substring(1).ToLower()));
+            var skillType = string.Join(" ",
+                type.ToString().Split("_").Select(w => w.Substring(0,1).ToUpper() + w.Substring(1).ToLower()));
             var options = new DialogOptions { CloseOnEscapeKey = true };
-            var parameters = new DialogParameters<EditCharacterStats>();
+            var parameters = new DialogParameters<EditCharacterSkill>();
             parameters.Add(x => x.CharacterId, character.Id);
-            var dialog = await DialogService.ShowAsync<EditCharacterStats>(skillType, parameters, options);
+            var dialog = await DialogService.ShowAsync<EditCharacterSkill>(skillType, parameters, options);
         }
     }
 }
