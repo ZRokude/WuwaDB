@@ -24,6 +24,8 @@ namespace WuwaDB.DBAccess.DataContext
         public DbSet<Character_Stats_Base> CharacterStatsBases { get; set; }
         public DbSet<Character_Skill_Detail> CharacterSkillDetails { get; set; }
         public DbSet<Character_Stats_Growth_Property> CharacterStatsGrowthproperties { get; set; }
+        public DbSet<Character_Skill_Detail_Number> CharacterSkillDetailNumbers { get; set; }
+        public DbSet<Character_Skill_Description> CharacterSkillDescriptions { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -48,14 +50,26 @@ namespace WuwaDB.DBAccess.DataContext
                 .HasOne(c => c.Character_Skill)
                 .WithMany(u => u.Character_Skill_Details)
                 .HasForeignKey(c => c.CharacterSkillId);
+            modelBuilder.Entity<Character_Skill_Detail_Number>()
+                .HasOne(c => c.Character_Skill_Detail)
+                .WithMany(u => u.Character_Skill_Detail_Numbers)
+                .HasForeignKey(c => c.CharacterSkillDetailId);
+            modelBuilder.Entity<Character_Skill_Description>()
+                .HasOne(c => c.Character_Skill)
+                .WithMany(u => u.Character_Skill_Descriptions)
+                .HasForeignKey(c => c.CharacterSkillId);
 
             modelBuilder.Entity<Character_Skill>()
-                .HasIndex(c => new { c.CharacterId, c.Type, c.DescriptionName })
+                .HasIndex(c => new { c.CharacterId, c.Type })
                 .IsUnique();
             modelBuilder.Entity<Character_Skill_Detail>()
                 .HasIndex(c => new { c.CharacterSkillId, c.SkillDetailsName })
                 .IsUnique();
 
+            modelBuilder.Entity<Character_Skill_Detail_Number>()
+                .HasKey(c => new { c.CharacterSkillDetailId, c.Level });
+            modelBuilder.Entity<Character_Skill_Description>()
+                .HasKey(c => new { c.CharacterSkillId, c.DescriptionTItle });
         }
 
     }

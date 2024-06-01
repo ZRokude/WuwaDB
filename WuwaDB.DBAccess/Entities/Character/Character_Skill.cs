@@ -13,12 +13,11 @@ namespace WuwaDB.DBAccess.Entities.Character
         public Guid CharacterId { get; set; }
         public string Name { get; set; }
         public SkillType Type { get; set; }
-        public string DescriptionName { get; set; }
-        public string  Description {  get; set; }
         public string? ImageName { get; set; }
         public byte[]? ImageFile { get; set; }
         // Navigation
         public Character Character { get; set; }
         public ICollection<Character_Skill_Detail> Character_Skill_Details { get; set; }
+        public ICollection<Character_Skill_Description> Character_Skill_Descriptions { get; set; }
     }
 }

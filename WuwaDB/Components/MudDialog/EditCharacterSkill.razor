@@ -1,5 +1,8 @@
 ﻿<MudDialog>
     <DialogContent>
+        <MudToolBar>
+            <MudButton StartIcon="@Icons.Material.Filled.Settings" OnClick="OpenSkillDetailDialog">Skill Detail</MudButton>
+        </MudToolBar>
         <MudTextField T="string" Label="Skill Name" @bind-Value="CharacterSkill.Name">
 
         </MudTextField>

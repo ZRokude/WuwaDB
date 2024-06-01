@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WuwaDB.DBAccess.DataContext;
 
@@ -11,9 +12,11 @@ using WuwaDB.DBAccess.DataContext;
 namespace WuwaDB.DBAccess.Migrations
 {
     [DbContext(typeof(WuwaDbContext))]
-    partial class WuwaDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240531075513_AddDetailNumber")]
+    partial class AddDetailNumber
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -116,6 +119,14 @@ namespace WuwaDB.DBAccess.Migrations
                     b.Property<Guid>("CharacterId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DescriptionName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<byte[]>("ImageFile")
                         .HasColumnType("varbinary(max)");
 
@@ -133,27 +144,10 @@ namespace WuwaDB.DBAccess.Migrations
 
                     b.HasIndex("Name");
 
-                    b.HasIndex("CharacterId", "Type")
+                    b.HasIndex("CharacterId", "Type", "DescriptionName")
                         .IsUnique();
 
                     b.ToTable("CharacterSkills");
-                });
-
-            modelBuilder.Entity("WuwaDB.DBAccess.Entities.Character.Character_Skill_Description", b =>
-                {
-                    b.Property<Guid>("CharacterSkillId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("DescriptionTItle")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("CharacterSkillId", "DescriptionTItle");
-
-                    b.ToTable("CharacterSkillDescriptions");
                 });
 
             modelBuilder.Entity("WuwaDB.DBAccess.Entities.Character.Character_Skill_Detail", b =>
@@ -343,17 +337,6 @@ namespace WuwaDB.DBAccess.Migrations
                     b.Navigation("Character");
                 });
 
-            modelBuilder.Entity("WuwaDB.DBAccess.Entities.Character.Character_Skill_Description", b =>
-                {
-                    b.HasOne("WuwaDB.DBAccess.Entities.Character.Character_Skill", "Character_Skill")
-                        .WithMany("Character_Skill_Descriptions")
-                        .HasForeignKey("CharacterSkillId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Character_Skill");
-                });
-
             modelBuilder.Entity("WuwaDB.DBAccess.Entities.Character.Character_Skill_Detail", b =>
                 {
                     b.HasOne("WuwaDB.DBAccess.Entities.Character.Character_Skill", "Character_Skill")
@@ -422,8 +405,6 @@ namespace WuwaDB.DBAccess.Migrations
 
             modelBuilder.Entity("WuwaDB.DBAccess.Entities.Character.Character_Skill", b =>
                 {
-                    b.Navigation("Character_Skill_Descriptions");
-
                     b.Navigation("Character_Skill_Details");
                 });
 
