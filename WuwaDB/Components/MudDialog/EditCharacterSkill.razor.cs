@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Forms;
 using MudBlazor;
 using WuwaDB.DBAccess.Entities.Account;
 using WuwaDB.DBAccess.Entities.Character;
@@ -17,6 +18,7 @@ namespace WuwaDB.Components.MudDialog
         private Character_Skill CharacterSkill { get; set; } = new();
         private Character_Skill_Detail CharacterSkillDetail { get; set; } = new();
         private bool SkillExist;
+        IBrowserFile file;
         protected override async void OnInitialized()
         {
             var propertyFilter = new
@@ -45,5 +47,6 @@ namespace WuwaDB.Components.MudDialog
         {
 
         }
+        private 
     }
 }

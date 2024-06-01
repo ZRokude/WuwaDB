@@ -14,7 +14,7 @@ namespace WuwaDB.DBAccess.Entities.Character
         public string Name { get; set; }
         public SkillType Type { get; set; }
         public string DescriptionName { get; set; }
-        public string  Description {  get; set; }
+        public string Description {  get; set; }
         public string? ImageName { get; set; }
         public byte[]? ImageFile { get; set; }
         // Navigation
