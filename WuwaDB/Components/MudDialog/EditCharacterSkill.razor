@@ -1,14 +1,38 @@
 ﻿<MudDialog>
     <DialogContent>
         <MudToolBar>
-            <MudButton StartIcon="@Icons.Material.Filled.Settings" OnClick="OpenSkillDetailDialog">Skill Detail</MudButton>
+            <MudStack Row="true">
+                <MudButton StartIcon="@Icons.Material.Filled.Settings" OnClick="OpenSkillDetailDialog">
+                    Skill Details
+                </MudButton>
+                <MudButton StartIcon="@Icons.Material.Filled.Settings" OnClick="OpenSkillDescriptionDialog">
+                    Skill Description More
+                </MudButton>
+            </MudStack>
+            
         </MudToolBar>
-        <MudTextField T="string" Label="Skill Name" @bind-Value="CharacterSkill.Name">
+        <MudTextField T="string" Label="Name" @bind-Value="CharacterSkill.Name"/>
+        <MudTextField T="string" Label="Description" @bind-Value="CharacterSkill.Description" AutoGrow="true"/>
 
-        </MudTextField>
+        <MudFileUpload Context="MudUpload" T="IBrowserFile" MaximumFileCount="20971520" Accept=".png, .jpg, .jpeg">
+            <ButtonTemplate Context="MudUpload">
+                <MudFab HtmlTag="label"
+                        Color="Color.Success"
+                        Icon="@Icons.Material.Filled.AttachFile"
+                        for="@MudUpload.Id" />
+            </ButtonTemplate>
+            <SelectedTemplate>
+                @if (file is not null)
+                {
+                    <MudText> @file.Name @file.Size</MudText>
+                }
+            </SelectedTemplate>
+        </MudFileUpload>
     </DialogContent>
     <DialogActions>
-
+        <MudButton StartIcon="@Icons.Material.Filled.Save" OnClick="SaveCharacterSkill">
+            Save
+        </MudButton>
     </DialogActions>
 </MudDialog>
 
