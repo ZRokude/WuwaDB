@@ -1,0 +1,66 @@
+﻿using Microsoft.AspNetCore.Components;
+using MudBlazor;
+using System.Collections;
+using WuwaDB.DBAccess.Entities.Character;
+using WuwaDB.DBAccess.Repository;
+
+namespace WuwaDB.Components.MudDialog
+{
+    public partial class EditCharacterSkillDescription
+    {
+        [Inject] UserRepository UserRepository { get; set; }
+        [Inject] AdminRepository AdminRepository { get; set; }
+        [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+        [Parameter] public Guid SkillId { get; set; }
+        public List<Character_Skill_Description> CharacterSkillDescriptions { get; set; } = new();
+        public Character_Skill_Description CharacterSkillDescription { get; set; } = new();
+        public string[] DescTitles;
+        protected override async void OnInitialized()
+        {
+            object propFilter = new
+            {
+                CharacterSkillId = SkillId
+            };
+            CharacterSkillDescriptions = await UserRepository.GetToListAsync<Character_Skill_Description>(propFilter);
+            if (CharacterSkillDescriptions is not null)
+            {
+                DescTitles = new string[CharacterSkillDescriptions.Count];
+                for (int i = 0; i < CharacterSkillDescriptions.Count; i++)
+                {
+                    DescTitles[i] = CharacterSkillDescriptions[i].DescriptionTitle;
+                }
+            }
+            StateHasChanged();
+        }
+        private async Task<IEnumerable<string>> SearchDescTitle(string value)
+        {
+            if (CharacterSkillDescriptions.FirstOrDefault(x => x.DescriptionTitle == value) is not null)
+            {
+                CharacterSkillDescription.Description = CharacterSkillDescriptions.FirstOrDefault(x => x.DescriptionTitle == value).Description;
+                StateHasChanged();
+            }
+            if (string.IsNullOrEmpty(value))
+                return DescTitles;
+            return DescTitles.Where(x=> x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+
+        }
+        private async Task ValueChanged(string value)
+        {
+            
+        }
+        private async Task Save()
+        {
+            CharacterSkillDescription.CharacterSkillId = SkillId;
+            var Match = CharacterSkillDescriptions.FirstOrDefault(x => x.DescriptionTitle == CharacterSkillDescription.DescriptionTitle);
+            if (Match is not null)
+            {
+                CharacterSkillDescription.CharacterSkillId = CharacterSkillDescriptions.FirstOrDefault(x => x.DescriptionTitle == CharacterSkillDescription.DescriptionTitle).CharacterSkillId;
+                await AdminRepository.UpdatesAsync(CharacterSkillDescription);
+            }
+            else
+                await AdminRepository.SavesAsync(CharacterSkillDescription);
+            StateHasChanged();
+            MudDialog.Close(DialogResult.Ok(true));
+        }
+    }
+}

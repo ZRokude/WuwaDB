@@ -23,9 +23,8 @@ namespace WuwaDB.Components.Pages
 
         protected override async void OnInitialized()
         {
-            var _character = await UserRepository.FindCharacterAsync(CharacterName);
-            if (_character is not null)
-                character = _character; 
+            object propFilter = new { Name = CharacterName };
+            character = await UserRepository.GetDataAsync<Character>(propFilter);
             StateHasChanged();
             
         }

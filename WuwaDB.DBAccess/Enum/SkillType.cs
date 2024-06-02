@@ -11,6 +11,7 @@ namespace WuwaDB.DBAccess.Enum
         Basic_Attack,
         Resonance_Skill,
         Forte_Circuit,
+        Inherint_Skill,
         Resonance_Liberation,
         Intro_Skill,
         Outro_Skill

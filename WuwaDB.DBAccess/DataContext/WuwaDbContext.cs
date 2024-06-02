@@ -65,11 +65,13 @@ namespace WuwaDB.DBAccess.DataContext
             modelBuilder.Entity<Character_Skill_Detail>()
                 .HasIndex(c => new { c.CharacterSkillId, c.SkillDetailsName })
                 .IsUnique();
+            modelBuilder.Entity<Character_Skill>()
+                 .HasIndex(c => new { c.Type, c.Name });
 
             modelBuilder.Entity<Character_Skill_Detail_Number>()
                 .HasKey(c => new { c.CharacterSkillDetailId, c.Level });
             modelBuilder.Entity<Character_Skill_Description>()
-                .HasKey(c => new { c.CharacterSkillId, c.DescriptionTItle });
+                .HasKey(c => new { c.CharacterSkillId, c.DescriptionTitle });
         }
 
     }
