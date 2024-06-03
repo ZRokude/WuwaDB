@@ -40,7 +40,12 @@ namespace WuwaDB.Components.MudDialog
                 StateHasChanged();
             }
             if (string.IsNullOrEmpty(value))
+            else if  (string.IsNullOrEmpty(value))
+            {
+                CharacterSkillDescription.Description = "";
                 return DescTitles;
+            }
+                
             return DescTitles.Where(x=> x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
 
         }

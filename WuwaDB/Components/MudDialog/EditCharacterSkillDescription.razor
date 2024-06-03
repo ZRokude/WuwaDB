@@ -5,9 +5,13 @@
         <MudTextField T="string" AutoGrow="true" Label="Description" @bind-Value="CharacterSkillDescription.Description" Immediate="true"/>
     </DialogContent>
     <DialogActions>
+        <MudButton StartIcon="@Icons.Material.Filled.DeleteForever" IconColor="Color.Error" Color="Color.Error">
+            Delete
+        </MudButton>
         <MudButton StartIcon="@Icons.Material.Filled.Save" OnClick="Save">
             Save
         </MudButton>
+
     </DialogActions>
 </MudDialog>
 
