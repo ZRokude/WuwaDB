@@ -1,8 +1,10 @@
 ﻿<MudDialog>
     <DialogContent>
         <MudAutocomplete T="string" Label="Description Title" SearchFunc="SearchDescTitle" 
-            @bind-Value="CharacterSkillDescription.DescriptionTitle" Immediate="true" CoerceValue="false" CoerceText="false" ResetValueOnEmptyText="true"/>
-        <MudTextField T="string" AutoGrow="true" Label="Description" @bind-Value="CharacterSkillDescription.Description" Immediate="true"/>
+            @bind-Value="CharacterSkillDescription.DescriptionTitle"
+            CoerceValue="true" CoerceText="true" ResetValueOnEmptyText="true" 
+            SelectOnClick="true" TextChanged="TextChanged" />
+        <MudTextField T="string" AutoGrow="true" Label="Description" @bind-Value="CharacterSkillDescription.Description"/>
     </DialogContent>
     <DialogActions>
         <MudButton StartIcon="@Icons.Material.Filled.DeleteForever" IconColor="Color.Error" Color="Color.Error">
@@ -11,7 +13,6 @@
         <MudButton StartIcon="@Icons.Material.Filled.Save" OnClick="Save">
             Save
         </MudButton>
-
     </DialogActions>
 </MudDialog>
 
