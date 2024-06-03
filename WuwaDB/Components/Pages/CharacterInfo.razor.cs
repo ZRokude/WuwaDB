@@ -23,9 +23,8 @@ namespace WuwaDB.Components.Pages
 
         protected override async void OnInitialized()
         {
-            var _character = await UserRepository.FindCharacterAsync(CharacterName);
-            if (_character is not null)
-                character = _character; 
+            object propFilter = new { Name = CharacterName };
+            character = await UserRepository.GetDataAsync<Character>(propFilter);
             StateHasChanged();
             
         }
@@ -72,6 +71,7 @@ namespace WuwaDB.Components.Pages
             var parameters = new DialogParameters<EditCharacterStats>();
             parameters.Add(x => x.CharacterId, character.Id);
             var dialog = await DialogService.ShowAsync<EditCharacterStats>("Edit Character Stats", parameters, options);
+            var result = dialog.Result;
         }
 
         private async void OpenDialogSkill(SkillType type)
@@ -81,7 +81,9 @@ namespace WuwaDB.Components.Pages
             var options = new DialogOptions { CloseOnEscapeKey = true };
             var parameters = new DialogParameters<EditCharacterSkill>();
             parameters.Add(x => x.CharacterId, character.Id);
+            parameters.Add(x => x.SkillType, type);
             var dialog = await DialogService.ShowAsync<EditCharacterSkill>(skillType, parameters, options);
+            var result= dialog.Result; 
         }
     }
 }

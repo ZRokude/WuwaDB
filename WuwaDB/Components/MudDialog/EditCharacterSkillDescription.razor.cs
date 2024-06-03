@@ -21,7 +21,7 @@ namespace WuwaDB.Components.MudDialog
             {
                 CharacterSkillId = SkillId
             };
-            CharacterSkillDescriptions = await UserRepository.GetToListAsync<Character_Skill_Description>();
+            CharacterSkillDescriptions = await UserRepository.GetToListAsync<Character_Skill_Description>(propFilter);
             if (CharacterSkillDescriptions is not null)
             {
                 DescTitles = new string[CharacterSkillDescriptions.Count];
@@ -39,6 +39,7 @@ namespace WuwaDB.Components.MudDialog
                 CharacterSkillDescription.Description = CharacterSkillDescriptions.FirstOrDefault(x => x.DescriptionTitle == value).Description;
                 StateHasChanged();
             }
+            if (string.IsNullOrEmpty(value))
             else if  (string.IsNullOrEmpty(value))
             {
                 CharacterSkillDescription.Description = "";
@@ -48,14 +49,18 @@ namespace WuwaDB.Components.MudDialog
             return DescTitles.Where(x=> x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
 
         }
+        private async Task ValueChanged(string value)
+        {
+            
+        }
         private async Task Save()
         {
             CharacterSkillDescription.CharacterSkillId = SkillId;
             var Match = CharacterSkillDescriptions.FirstOrDefault(x => x.DescriptionTitle == CharacterSkillDescription.DescriptionTitle);
             if (Match is not null)
             {
-                //CharacterSkillDescription.CharacterSkillId = CharacterSkillDescriptions.FirstOrDefault(x => x.DescriptionTitle == CharacterSkillDescription.DescriptionTitle).CharacterSkillId;
-                //await AdminRepository.UpdatesAsync(CharacterSkillDescription);
+                CharacterSkillDescription.CharacterSkillId = CharacterSkillDescriptions.FirstOrDefault(x => x.DescriptionTitle == CharacterSkillDescription.DescriptionTitle).CharacterSkillId;
+                await AdminRepository.UpdatesAsync(CharacterSkillDescription);
             }
             else
                 await AdminRepository.SavesAsync(CharacterSkillDescription);

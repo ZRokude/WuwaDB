@@ -5,6 +5,7 @@ using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace WuwaDB.DBAccess.Entities.Character
 {
     public class Character_Skill_Description

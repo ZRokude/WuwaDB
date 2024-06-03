@@ -1,12 +1,16 @@
-﻿@using Microsoft.Data.SqlClient.DataClassification
+﻿
 <MudDialog>
     <DialogContent>
         <MudAutocomplete T="string" Label="Description Title">
         </MudAutocomplete>
-        <MudAutocomplete T="int" Label="Level" InputMode="InputMode.numeric" Immediate="true" 
-                         CoerceValue="true" CoerceText="false" ResetValueOnEmptyText="true"/>
+        <MudNumericField T="int" Label="Level"/>
         <MudNumericField T="double" Step="0.01" Label="Skill Detail Percentage"/>
     </DialogContent>
+    <DialogActions>
+        <MudButton StartIcon="@Icons.Material.Filled.Save">
+            Save
+        </MudButton>
+    </DialogActions>
 </MudDialog>
 
 @code {

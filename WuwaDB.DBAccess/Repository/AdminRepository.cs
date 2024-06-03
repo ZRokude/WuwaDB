@@ -16,6 +16,7 @@ namespace WuwaDB.DBAccess.Repository
     public class AdminRepository
     {
         [Inject] SharedRepository ShareRepository { get; set; } = new();
+        [Inject] UserRepository UserRepository { get; set; }
         private readonly IDbContextFactory<WuwaDbContext> _context;
 
         public AdminRepository(IDbContextFactory<WuwaDbContext> context)
@@ -32,6 +33,13 @@ namespace WuwaDB.DBAccess.Repository
         {
             await using WuwaDbContext context = await _context.CreateDbContextAsync();
             await context.AddAsync(entity);
+            await context.SaveChangesAsync();
+        }
+        public async Task UpdatesAsync<T>(T entity) where T : class
+        {
+            await using WuwaDbContext context = await _context.CreateDbContextAsync();
+            context.Set<T>().Attach(entity);
+            context.Entry(entity).State = EntityState.Modified;
             await context.SaveChangesAsync();
         }
         public async Task CreateUserDataAsync(string username, string password, string role, string[] additionalProp)
