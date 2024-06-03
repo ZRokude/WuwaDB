@@ -69,7 +69,7 @@ namespace WuwaDB.DBAccess.DataContext
             modelBuilder.Entity<Character_Skill_Detail_Number>()
                 .HasKey(c => new { c.CharacterSkillDetailId, c.Level });
             modelBuilder.Entity<Character_Skill_Description>()
-                .HasKey(c => new { c.CharacterSkillId, c.DescriptionTItle });
+                .HasKey(c => new { c.CharacterSkillId, c.DescriptionTitle });
         }
 
     }
