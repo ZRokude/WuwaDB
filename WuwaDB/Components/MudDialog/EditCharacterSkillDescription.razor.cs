@@ -22,7 +22,7 @@ namespace WuwaDB.Components.MudDialog
                 CharacterSkillId = SkillId
             };
             CharacterSkillDescriptions = await UserRepository.GetToListAsync<Character_Skill_Description>(propFilter);
-            if (CharacterSkillDescriptions is not null)
+            if (CharacterSkillDescriptions.Count > 0)
             {
                 DescTitles = new string[CharacterSkillDescriptions.Count];
                 for (int i = 0; i < CharacterSkillDescriptions.Count; i++)
@@ -34,24 +34,26 @@ namespace WuwaDB.Components.MudDialog
         }
         private async Task<IEnumerable<string>> SearchDescTitle(string value)
         {
-            if (CharacterSkillDescriptions.FirstOrDefault(x => x.DescriptionTitle == value) is not null)
-            {
-                CharacterSkillDescription.Description = CharacterSkillDescriptions.FirstOrDefault(x => x.DescriptionTitle == value).Description;
-                StateHasChanged();
-            }
             if (string.IsNullOrEmpty(value))
-            else if  (string.IsNullOrEmpty(value))
             {
-                CharacterSkillDescription.Description = "";
+                
                 return DescTitles;
             }
                 
             return DescTitles.Where(x=> x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
 
         }
-        private async Task ValueChanged(string value)
+        private async Task TextChanged(string value)
         {
-            
+            if (CharacterSkillDescriptions.FirstOrDefault(x => x.DescriptionTitle == value) is not null)
+            {
+                CharacterSkillDescription.Description = CharacterSkillDescriptions.FirstOrDefault(x => x.DescriptionTitle == value).Description;
+                StateHasChanged();
+            }
+            else if (string.IsNullOrEmpty(value))
+            {
+                CharacterSkillDescription.Description = "";
+            }
         }
         private async Task Save()
         {
