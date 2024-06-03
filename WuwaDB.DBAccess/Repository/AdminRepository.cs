@@ -89,8 +89,6 @@ namespace WuwaDB.DBAccess.Repository
             // Add the new account to the DbSet
             await context.AddAsync(account);
             await context.SaveChangesAsync();
-
-
         }
     }
 }
