@@ -21,7 +21,7 @@ namespace WuwaDB.Components.MudDialog
             {
                 CharacterSkillId = SkillId
             };
-            CharacterSkillDescriptions = await UserRepository.GetToListAsync<Character_Skill_Description>(propFilter);
+            CharacterSkillDescriptions = await UserRepository.GetToListAsync<Character_Skill_Description>();
             if (CharacterSkillDescriptions.Count > 0)
             {
                 DescTitles = new string[CharacterSkillDescriptions.Count];

@@ -35,6 +35,22 @@ namespace WuwaDB.Components.MudDialog
             MudDialog.Close(DialogResult.Ok(true));
         }
 
-       
+        public void Overload(int a, string b, object c)
+        {
+            int z = a + Convert.ToInt32(b);
+        }
+        public void Overload(int a, string b)
+        {
+
+        }
+        public void Overload(int a)
+        {
+
+        }
+
+        public void Overload()
+        {
+
+        }
     }
 }

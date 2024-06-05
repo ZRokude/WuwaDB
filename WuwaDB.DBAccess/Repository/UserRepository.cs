@@ -40,14 +40,15 @@ namespace WuwaDB.DBAccess.Repository
         /// <param name="additionalProp"></param>
         /// <returns></returns>
         /// <exception cref="ArgumentException"></exception>
-        public async Task<List<T>> GetToListAsync<T>(object? propertyFilter = null) where T:class
+        public async Task<List<T>> GetToListAsync<T>(object? propertyFilter = null, string[]? propertyInclude = null)where T:class
         {
             await using WuwaDbContext context = await _context.CreateDbContextAsync();
             if (propertyFilter is not null)
             {
-                var lambdaProperty = ShareRepository.GetObjectProperty<T>(propertyFilter);
+                var lambdaProperty = ShareRepository.GetObjectAsExpression<T>(propertyFilter);
                 return await context.Set<T>().Where(lambdaProperty).ToListAsync();
             }
+            //else if (propertyInclude)
             else
                 return await context.Set<T>().ToListAsync();
         }
@@ -55,9 +56,10 @@ namespace WuwaDB.DBAccess.Repository
         public async Task<T?> GetDataAsync<T>(object propertyFilter) where T : class
         {
             await using WuwaDbContext context = await _context.CreateDbContextAsync();
-            var lambdaProperty = ShareRepository.GetObjectProperty<T>(propertyFilter);
+            var lambdaProperty = ShareRepository.GetObjectAsExpression<T>(propertyFilter);
             return await context.Set<T>().FirstOrDefaultAsync(lambdaProperty);
         }
 
+        
     }
 }

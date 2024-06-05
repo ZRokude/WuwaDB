@@ -10,7 +10,7 @@ namespace WuwaDB.DBAccess.Repository
 {
     public class SharedRepository
     {
-        public Expression<Func<T, bool>> GetObjectProperty<T>(object getProperty) where T:class
+        public Expression<Func<T, bool>> GetObjectAsExpression<T>(object getProperty) where T:class
         {
             // Create the parameter expression for the entity type
             var parameter = Expression.Parameter(typeof(T), "x");

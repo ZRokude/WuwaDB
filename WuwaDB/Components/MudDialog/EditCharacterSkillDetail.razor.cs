@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using System.ComponentModel;
+using System.Linq.Expressions;
 using WuwaDB.DBAccess.Entities.Character;
 using WuwaDB.DBAccess.Repository;
 
@@ -23,10 +24,10 @@ namespace WuwaDB.Components.MudDialog
         {
             object propFilter = new
             {
-                CharacterSkillId = SkillId,
+                CharacterSkillId = SkillId
             };
-            CharacterSkillDetails = await UserRepository.GetToListAsync<Character_Skill_Detail>(propFilter);
-            CharacterSkillDetailNumbers = await UserRepository.GetToListAsync<Character_Skill_Detail_Number>(propFilter);
+            CharacterSkillDetails = await UserRepository.GetToListAsync<Character_Skill_Detail>();
+            
             if (CharacterSkillDetails.Count > 0)
             {
                 for(int i = 0; i< CharacterSkillDetails.Count; i++) 
