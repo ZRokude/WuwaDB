@@ -29,28 +29,14 @@ namespace WuwaDB.Components.MudDialog
         private async Task Save()
         {
             if (StatsExist is not true)
+            {
                 CharacterStats.CharacterId = CharacterId;
-            await AdminRepository.SavesAsync(CharacterStats);
+                await AdminRepository.SavesAsync(CharacterStats);
+            }
+            else
+                await AdminRepository.UpdatesAsync(CharacterStats);
             StateHasChanged();
             MudDialog.Close(DialogResult.Ok(true));
-        }
-
-        public void Overload(int a, string b, object c)
-        {
-            int z = a + Convert.ToInt32(b);
-        }
-        public void Overload(int a, string b)
-        {
-
-        }
-        public void Overload(int a)
-        {
-
-        }
-
-        public void Overload()
-        {
-
         }
     }
 }

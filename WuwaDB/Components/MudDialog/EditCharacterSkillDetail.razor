@@ -2,14 +2,18 @@
     <DialogContent>
         <MudAutocomplete T="string" Label="Description Title" @bind-Value="CharacterSkillDetail.SkillDetailsName"
                          CoerceValue="true" CoerceText="true" ResetValueOnEmptyText="true"
-                         SelectOnClick="true" TextChanged="TextChangedSkillDetailName"/>
+                         SelectOnClick="true" TextChanged="TextChangedSkillDetailName" SearchFunc="SearchSkillDetailName"/>
         <MudAutocomplete InputMode="InputMode.numeric" T="int" Label="Level" @bind-Value="CharacterSkillDetailNumber.Level"
                          CoerceValue="true" CoerceText="true" ResetValueOnEmptyText="true"
-                         SelectOnClick="true" />
+                         SelectOnClick="true" TextChanged="TextChangedSkillLevel" SearchFunc="SearchSkillLevel"/>
         <MudNumericField T="double" Step="0.01" Label="Skill Detail Percentage" @bind-Value="CharacterSkillDetailNumber.Number"/>
+        <MudNumericField T="int?" Label="Skill Detail Multiplier" @bind-Value="CharacterSkillDetailNumber.Multiplier"/>
     </DialogContent>
     <DialogActions>
-        <MudButton StartIcon="@Icons.Material.Filled.Save">
+        <MudButton StartIcon="@Icons.Material.Filled.DeleteForever" IconColor="Color.Error">
+            Delete
+        </MudButton>
+        <MudButton StartIcon="@Icons.Material.Filled.Save" OnClick="Save">
             Save
         </MudButton>
     </DialogActions>

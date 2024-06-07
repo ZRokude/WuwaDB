@@ -7,19 +7,19 @@
                 Edit Character
             </MudButton>
         </MudToolBar>
-        <MudGrid Justify="Justify.SpaceBetween" Spacing="6">
+        <MudGrid Justify="Justify.FlexStart">
             <MudItem>
-                <div class="character-card-container">+-
+                <div class="character-card-container">
                     <MudCardMedia Image="@($"/Character_Model/{character.Name}.png")" Class="character-card bg-color-transparent"/>
                 </div>
-            </MudItem>     
-            <MudItem>
-                <MudStack AlignItems="AlignItems.End" Spacing="10">
-                    <MudPaper>
-                        <MudStack>
-                            <MudPaper>
-
-                            </MudPaper>
+            </MudItem>
+            <MudSpacer/>
+            <MudItem >
+                <MudStack AlignItems="AlignItems.End" Spacing="10" Class="bg-color-unset">
+                    <MudPaper Elevation="0" Class="bg-color-transparent">
+                        <MudStack Row="true" Spacing="5">
+                            <MudImage Style="width:30px;" Src="Icon/AttributeStat/T_Iconpropertygreenlife_UI.png"/>
+                            @CharacterStats.HP
                         </MudStack>
                     </MudPaper>
                 </MudStack>
@@ -29,6 +29,6 @@
 </div>
 
 @code {
-    
-}
+    const string HP = @"<img src=""Icon/AttributeStat/T_Iconpropertygreenlife_UI.png""/>";
+}}
  

@@ -25,6 +25,10 @@ namespace WuwaDB.Components.Pages
         {
             object propFilter = new { Name = CharacterName };
             character = await UserRepository.GetDataAsync<Character>(propFilter);
+            if (character is not null)
+                CharacterStats =
+                    await UserRepository.GetDataAsync<Character_Stats_Base>(propertyFilter: new
+                        { CharacterId = character.Id });
             StateHasChanged();
             
         }
@@ -71,7 +75,10 @@ namespace WuwaDB.Components.Pages
             var parameters = new DialogParameters<EditCharacterStats>();
             parameters.Add(x => x.CharacterId, character.Id);
             var dialog = await DialogService.ShowAsync<EditCharacterStats>("Edit Character Stats", parameters, options);
-            var result = dialog.Result;
+            var result = await dialog.Result;
+            if (!result.Canceled)
+                OnInitialized();
+                
         }
 
         private async void OpenDialogSkill(SkillType type)
@@ -83,7 +90,9 @@ namespace WuwaDB.Components.Pages
             parameters.Add(x => x.CharacterId, character.Id);
             parameters.Add(x => x.SkillType, type);
             var dialog = await DialogService.ShowAsync<EditCharacterSkill>(skillType, parameters, options);
-            var result= dialog.Result; 
+            var result= await dialog.Result;
+            if (!result.Canceled)
+                OnInitialized();
         }
     }
 }

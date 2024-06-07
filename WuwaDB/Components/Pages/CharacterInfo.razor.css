@@ -8,14 +8,12 @@
 }
 
 ::deep .character-card-container {
-    height: 80vh; 
-    width: 35vw; 
+    height: 80vh;
+    width: 35vw;
     position: relative;
-    object-position:center;
-    position:fixed;
-
+    object-position: center;
+    position: fixed;
 }
-
 @media {
 
 }

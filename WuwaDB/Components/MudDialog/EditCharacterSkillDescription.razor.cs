@@ -35,11 +35,7 @@ namespace WuwaDB.Components.MudDialog
         private async Task<IEnumerable<string>> SearchDescTitle(string value)
         {
             if (string.IsNullOrEmpty(value))
-            {
-                
                 return DescTitles;
-            }
-                
             return DescTitles.Where(x=> x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
 
         }
