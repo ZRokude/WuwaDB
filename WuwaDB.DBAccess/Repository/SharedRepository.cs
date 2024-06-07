@@ -10,7 +10,7 @@ namespace WuwaDB.DBAccess.Repository
 {
     public class SharedRepository
     {
-        public Expression<Func<T, bool>> GetObjectProperty<T>(object getProperty) where T:class
+        public Expression<Func<T, bool>> GetObjectAsExpression<T>(object getProperty, string[] joinedProperty = null) where T:class
         {
             // Create the parameter expression for the entity type
             var parameter = Expression.Parameter(typeof(T), "x");
@@ -23,8 +23,22 @@ namespace WuwaDB.DBAccess.Repository
             {
                 var propertyName = propertyInfo.Name;
                 var propertyValue = propertyInfo.GetValue(getProperty);
-
-                var property = Expression.Property(parameter, propertyName);
+                Expression property = parameter;
+                if (joinedProperty != null && joinedProperty.Length > 0)
+                {
+                    foreach (var join in joinedProperty)
+                    {
+                        property = Expression.Property(property, join);
+                    }
+                }
+                try
+                {
+                    property = Expression.Property(property, propertyName);
+                }
+                catch (ArgumentException)
+                {
+                    continue;
+                }
                 var constant = Expression.Constant(propertyValue);
                 var convertedConstant = Expression.Convert(constant, property.Type);
                 var equality = Expression.Equal(property, convertedConstant);

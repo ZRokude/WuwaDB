@@ -21,7 +21,7 @@ namespace WuwaDB.Components.MudDialog
             {
                 CharacterSkillId = SkillId
             };
-            CharacterSkillDescriptions = await UserRepository.GetToListAsync<Character_Skill_Description>(propFilter);
+            CharacterSkillDescriptions = await UserRepository.GetToListAsync<Character_Skill_Description>();
             if (CharacterSkillDescriptions.Count > 0)
             {
                 DescTitles = new string[CharacterSkillDescriptions.Count];
@@ -35,11 +35,7 @@ namespace WuwaDB.Components.MudDialog
         private async Task<IEnumerable<string>> SearchDescTitle(string value)
         {
             if (string.IsNullOrEmpty(value))
-            {
-                
                 return DescTitles;
-            }
-                
             return DescTitles.Where(x=> x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
 
         }

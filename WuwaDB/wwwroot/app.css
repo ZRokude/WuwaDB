@@ -54,5 +54,5 @@ h1:focus {
     background-color:unset!important;
 }
 .bg-color-transparent{
-    background-color:transparent;
+    background-color:transparent!important;
 }

@@ -20,6 +20,6 @@ namespace WuwaDB.DBAccess.Entities.Character
         public Character Character { get; set; }
         public ICollection<Character_Skill_Detail> Character_Skill_Details { get; set; }
         public ICollection<Character_Skill_Description> Character_Skill_Descriptions { get; set; }
-        public ICollection<Character_Skill_Detail_Number> Character_Skill_Numbers { get; set; }
+       
     }
 }

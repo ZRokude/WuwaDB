@@ -190,18 +190,13 @@ namespace WuwaDB.DBAccess.Migrations
                     b.Property<int>("Level")
                         .HasColumnType("int");
 
-                    b.Property<Guid>("CharacterSkillId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("Character_SkillId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int?>("Multiplier")
+                        .HasColumnType("int");
 
                     b.Property<double>("Number")
                         .HasColumnType("float");
 
                     b.HasKey("CharacterSkillDetailId", "Level");
-
-                    b.HasIndex("Character_SkillId");
 
                     b.ToTable("CharacterSkillDetailNumbers");
                 });
@@ -386,14 +381,6 @@ namespace WuwaDB.DBAccess.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("WuwaDB.DBAccess.Entities.Character.Character_Skill", "Character_Skill")
-                        .WithMany("Character_Skill_Numbers")
-                        .HasForeignKey("Character_SkillId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Character_Skill");
-
                     b.Navigation("Character_Skill_Detail");
                 });
 
@@ -446,8 +433,6 @@ namespace WuwaDB.DBAccess.Migrations
                     b.Navigation("Character_Skill_Descriptions");
 
                     b.Navigation("Character_Skill_Details");
-
-                    b.Navigation("Character_Skill_Numbers");
                 });
 
             modelBuilder.Entity("WuwaDB.DBAccess.Entities.Character.Character_Skill_Detail", b =>

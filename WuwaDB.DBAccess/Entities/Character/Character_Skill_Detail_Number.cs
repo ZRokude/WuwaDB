@@ -8,14 +8,14 @@ namespace WuwaDB.DBAccess.Entities.Character
 {
     public class Character_Skill_Detail_Number
     {
-        public Guid CharacterSkillId { get; set; }
         public Guid CharacterSkillDetailId { get; set; }
         public int Level { get; set; }
         public double Number { get; set; }
+        public int? Multiplier { get; set; }
 
         //Nav
         public Character_Skill_Detail Character_Skill_Detail { get; set; }
-        public Character_Skill Character_Skill { get; set; }
+       
 
     }
 }
