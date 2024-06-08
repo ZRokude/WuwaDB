@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WuwaDB.DBAccess.DataContext;
 
@@ -11,9 +12,11 @@ using WuwaDB.DBAccess.DataContext;
 namespace WuwaDB.DBAccess.Migrations
 {
     [DbContext(typeof(WuwaDbContext))]
-    partial class WuwaDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240608094946_RemoveResonanceEnergy")]
+    partial class RemoveResonanceEnergy
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -69,7 +72,7 @@ namespace WuwaDB.DBAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Roles", (string)null);
+                    b.ToTable("Roles");
                 });
 
             modelBuilder.Entity("WuwaDB.DBAccess.Entities.Character.Character", b =>
@@ -104,7 +107,7 @@ namespace WuwaDB.DBAccess.Migrations
 
                     b.HasIndex("Name");
 
-                    b.ToTable("Characters", (string)null);
+                    b.ToTable("Characters");
                 });
 
             modelBuilder.Entity("WuwaDB.DBAccess.Entities.Character.Character_Skill", b =>
@@ -141,7 +144,7 @@ namespace WuwaDB.DBAccess.Migrations
 
                     b.HasIndex("Type", "Name");
 
-                    b.ToTable("CharacterSkills", (string)null);
+                    b.ToTable("CharacterSkills");
                 });
 
             modelBuilder.Entity("WuwaDB.DBAccess.Entities.Character.Character_Skill_Description", b =>
@@ -158,7 +161,7 @@ namespace WuwaDB.DBAccess.Migrations
 
                     b.HasKey("CharacterSkillId", "DescriptionTitle");
 
-                    b.ToTable("CharacterSkillDescriptions", (string)null);
+                    b.ToTable("CharacterSkillDescriptions");
                 });
 
             modelBuilder.Entity("WuwaDB.DBAccess.Entities.Character.Character_Skill_Detail", b =>
@@ -179,7 +182,7 @@ namespace WuwaDB.DBAccess.Migrations
                     b.HasIndex("CharacterSkillId", "SkillDetailsName")
                         .IsUnique();
 
-                    b.ToTable("CharacterSkillDetails", (string)null);
+                    b.ToTable("CharacterSkillDetails");
                 });
 
             modelBuilder.Entity("WuwaDB.DBAccess.Entities.Character.Character_Skill_Detail_Number", b =>
@@ -198,7 +201,7 @@ namespace WuwaDB.DBAccess.Migrations
 
                     b.HasKey("CharacterSkillDetailId", "Level");
 
-                    b.ToTable("CharacterSkillDetailNumbers", (string)null);
+                    b.ToTable("CharacterSkillDetailNumbers");
                 });
 
             modelBuilder.Entity("WuwaDB.DBAccess.Entities.Character.Character_Stats_Base", b =>
@@ -232,7 +235,7 @@ namespace WuwaDB.DBAccess.Migrations
 
                     b.HasIndex("CharacterId");
 
-                    b.ToTable("CharacterStatsBases", (string)null);
+                    b.ToTable("CharacterStatsBases");
                 });
 
             modelBuilder.Entity("WuwaDB.DBAccess.Entities.Character.Character_Stats_Growth_Property", b =>
@@ -260,7 +263,7 @@ namespace WuwaDB.DBAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("CharacterStatsGrowthproperties", (string)null);
+                    b.ToTable("CharacterStatsGrowthproperties");
                 });
 
             modelBuilder.Entity("WuwaDB.DBAccess.Entities.Character.VoiceActor", b =>
@@ -285,7 +288,7 @@ namespace WuwaDB.DBAccess.Migrations
 
                     b.HasIndex("LanguageId");
 
-                    b.ToTable("VoiceActor", (string)null);
+                    b.ToTable("VoiceActor");
                 });
 
             modelBuilder.Entity("WuwaDB.DBAccess.Entities.Shared.Language", b =>
@@ -300,7 +303,7 @@ namespace WuwaDB.DBAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Language", (string)null);
+                    b.ToTable("Language");
                 });
 
             modelBuilder.Entity("WuwaDB.DBAccess.Entities.Account.Admin", b =>

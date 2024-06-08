@@ -7,6 +7,7 @@ using WuwaDB.DBAccess.DataContext;
 using WuwaDB.DBAccess.Entities.Account;
 using WuwaDB.DBAccess.Entities.Character;
 using WuwaDB.DBAccess.Repository;
+using System.Reflection.Metadata.Ecma335;
 
 namespace WuwaDB.Components.MudDialog
 {
@@ -26,13 +27,10 @@ namespace WuwaDB.Components.MudDialog
         private int[] SkillLevels;
         protected override async void OnInitialized()
         {
-            object propFilter = new
-            {
-                CharacterSkillId = SkillId
-            };
-            CharacterSkillDetails = await UserRepository.GetToListAsync<Character_Skill_Detail>(propFilter);
-            string[] propInclude = ["Character_Skill_Detail"];
-            CharacterSkillDetailNumbers = await UserRepository.GetToListAsync<Character_Skill_Detail_Number>(propFilter, propInclude);
+            CharacterSkillDetails = await UserRepository.GetToListAsync<Character_Skill_Detail>
+                (new { CharacterSkillId = SkillId });
+            CharacterSkillDetailNumbers = await UserRepository.GetToListAsync<Character_Skill_Detail_Number>
+                (new { CharacterSkillId = SkillId }, new string[] { "Character_Skill_Detail" });
             if (CharacterSkillDetails.Count > 0)
             {
                 SkillDetailNames = new string[CharacterSkillDetails.Count];
@@ -81,28 +79,33 @@ namespace WuwaDB.Components.MudDialog
                 CharacterSkillDetailNumber.Multiplier = null;
                 SkillLevels = null;
             }
-            
+                
         }
 
         private async Task TextChangedSkillLevel(string value)
         {
-            var matchSkillDetailLevel = CharacterSkillDetailNumbers.FirstOrDefault(x => x.Level.ToString() == value);
-            if (matchSkillDetailLevel is not null)
-            {
-                var SkillDetailId =
-                    CharacterSkillDetails.FirstOrDefault(x =>
-                        x.SkillDetailsName == CharacterSkillDetail.SkillDetailsName).Id;
-                var matchSkillDetailNumbers = CharacterSkillDetailNumbers.Where(x =>
-                    x.Level.ToString() == value
-                    && x.CharacterSkillDetailId == SkillDetailId).ToList();
-                CharacterSkillDetailNumber.Number = matchSkillDetailNumbers[0].Number;
-                CharacterSkillDetailNumber.Multiplier = matchSkillDetailNumbers[0].Multiplier;
-            }
-
             if (string.IsNullOrEmpty(value))
             {
+                CharacterSkillDetailNumber.Level = 0;
                 CharacterSkillDetailNumber.Number = 0;
                 CharacterSkillDetailNumber.Multiplier = null;
+            }
+            else
+            {
+                var matchSkillDetailLevel =
+                CharacterSkillDetailNumbers.FirstOrDefault(
+                    x => x.CharacterSkillDetailId == CharacterSkillDetails.FirstOrDefault(x => x.SkillDetailsName == CharacterSkillDetail.SkillDetailsName).Id && x.Level.ToString() == value) ?? null;
+                if (matchSkillDetailLevel is not null)
+                {
+                    var SkillDetailId =
+                        CharacterSkillDetails.FirstOrDefault(x =>
+                            x.SkillDetailsName == CharacterSkillDetail.SkillDetailsName).Id;
+                    var matchSkillDetailNumbers = CharacterSkillDetailNumbers.Where(x =>
+                        x.Level.ToString() == value
+                        && x.CharacterSkillDetailId == SkillDetailId).ToList();
+                    CharacterSkillDetailNumber.Number = matchSkillDetailNumbers[0].Number;
+                    CharacterSkillDetailNumber.Multiplier = matchSkillDetailNumbers[0].Multiplier;
+                }
             }
         }
         private async Task Save()

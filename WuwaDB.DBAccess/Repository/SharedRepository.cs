@@ -10,6 +10,13 @@ namespace WuwaDB.DBAccess.Repository
 {
     public class SharedRepository
     {
+        /// <summary>
+        /// A method to get an expression from object name
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="getProperty"></param>
+        /// <param name="joinedProperty"></param>
+        /// <returns></returns>
         public Expression<Func<T, bool>> GetObjectAsExpression<T>(object getProperty, string[] joinedProperty = null) where T:class
         {
             // Create the parameter expression for the entity type
@@ -24,7 +31,7 @@ namespace WuwaDB.DBAccess.Repository
                 var propertyName = propertyInfo.Name;
                 var propertyValue = propertyInfo.GetValue(getProperty);
                 Expression property = parameter;
-                if (joinedProperty != null && joinedProperty.Length > 0)
+                if (joinedProperty != null)
                 {
                     foreach (var join in joinedProperty)
                     {

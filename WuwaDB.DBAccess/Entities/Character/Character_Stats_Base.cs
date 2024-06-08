@@ -16,7 +16,6 @@ namespace WuwaDB.DBAccess.Entities.Character
         public double Critical_Rate { get; set; }
         public double Critical_Damage { get; set; }
         public double Energy_Regen { get; set; }
-        public double Max_Resonance_Energy { get; set; }
 
         //Nav
 

@@ -7,28 +7,63 @@
                 Edit Character
             </MudButton>
         </MudToolBar>
-        <MudGrid Justify="Justify.FlexStart">
-            <MudItem>
+        <MudGrid Class="main-grid">
+            <!-- Fixed Image Section -->
+            <MudItem xs="12" md="3" Class="fixed-image-container">
                 <div class="character-card-container">
-                    <MudCardMedia Image="@($"/Character_Model/{character.Name}.png")" Class="character-card bg-color-transparent"/>
+                    <MudCardMedia Image="@($"/Character_Model/{character.Name}.png")" Class="character-card bg-color-transparent" />
                 </div>
             </MudItem>
-            <MudSpacer/>
-            <MudItem >
-                <MudStack AlignItems="AlignItems.End" Spacing="10" Class="bg-color-unset">
-                    <MudPaper Elevation="0" Class="bg-color-transparent">
-                        <MudStack Row="true" Spacing="5">
-                            <MudImage Style="width:30px;" Src="Icon/AttributeStat/T_Iconpropertygreenlife_UI.png"/>
-                            @CharacterStats.HP
-                        </MudStack>
+            <MudItem xs="12" md="9">
+                <MudStack AlignItems="AlignItems.End">
+                    <MudPaper Elevation="5" Class=" custom-paper">
+                        <MudToolBar WrapContent="true" Class="justify-content-center">
+                            <MudText Align="Align.Center" Inline="true" GutterBottom="true">Character Stat</MudText>
+                        </MudToolBar>
+                        @foreach (var property in typeof(Character_Stats_Base).GetProperties())
+                        {
+                            if (CharacterStatBase is not null)
+                            {
+                                if (property.GetValue(CharacterStatBase) is not null)
+                                {
+                                    if (property.Name != "Id" && property.Name != "CharacterId")
+                                    {
+                                        <MudStack Row="true" Spacing="15">
+                                            <MudImage Style="width:40px;" Src=@($"Icon/AttributeStat/{property.Name}.png") />
+                                            <MudSpacer />
+                                            <MudSpacer />
+                                            <MudSpacer />
+                                            <MudText Align="Align.Center" Style="padding-top:4%;">
+                                                @if (property.PropertyType == typeof(double))
+                                                    @($"{@property.GetValue(CharacterStatBase)}%")
+                                                else
+                                                    @property.GetValue(CharacterStatBase)
+                                            </MudText>
+                                        </MudStack>
+                                    }
+                                }
+                            }
+                        }
+                        <MudSlider @bind-Value="LevelSlider" Min="1" Max="90" Step="1" ValueLabel="true" Immediate="true">
+                            Level: @LevelSlider
+                            <MudAutocomplete T="int" @bind-Value="LevelSlider" TextChanged="LevelChanged"
+                                             Immediate="true" Style="display:none!important;"/>
+                        </MudSlider>
+                        
                     </MudPaper>
                 </MudStack>
+            </MudItem>
+            <MudItem xs="12" md="9">
+                 <MudStack AlignItems="AlignItems.End">
+                     <MudPaper Elevation="5" Class="custom-paper">
+                         
+                     </MudPaper>
+                 </MudStack>
             </MudItem>
         </MudGrid>
     </MudContainer> 
 </div>
 
 @code {
-    const string HP = @"<img src=""Icon/AttributeStat/T_Iconpropertygreenlife_UI.png""/>";
 }}
  

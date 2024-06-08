@@ -6,6 +6,7 @@ using WuwaDB.Components.MudDialog;
 using WuwaDB.DBAccess.Repository;
 using WuwaDB.DBAccess.Entities.Character;
 using WuwaDB.DBAccess.Enum;
+using Microsoft.IdentityModel.Tokens;
 
 namespace WuwaDB.Components.Pages
 {
@@ -18,21 +19,80 @@ namespace WuwaDB.Components.Pages
         [Parameter] public string CharacterName { get; set; }
 
         public Character_Skill CharacterSkill { get; set; } = new();
-        public Character_Stats_Base CharacterStats { get; set; } = new();
+        public Character_Stats_Base CharacterStatBase { get; set; } = new();
         public Character character { get; set; } = new();
-
+        public List<Character_Skill> CharacterSkills { get; set; } = new();
+        public List<Character_Skill_Description> CharacterSkillDescriptions { get; set; } = new();
+        public List<Character_Skill_Detail>CharacterSkillDetails { get; set; } = new();
+        public List<Character_Skill_Detail_Number> CharacterSkillDetailNumbers { get; set; } = new();
+        public List<Character_Stats_Growth_Property> CharacterStatsGrowthProperties { get; set; } = new();
+        private int[] HPArray { get; set; }
+        private int[] ATKArray { get;set; }
+        private int[] DEFArray { get; set; }
+        private int LevelSlider { get; set; } = 1;
         protected override async void OnInitialized()
         {
-            object propFilter = new { Name = CharacterName };
-            character = await UserRepository.GetDataAsync<Character>(propFilter);
+            CharacterStatsGrowthProperties = await UserRepository.GetToListAsync<Character_Stats_Growth_Property>();
+            character = await UserRepository.GetDataAsync<Character>(new {Name = CharacterName});
             if (character is not null)
-                CharacterStats =
+            {
+                CharacterStatBase =
                     await UserRepository.GetDataAsync<Character_Stats_Base>(propertyFilter: new
-                        { CharacterId = character.Id });
-            StateHasChanged();
-            
-        }
+                    { CharacterId = character.Id });
+                CharacterSkills = 
+                    await UserRepository.GetToListAsync<Character_Skill>(propertyFilter: new 
+                    { CharacterId = character.Id });
+            }
+            if (CharacterSkills.Count > 0)
+            {
+                CharacterSkillDescriptions =
+                    await UserRepository.GetToListAsync<Character_Skill_Description>
+                    ( new{ CharacterId = character.Id }, new string[] {"Character_Skill"});
+                CharacterSkillDetails =
+                    await UserRepository.GetToListAsync<Character_Skill_Detail>
+                    (new {CharacterId = character.Id}, new string[] {"Character_Skill"});
 
+            }
+            if (CharacterSkillDetails.Count > 0)
+            {
+                CharacterSkillDetailNumbers = await UserRepository.GetToListAsync<Character_Skill_Detail_Number>
+                    (new { CharacterId = character.Id }, new string[] { "Character_Skill_Detail", "Character_Skill" });
+            }
+            StatsCalculation();
+            StateHasChanged();
+        }
+      
+        private void StatsCalculation()
+        {
+            HPArray = new int[90];
+            ATKArray = new int[90];
+            DEFArray = new int[90];
+            double baseRatioHp = CharacterStatsGrowthProperties.FirstOrDefault(x => x.Level == 1).LifeMaxRatio;
+            int Level = 1;
+            for (int i = 0; i < 90; i++)
+            {
+                double mathHP = CharacterStatsGrowthProperties.FirstOrDefault(x => x.Level == Level).LifeMaxRatio / baseRatioHp;
+                double mathATK = CharacterStatsGrowthProperties.FirstOrDefault(x => x.Level == Level).AtkRatio / baseRatioHp;
+                double mathDEF = CharacterStatsGrowthProperties.FirstOrDefault(x=>x.Level == Level).DefRatio / baseRatioHp;
+                var mathedHP = mathHP * CharacterStatBase.HP;
+                var mathedATK = mathATK * CharacterStatBase.ATK;
+                var mathedDEF = mathDEF * CharacterStatBase.DEF;
+                HPArray[i] = (int)mathedHP;
+                ATKArray[i] = (int)mathedATK;
+                DEFArray[i] = (int)mathedDEF;
+                Level++;
+            };
+        }
+        private void LevelChanged(string value)
+        {
+            int Level = Convert.ToInt16(value) - 1;
+            if (HPArray is not null)
+                CharacterStatBase.HP = HPArray[Level];
+            if (ATKArray is not null)
+                CharacterStatBase.ATK = ATKArray[Level];
+            if(DEFArray is not null)
+                CharacterStatBase.DEF = DEFArray[Level];
+        }
         private async void OpenDialog()
         {
             var options = new DialogOptions { CloseOnEscapeKey = true };
@@ -78,7 +138,6 @@ namespace WuwaDB.Components.Pages
             var result = await dialog.Result;
             if (!result.Canceled)
                 OnInitialized();
-                
         }
 
         private async void OpenDialogSkill(SkillType type)

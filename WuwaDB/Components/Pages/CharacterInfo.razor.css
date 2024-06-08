@@ -6,13 +6,49 @@
     background-position: center;
    
 }
+::deep.main-grid {
+    display: flex;
+    height: 100vh;
+}
 
+::deep.fixed-image-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+    z-index: 1;
+}
+
+::deep.scrollable-content-container {
+    margin-left: 25%; 
+    overflow-y: auto;
+    height: 100vh;
+    padding-left: 20px; /* Optional: Add some padding for better visual separation */
+}
+
+::deep.character-card-container {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+::deep.character-card {
+    width: 100%;
+    height: auto;
+}
 ::deep .character-card-container {
     height: 80vh;
     width: 35vw;
     position: relative;
     object-position: center;
     position: fixed;
+}
+::deep .custom-paper {
+    background-color: rgba(128, 128, 128, 0.4); /* White background with 80% opacity */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow effect */
+    padding: 20px;
+    border-radius: 8px;
 }
 @media {
 

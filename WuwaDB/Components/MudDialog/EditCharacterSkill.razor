@@ -13,7 +13,7 @@
         </MudToolBar>
         <MudTextField T="string" Label="Name" @bind-Value="CharacterSkill.Name"/>
         <MudTextField T="string" Label="Description" @bind-Value="CharacterSkill.Description" AutoGrow="true"/>
-        <MudFileUpload Context="MudUpload" T="IBrowserFile" MaximumFileCount="20971520" Accept=".png, .jpg, .jpeg">
+        <MudFileUpload Context="MudUpload" T="IBrowserFile" MaximumFileCount="20971520" Accept=".png, .jpg, .jpeg" OnFilesChanged="FilesChanged">
             <ButtonTemplate Context="MudUpload">
                 <MudFab HtmlTag="label"
                         Color="Color.Success"
