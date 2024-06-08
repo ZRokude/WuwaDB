@@ -1,4 +1,5 @@
 ﻿@page "/Character/{CharacterName}"
+@using WuwaDB.DBAccess.Enum 
 @using WuwaDB.DBAccess.Entities.Character
 <div>
     <MudContainer Class="w-100 h-100" >
@@ -15,50 +16,94 @@
                 </div>
             </MudItem>
             <MudItem xs="12" md="9">
-                <MudStack AlignItems="AlignItems.End">
-                    <MudPaper Elevation="5" Class=" custom-paper">
-                        <MudToolBar WrapContent="true" Class="justify-content-center">
-                            <MudText Align="Align.Center" Inline="true" GutterBottom="true">Character Stat</MudText>
-                        </MudToolBar>
-                        @foreach (var property in typeof(Character_Stats_Base).GetProperties())
-                        {
-                            if (CharacterStatBase is not null)
+                <MudStack Justify="Justify.Center" Spacing="5">
+                    <MudStack AlignItems="AlignItems.End">
+                        <MudPaper Elevation="5" Class=" custom-paper">
+                            <MudToolBar WrapContent="true" Class="justify-content-center">
+                                <MudText Align="Align.Center" Inline="true" GutterBottom="true">Character Stat</MudText>
+                            </MudToolBar>
+                            @foreach (var property in typeof(Character_Stats_Base).GetProperties())
                             {
-                                if (property.GetValue(CharacterStatBase) is not null)
+                                if (CharacterStatBase is not null)
                                 {
-                                    if (property.Name != "Id" && property.Name != "CharacterId")
+                                    if (property.GetValue(CharacterStatBase) is not null)
                                     {
-                                        <MudStack Row="true" Spacing="15">
-                                            <MudImage Style="width:40px;" Src=@($"Icon/AttributeStat/{property.Name}.png") />
-                                            <MudSpacer />
-                                            <MudSpacer />
-                                            <MudSpacer />
-                                            <MudText Align="Align.Center" Style="padding-top:4%;">
-                                                @if (property.PropertyType == typeof(double))
-                                                    @($"{@property.GetValue(CharacterStatBase)}%")
-                                                else
-                                                    @property.GetValue(CharacterStatBase)
-                                            </MudText>
-                                        </MudStack>
+                                        if (property.Name != "Id" && property.Name != "CharacterId")
+                                        {
+                                            <MudStack Row="true" Spacing="15">
+                                                <MudImage Style="width:40px;" Src=@($"Icon/AttributeStat/{property.Name}.png") />
+                                                <MudSpacer />
+                                                <MudSpacer />
+                                                <MudSpacer />
+                                                <MudText Align="Align.Center" Style="padding-top:4%;">
+                                                    @if (property.PropertyType == typeof(double))
+                                                        @($"{@property.GetValue(CharacterStatBase)}%")
+                                                    else
+                                                        @property.GetValue(CharacterStatBase)
+
+
+
+
+
+                                                </MudText>
+                                            </MudStack>
+                                        }
                                     }
                                 }
                             }
+                            <MudSlider @bind-Value="LevelSlider" Min="1" Max="90" Step="1" ValueLabel="true" Immediate="true">
+                                Level: @LevelSlider
+                                <MudAutocomplete T="int" @bind-Value="LevelSlider" TextChanged="LevelChanged"
+                                                 Immediate="true" Style="display:none!important;" />
+                            </MudSlider>
+                        </MudPaper>
+                    </MudStack>
+                    @if (CharacterSkills.Count > 0)
+                    {
+                        @foreach (SkillType skillType in Enum.GetValues(typeof(SkillType)))
+                        {
+                            <MudStack AlignItems="AlignItems.End">
+                                <MudPaper Elevation="5" Class="custom-paper">
+                                    <MudToolBar WrapContent="true" Class="justify-content-center">
+                                        <MudStack Row="true" AlignItems="AlignItems.End" Spacing="3">
+                                            <MudImage Style="width:50px;" Src="@GetImage(skillType)" />
+                                            <MudStack Spacing="1" Row="true">
+                                                <MudButton>
+                                                    Skill Info
+                                                </MudButton>
+                                                <MudButton>
+                                                    Skill Detail
+                                                </MudButton>
+                                                <MudIconButton Icon="@Icons.Material.Filled.ArrowDownward" Size="Size.Small"/>
+                                            </MudStack>
+                                        </MudStack>
+                                    </MudToolBar>
+                                    <MudStack>
+                                        @if(GetSkillInfoTitle(skillType) is not null)
+                                        {
+                                            @for (int i = 0; i < GetSkillInfoTitle(skillType).Count(); i++)
+                                            {
+                                                @if (@GetSkillInfoTitle(skillType)[i].DescriptionTitle is not null)
+                                                {
+                                                    <MudText>
+                                                        @GetSkillInfoTitle(skillType)[i].DescriptionTitle
+                                                    </MudText>                                                
+                                                }
+                                                @if (@GetSkillInfoTitle(skillType)[i].Description is not null)
+                                                {
+                                                    <MudText>
+                                                        @GetSkillInfoTitle(skillType)[i].Description
+                                                    </MudText>
+                                                }
+                                            }
+                                        }
+                                    </MudStack>
+                                </MudPaper>
+                            </MudStack>
+
                         }
-                        <MudSlider @bind-Value="LevelSlider" Min="1" Max="90" Step="1" ValueLabel="true" Immediate="true">
-                            Level: @LevelSlider
-                            <MudAutocomplete T="int" @bind-Value="LevelSlider" TextChanged="LevelChanged"
-                                             Immediate="true" Style="display:none!important;"/>
-                        </MudSlider>
-                        
-                    </MudPaper>
+                    }
                 </MudStack>
-            </MudItem>
-            <MudItem xs="12" md="9">
-                 <MudStack AlignItems="AlignItems.End">
-                     <MudPaper Elevation="5" Class="custom-paper">
-                         
-                     </MudPaper>
-                 </MudStack>
             </MudItem>
         </MudGrid>
     </MudContainer> 

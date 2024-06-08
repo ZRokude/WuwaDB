@@ -21,6 +21,7 @@ namespace WuwaDB.Components.MudDialog
         private Guid? CharacterSkillId;
         private bool SkillExist;
         IBrowserFile file;
+        private string imageData;
       
         protected override async void OnInitialized()
         {
@@ -33,10 +34,17 @@ namespace WuwaDB.Components.MudDialog
             {
                 SkillExist = true;
                 CharacterSkillId = CharacterSkill.Id;
+                if (CharacterSkill.ImageFile is not null)
+                    GetImage();
             }
             else
                 CharacterSkill = new();
             StateHasChanged();
+        }
+        private async void GetImage()
+        {
+            string imageSrc = Convert.ToBase64String(CharacterSkill.ImageFile);
+            imageData = string.Format("data:image/jpeg;base64,{0}", imageSrc);
         }
         private async Task FilesChanged(InputFileChangeEventArgs e)
         {
@@ -46,10 +54,6 @@ namespace WuwaDB.Components.MudDialog
                 Snackbar.Add("File is exceed limits, please try to put lower size", Severity.Warning);
                 file = null;
             }
-        }
-        private async Task SaveCharacterSkill()
-        {
-            CharacterSkill.Type = SkillType;
             if (file is not null)
             {
                 var fileRead = file.OpenReadStream(maxAllowedSize: 30 * 1024 * 1024);
@@ -64,6 +68,13 @@ namespace WuwaDB.Components.MudDialog
                 else
                     Console.WriteLine("Something make file can't be read");
             }
+            GetImage();
+            StateHasChanged();
+        }
+        private async Task SaveCharacterSkill()
+        {
+            CharacterSkill.Type = SkillType;
+            
             if (SkillExist is not true)
             {
                 CharacterSkill.CharacterId = CharacterId;

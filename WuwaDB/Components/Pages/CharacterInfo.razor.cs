@@ -17,7 +17,6 @@ namespace WuwaDB.Components.Pages
         [Inject] private UserRepository UserRepository { get; set; }
         [Inject] public IDialogService DialogService { get; set; }
         [Parameter] public string CharacterName { get; set; }
-
         public Character_Skill CharacterSkill { get; set; } = new();
         public Character_Stats_Base CharacterStatBase { get; set; } = new();
         public Character character { get; set; } = new();
@@ -30,6 +29,8 @@ namespace WuwaDB.Components.Pages
         private int[] ATKArray { get;set; }
         private int[] DEFArray { get; set; }
         private int LevelSlider { get; set; } = 1;
+       
+
         protected override async void OnInitialized()
         {
             CharacterStatsGrowthProperties = await UserRepository.GetToListAsync<Character_Stats_Growth_Property>();
@@ -45,6 +46,7 @@ namespace WuwaDB.Components.Pages
             }
             if (CharacterSkills.Count > 0)
             {
+                byte[] ImageByte = CharacterSkills[0].ImageFile;
                 CharacterSkillDescriptions =
                     await UserRepository.GetToListAsync<Character_Skill_Description>
                     ( new{ CharacterId = character.Id }, new string[] {"Character_Skill"});
@@ -58,30 +60,60 @@ namespace WuwaDB.Components.Pages
                 CharacterSkillDetailNumbers = await UserRepository.GetToListAsync<Character_Skill_Detail_Number>
                     (new { CharacterId = character.Id }, new string[] { "Character_Skill_Detail", "Character_Skill" });
             }
+            if(CharacterStatBase is not null)
             StatsCalculation();
             StateHasChanged();
         }
       
         private void StatsCalculation()
         {
-            HPArray = new int[90];
-            ATKArray = new int[90];
-            DEFArray = new int[90];
-            double baseRatioHp = CharacterStatsGrowthProperties.FirstOrDefault(x => x.Level == 1).LifeMaxRatio;
-            int Level = 1;
-            for (int i = 0; i < 90; i++)
+            if (LevelSlider  <= 90)
             {
-                double mathHP = CharacterStatsGrowthProperties.FirstOrDefault(x => x.Level == Level).LifeMaxRatio / baseRatioHp;
-                double mathATK = CharacterStatsGrowthProperties.FirstOrDefault(x => x.Level == Level).AtkRatio / baseRatioHp;
-                double mathDEF = CharacterStatsGrowthProperties.FirstOrDefault(x=>x.Level == Level).DefRatio / baseRatioHp;
-                var mathedHP = mathHP * CharacterStatBase.HP;
-                var mathedATK = mathATK * CharacterStatBase.ATK;
-                var mathedDEF = mathDEF * CharacterStatBase.DEF;
-                HPArray[i] = (int)mathedHP;
-                ATKArray[i] = (int)mathedATK;
-                DEFArray[i] = (int)mathedDEF;
-                Level++;
-            };
+                HPArray = new int[90];
+                ATKArray = new int[90];
+                DEFArray = new int[90];
+                double baseRatioHp = CharacterStatsGrowthProperties.FirstOrDefault(x => x.Level == 1).LifeMaxRatio;
+                int Level = 1;
+                for (int i = 0; i < 90; i++)
+                {
+                    double mathHP = CharacterStatsGrowthProperties.FirstOrDefault(x => x.Level == Level).LifeMaxRatio / baseRatioHp;
+                    double mathATK = CharacterStatsGrowthProperties.FirstOrDefault(x => x.Level == Level).AtkRatio / baseRatioHp;
+                    double mathDEF = CharacterStatsGrowthProperties.FirstOrDefault(x => x.Level == Level).DefRatio / baseRatioHp;
+                    var mathedHP = mathHP * CharacterStatBase.HP;
+                    var mathedATK = mathATK * CharacterStatBase.ATK;
+                    var mathedDEF = mathDEF * CharacterStatBase.DEF;
+                    HPArray[i] = (int)mathedHP;
+                    ATKArray[i] = (int)mathedATK;
+                    DEFArray[i] = (int)mathedDEF;
+                    Level++;
+                };
+            }
+        }
+        private string GetImage(SkillType type)
+        {
+            var skillType = CharacterSkills.FirstOrDefault(x => x.Type == type);
+
+            if (skillType is not null)
+            {
+                var ImageByte = skillType.ImageFile;
+                if(ImageByte is not null)
+                {
+                    string imageSrc = Convert.ToBase64String(ImageByte);
+
+                    return string.Format("data:image/jpeg;base64,{0}", imageSrc);
+                }
+            }
+            return null;
+        }
+        private List<Character_Skill_Description> GetSkillInfoTitle(SkillType type)
+        {
+            var skillType = CharacterSkills.FirstOrDefault(x => x.Type == type);
+            if(skillType is not null)
+            {
+                var characterSkillDesc = CharacterSkillDescriptions.Where(x=>x.CharacterSkillId == skillType.Id).ToList();
+                return characterSkillDesc;
+            }
+            return null;
         }
         private void LevelChanged(string value)
         {
