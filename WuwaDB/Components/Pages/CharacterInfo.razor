@@ -91,13 +91,13 @@
                                                     No skill info available.
                                                 </MudText>
                                             }
-                                            @if(CharacterSkillDetails.FirstOrDefault(x=> x.CharacterSkillId == 
+                                            @* @if(CharacterSkillDetails.FirstOrDefault(x=> x.CharacterSkillId == 
                                                 CharacterSkills.FirstOrDefault(x=>x.Type == skillType).Id) is not null)
                                             {
                                                 var characterSkillDetails = CharacterSkillDetails.Where(x => x.CharacterSkillId ==
                                                 CharacterSkills.FirstOrDefault(x => x.Type == skillType).Id).ToList();
 
-                                            }
+                                            } *@
                                         </MudCollapse>
                                     </MudStack>
                                 </MudPaper>
