@@ -7,30 +7,24 @@
    
 }
 ::deep.main-grid {
-    display: flex;
     height: 100vh;
+    display:inline-flex;
 }
 
 ::deep.fixed-image-container {
-    position: fixed;
-    top: 0;
+    position: absolute;
     left: 0;
     overflow: hidden;
     z-index: 1;
 }
 
 ::deep.scrollable-content-container {
-    margin-left: 25%; 
     overflow-y: auto;
     height: 100vh;
-    padding-left: 20px; /* Optional: Add some padding for better visual separation */
 }
 
 ::deep.character-card-container {
     height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
 }
 
 ::deep.character-card {
@@ -47,8 +41,16 @@
 ::deep .custom-paper {
     background-color: rgba(128, 128, 128, 0.4); /* White background with 80% opacity */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow effect */
-    padding: 20px;
+    padding: 18px;
     border-radius: 8px;
+}
+::deep .text-container {
+    white-space: normal; /* Allows text to wrap */
+    width: auto; /* Adjusts width automatically */
+}
+::deep .limited-width-container {
+    max-width: 360px; /* Adjust as needed */
+    margin: 0 auto; /* Center the container */
 }
 @media {
 

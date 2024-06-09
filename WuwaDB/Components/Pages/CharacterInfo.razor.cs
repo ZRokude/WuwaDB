@@ -105,16 +105,7 @@ namespace WuwaDB.Components.Pages
             }
             return null;
         }
-        private List<Character_Skill_Description> GetSkillInfoTitle(SkillType type)
-        {
-            var skillType = CharacterSkills.FirstOrDefault(x => x.Type == type);
-            if(skillType is not null)
-            {
-                var characterSkillDesc = CharacterSkillDescriptions.Where(x=>x.CharacterSkillId == skillType.Id).ToList();
-                return characterSkillDesc;
-            }
-            return null;
-        }
+        
         private void LevelChanged(string value)
         {
             int Level = Convert.ToInt16(value) - 1;
