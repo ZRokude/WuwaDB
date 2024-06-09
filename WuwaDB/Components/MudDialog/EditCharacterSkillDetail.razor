@@ -1,10 +1,10 @@
 ﻿<MudDialog>
     <DialogContent>
         <MudAutocomplete T="string" Label="Description Title" @bind-Value="CharacterSkillDetail.SkillDetailsName"
-                         CoerceValue="true" CoerceText="true" ResetValueOnEmptyText="true"
+                         CoerceValue="true" CoerceText="true" ResetValueOnEmptyText="true" MaxItems="4" Immediate="true"
                          SelectOnClick="true" TextChanged="TextChangedSkillDetailName" SearchFunc="SearchSkillDetailName"/>
-        <MudAutocomplete InputMode="InputMode.numeric" T="int" Label="Level" @bind-Value="CharacterSkillDetailNumber.Level"
-                         CoerceValue="true" CoerceText="true" ResetValueOnEmptyText="true"
+        <MudAutocomplete T="int" Label="Level" @bind-Value="CharacterSkillDetailNumber.Level" HelperText="Please Put a Number"
+                         CoerceValue="true" CoerceText="true" ResetValueOnEmptyText="true" MaxItems="4"  Immediate="true"
                          SelectOnClick="true" TextChanged="TextChangedSkillLevel" SearchFunc="SearchSkillLevel"/>
         <MudNumericField T="double" Step="0.01" Label="Skill Detail Percentage" @bind-Value="CharacterSkillDetailNumber.Number"/>
         <MudNumericField T="int?" Label="Skill Detail Multiplier" @bind-Value="CharacterSkillDetailNumber.Multiplier"/>

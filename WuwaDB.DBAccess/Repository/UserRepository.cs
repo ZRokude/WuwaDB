@@ -21,6 +21,7 @@ namespace WuwaDB.DBAccess.Repository
     public class UserRepository
     {
         private readonly IDbContextFactory<WuwaDbContext> _context;
+        [Inject] private WuwaDbContext dbContext { get; set; }
         [Inject] private SharedRepository ShareRepository { get; set; } = new();
         public UserRepository(IDbContextFactory<WuwaDbContext> context)
         {
@@ -45,13 +46,21 @@ namespace WuwaDB.DBAccess.Repository
 
             await using WuwaDbContext context = await _context.CreateDbContextAsync();
             IQueryable<T> query = context.Set<T>();
-            if (propertyInclude is not null)
-            {
-                foreach (var property in propertyInclude)
-                {
-                    query = query.Include(property);
-                }
-            }
+            //if (propertyInclude is not null)
+            //{
+            //    foreach (var property in propertyInclude)
+            //    {
+            //        try
+            //        {
+            //            query = query.Include(property);
+            //        }
+            //        catch (ArgumentException)
+            //        {
+            //            continue;
+            //        }
+
+            //    }
+            //}
             if (propertyFilter is not null)
             {
                 var lambdaProperty = ShareRepository.GetObjectAsExpression<T>(propertyFilter, propertyInclude);

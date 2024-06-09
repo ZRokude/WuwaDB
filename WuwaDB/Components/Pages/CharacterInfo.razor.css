@@ -6,13 +6,51 @@
     background-position: center;
    
 }
+::deep.main-grid {
+    height: 100vh;
+    display:inline-flex;
+}
 
+::deep.fixed-image-container {
+    position: absolute;
+    left: 0;
+    overflow: hidden;
+    z-index: 1;
+}
+
+::deep.scrollable-content-container {
+    overflow-y: auto;
+    height: 100vh;
+}
+
+::deep.character-card-container {
+    height: 100%;
+}
+
+::deep.character-card {
+    width: 100%;
+    height: auto;
+}
 ::deep .character-card-container {
     height: 80vh;
     width: 35vw;
     position: relative;
     object-position: center;
     position: fixed;
+}
+::deep .custom-paper {
+    background-color: rgba(128, 128, 128, 0.4); /* White background with 80% opacity */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow effect */
+    padding: 18px;
+    border-radius: 8px;
+}
+::deep .text-container {
+    white-space: normal; /* Allows text to wrap */
+    width: auto; /* Adjusts width automatically */
+}
+::deep .limited-width-container {
+    max-width: 360px; /* Adjust as needed */
+    margin: 0 auto; /* Center the container */
 }
 @media {
 

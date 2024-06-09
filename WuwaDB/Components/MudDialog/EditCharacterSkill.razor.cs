@@ -15,38 +15,71 @@ namespace WuwaDB.Components.MudDialog
         [CascadingParameter] MudDialogInstance MudDialog { get; set; }
         [Parameter] public Guid CharacterId { get; set; }
         [Parameter] public SkillType SkillType { get; set; }
+        [Inject] ISnackbar Snackbar { get; set; }
         [Inject] private IDialogService DialogService { get; set; }
         private Character_Skill CharacterSkill { get; set; } = new();
         private Guid? CharacterSkillId;
         private bool SkillExist;
         IBrowserFile file;
+        private string imageData;
       
         protected override async void OnInitialized()
         {
-            var propertyFilter = new
-            {
+            CharacterSkill = await UserRepository.GetDataAsync<Character_Skill>(
+                new{
                 Type = SkillType,
                 CharacterId = CharacterId
-            };
-            CharacterSkill = await UserRepository.GetDataAsync<Character_Skill>(propertyFilter);
+                   });
             if (CharacterSkill is not null)
             {
                 SkillExist = true;
                 CharacterSkillId = CharacterSkill.Id;
+                if (CharacterSkill.ImageFile is not null)
+                    GetImage();
             }
             else
                 CharacterSkill = new();
             StateHasChanged();
         }
-
+        private async void GetImage()
+        {
+            string imageSrc = Convert.ToBase64String(CharacterSkill.ImageFile);
+            imageData = string.Format("data:image/jpeg;base64,{0}", imageSrc);
+        }
+        private async Task FilesChanged(InputFileChangeEventArgs e)
+        {
+            file = e.File;
+            if (file.Size > 20971520)
+            {
+                Snackbar.Add("File is exceed limits, please try to put lower size", Severity.Warning);
+                file = null;
+            }
+            if (file is not null)
+            {
+                var fileRead = file.OpenReadStream(maxAllowedSize: 30 * 1024 * 1024);
+                if (fileRead.CanRead)
+                {
+                    using (var stream = new MemoryStream())
+                    {
+                        await fileRead.CopyToAsync(stream);
+                        CharacterSkill.ImageFile = stream.ToArray();
+                    }
+                }
+                else
+                    Console.WriteLine("Something make file can't be read");
+            }
+            GetImage();
+            StateHasChanged();
+        }
         private async Task SaveCharacterSkill()
         {
+            CharacterSkill.Type = SkillType;
+            
             if (SkillExist is not true)
             {
                 CharacterSkill.CharacterId = CharacterId;
                 await AdminRepository.SavesAsync(CharacterSkill);
             }
-                
             else
                 await AdminRepository.UpdatesAsync(CharacterSkill);
             StateHasChanged();

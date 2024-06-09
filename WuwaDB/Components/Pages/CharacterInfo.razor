@@ -1,34 +1,121 @@
 ﻿@page "/Character/{CharacterName}"
+@using WuwaDB.DBAccess.Enum 
 @using WuwaDB.DBAccess.Entities.Character
 <div>
-    <MudContainer Class="w-100 h-100" >
+    <MudContainer>
         <MudToolBar>
             <MudButton Variant="Variant.Filled" Color="Color.Info" StartIcon="@Icons.Material.Filled.Settings" OnClick="OpenDialog">
                 Edit Character
             </MudButton>
         </MudToolBar>
-        <MudGrid Justify="Justify.FlexStart">
+        <div class="fixed-image-container character-card-container" style="justify-content:flex-start">
+            <MudCardMedia Image="@($"/Character_Model/{character.Name}.png")" Class="character-card bg-color-transparent" />
+        </div>
+        <MudGrid Justify="Justify.FlexEnd">
             <MudItem>
-                <div class="character-card-container">
-                    <MudCardMedia Image="@($"/Character_Model/{character.Name}.png")" Class="character-card bg-color-transparent"/>
-                </div>
-            </MudItem>
-            <MudSpacer/>
-            <MudItem >
-                <MudStack AlignItems="AlignItems.End" Spacing="10" Class="bg-color-unset">
-                    <MudPaper Elevation="0" Class="bg-color-transparent">
-                        <MudStack Row="true" Spacing="5">
-                            <MudImage Style="width:30px;" Src="Icon/AttributeStat/T_Iconpropertygreenlife_UI.png"/>
-                            @CharacterStats.HP
-                        </MudStack>
+                <MudStack AlignItems="AlignItems.End" Wrap="Wrap.Wrap" Class="limited-width-container">
+                    <MudPaper Elevation="5" Class=" custom-paper">
+                        <MudToolBar WrapContent="true" Class="justify-content-center">
+                            <MudText Align="Align.Center" Inline="true" GutterBottom="true">Character Stat</MudText>
+                        </MudToolBar>
+                        @foreach (var property in typeof(Character_Stats_Base).GetProperties())
+                        {
+                            if (CharacterStatBase is not null)
+                            {
+                                if (property.GetValue(CharacterStatBase) is not null)
+                                {
+                                    if (property.Name != "Id" && property.Name != "CharacterId")
+                                    {
+                                        <MudStack Row="true" Spacing="15">
+                                            <MudImage Style="width:40px;" Src=@($"Icon/AttributeStat/{property.Name}.png") />
+                                            <MudSpacer />
+                                            <MudSpacer />
+                                            <MudSpacer />
+                                            <MudText Align="Align.Center" Style="padding-top:4%;">
+                                                @if (property.PropertyType == typeof(double))
+                                                    @($"{@property.GetValue(CharacterStatBase)}%")
+                                                else
+                                                    @property.GetValue(CharacterStatBase)
+
+                                            </MudText>
+                                        </MudStack>
+                                    }
+                                }
+                            }
+                        }
+                        <MudSlider @bind-Value="LevelSlider" Min="1" Max="90" Step="1" ValueLabel="true" Immediate="true">
+                            Level: @LevelSlider
+                            <MudAutocomplete T="int" @bind-Value="LevelSlider" TextChanged="LevelChanged"
+                                             Immediate="true" Style="display:none!important;" />
+                        </MudSlider>
                     </MudPaper>
+                    @if (CharacterSkills.Count > 0)
+                    {
+                        @foreach (SkillType skillType in Enum.GetValues(typeof(SkillType)))
+                        {
+                            <MudStack AlignItems="AlignItems.End">
+                                <MudPaper Elevation="5" Class="custom-paper">
+                                    <MudToolBar WrapContent="true" Class="justify-content-center">
+                                        <MudStack Row="true" AlignItems="AlignItems.End" Spacing="3">
+                                            <MudImage Style="width:50px;" Src="@GetImage(skillType)" />
+                                            <MudStack Spacing="1" Row="true">
+                                                <MudButton>
+                                                    Skill Info
+                                                </MudButton>
+                                                <MudButton>
+                                                    Skill Detail
+                                                </MudButton>
+                                                <MudIconButton Icon="@Icons.Material.Filled.ArrowDownward" Size="Size.Small" OnClick="OnExpandCollapseClick" />
+                                            </MudStack>
+                                        </MudStack>
+                                    </MudToolBar>
+                                    <MudStack Justify="Justify.Center" AlignItems="AlignItems.Center">
+                                        <MudCollapse Expanded="@skillInfoExpand">
+                                            @if (CharacterSkills.FirstOrDefault(x => x.Type == skillType) is not null)
+                                            {
+                                                var type = CharacterSkills.FirstOrDefault(x => x.Type == skillType);
+                                                var characterSkillDesc = CharacterSkillDescriptions.Where(x => x.CharacterSkillId == type.Id).ToList();
+                                                @foreach (var title in characterSkillDesc)
+                                                {
+                                                    <MudText Align="Align.Center">
+                                                        @title.DescriptionTitle
+                                                    </MudText>
+                                                    <MudText Align="Align.Center">
+                                                        @title.Description
+                                                    </MudText>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <MudText>
+                                                    No skill info available.
+                                                </MudText>
+                                            }
+                                            @if(CharacterSkillDetails.FirstOrDefault(x=> x.CharacterSkillId == 
+                                                CharacterSkills.FirstOrDefault(x=>x.Type == skillType).Id) is not null)
+                                            {
+                                                var characterSkillDetails = CharacterSkillDetails.Where(x => x.CharacterSkillId ==
+                                                CharacterSkills.FirstOrDefault(x => x.Type == skillType).Id).ToList();
+
+                                            }
+                                        </MudCollapse>
+                                    </MudStack>
+                                </MudPaper>
+                            </MudStack>
+
+                        }
+                    }
                 </MudStack>
             </MudItem>
         </MudGrid>
-    </MudContainer> 
+    </MudContainer>
 </div>
 
 @code {
-    const string HP = @"<img src=""Icon/AttributeStat/T_Iconpropertygreenlife_UI.png""/>";
-}}
+    private bool skillInfoExpand = false;
+    private void OnExpandCollapseClick()
+    {
+        skillInfoExpand = !skillInfoExpand;
+    }
+}
  
