@@ -1,16 +1,16 @@
 ﻿@inherits LayoutComponentBase
-<MudThemeProvider Theme="customTheme" />
+<MudThemeProvider Theme="customTheme" DefaultScrollbar="true"/>
 <MudDialogProvider @rendermode="InteractiveServer" />
 <MudSnackbarProvider @rendermode="InteractiveServer" />
 <MudPopoverProvider @rendermode="InteractiveServer"/>
 
 <MudLayout>
     <HeaderSidebar/>
-    <div style="position: absolute; top: 0; left: 0; bottom: 0; right: 0;">
+    <div style="position:absolute;top: 0; left: 0; bottom: 0; right: 0;">
         <MudMainContent>
-            <div class="body-background">
-                @Body
-            </div>
+                <div class="body-background">
+                    @Body
+                </div>
         </MudMainContent>
     </div>
 </MudLayout>
