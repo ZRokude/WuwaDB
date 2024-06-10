@@ -9,10 +9,10 @@
                 Edit Character
             </MudButton>
         </MudToolBar>
-        <div class="fixed-image-container character-card-container" style="justify-content:flex-start">
+        <div class="fixed-image-container character-card-container">
             <MudCardMedia Image="@($"/Character_Model/{character.Name}.png")" Class="character-card bg-color-transparent" />
         </div>
-        <MudGrid Justify="Justify.FlexEnd">
+        <MudGrid Class="justify-mud-grid" Spacing="0">
             <MudItem>
                 <MudStack AlignItems="AlignItems.End" Wrap="Wrap.Wrap" Class="limited-width-container">
                     <MudPaper Elevation="5" Class=" custom-paper">
@@ -21,11 +21,12 @@
                         </MudToolBar>
                         @foreach (var property in typeof(Character_Stats_Base).GetProperties())
                         {
-                            if (CharacterStatBase is not null)
+                            if (property.Name != "Id" && property.Name != "CharacterId" && property.Name != "Character")
                             {
-                                if (property.GetValue(CharacterStatBase) is not null)
+                                if(CharacterStatBase is not null)
                                 {
-                                    if (property.Name != "Id" && property.Name != "CharacterId")
+                                    var propertyValue = property.GetValue(CharacterStatBase);
+                                    if (propertyValue != null)
                                     {
                                         <MudStack Row="true" Spacing="15">
                                             <MudImage Style="width:40px;" Src=@($"Icon/AttributeStat/{property.Name}.png") />
@@ -38,7 +39,18 @@
                                                 else
                                                     @property.GetValue(CharacterStatBase)
 
+
                                             </MudText>
+                                        </MudStack>
+                                    }
+                                    else
+                                    {
+                                        <MudStack Row="true" Spacing="15">
+                                            <MudImage Style="width:40px;" Src=@($"Icon/AttributeStat/{property.Name}.png") />
+                                            <MudSpacer />
+                                            <MudSpacer />
+                                            <MudSpacer />
+                                            <MudText Align="Align.Center" Style="padding-top:4">0</MudText>
                                         </MudStack>
                                     }
                                 }
@@ -58,7 +70,9 @@
                                 <MudPaper Elevation="5" Class="custom-paper">
                                     <MudToolBar WrapContent="true" Class="justify-content-center">
                                         <MudStack Row="true" AlignItems="AlignItems.End" Spacing="3">
-                                            <MudImage Style="width:50px;" Src="@GetImage(skillType)" />
+                                            <MudTooltip Text="@GetSkillName(skillType)">
+                                                <MudImage Style="width:50px;" Src="@GetImage(skillType)" />
+                                            </MudTooltip>
                                             <MudStack Spacing="1" Row="true">
                                                 <MudButton OnClick="()=>ToggleSkillInfo(skillType)">
                                                     Skill Info
@@ -77,26 +91,29 @@
                                                 @if (CharacterSkills.FirstOrDefault(x => x.Type == skillType) is not null)
                                                 {
                                                     var type = CharacterSkills.FirstOrDefault(x => x.Type == skillType);
-
-                                                    var characterSkillDesc = CharacterSkillDescriptions.Where(x => x.CharacterSkillId == type.Id).ToList();
-                                                    @foreach (var title in characterSkillDesc)
+                                                    @if (type is not null)
                                                     {
-                                                        <MudText Align="Align.Center">
-                                                            @title.DescriptionTitle
-                                                        </MudText>
-                                                        <MudText Align="Align.Center" @key="@title.Description">
-                                                            <MudHighlighter HighlightedTexts="highLightedTexts" UntilNextBoundary="true"
-                                                                            Markup="true" Text="@title.Description"
-                                                                            Style="@colorHighLight" />
-                                                            
-                                                        </MudText>
+                                                        var characterSkillDesc = CharacterSkillDescriptions.Where(x => x.CharacterSkillId == type.Id).ToList();
+                                                        @if (characterSkillDesc.Count > 0)
+                                                        {
+                                                            @foreach (var title in characterSkillDesc)
+                                                            {
+                                                                <MudText Align="Align.Center">
+                                                                    @title.DescriptionTitle
+                                                                </MudText>
+                                                                <MudText Align="Align.Center" @key="@title.Description">
+                                                                    <MudHighlighter HighlightedTexts="highLightedTexts" UntilNextBoundary="true"
+                                                                                    Text="@title.Description"
+                                                                                    Style="@colorHighLight" Class="highlight-description" />
+
+                                                                </MudText>
+                                                            }
+                                                        }
+                                                        else
+                                                        {
+                                                            <MudText>No skill info available.</MudText>
+                                                        }
                                                     }
-                                                }
-                                                else
-                                                {
-                                                    <MudText>
-                                                        No skill info available.
-                                                    </MudText>
                                                 }
                                             }
                                             @if (SkillDetail(skillType) == true)
@@ -110,8 +127,6 @@
                                                             x => x.CharacterSkillId == type.Id).ToList();
                                                         @if (skillDetails.Count > 0)
                                                         {
-
-                                                            int i = 0;
                                                             foreach (var skillDetail in skillDetails)
                                                             {
                                                                 var skillDetailNumber = CharacterSkillDetailNumbers.FirstOrDefault(x => x.CharacterSkillDetailId == skillDetail.Id);
@@ -120,6 +135,10 @@
                                                                     <MudText>@($"{skillDetailNumber.Number}%")  </MudText>
                                                                 </MudStack>
                                                             }
+                                                        }
+                                                        else
+                                                        {
+                                                            <MudText>No skill detail available.</MudText>
                                                         }
                                                     }
                                                 }
@@ -147,23 +166,19 @@
     private Dictionary<SkillType, bool> skillDetailStates = new();
     private Dictionary<SkillType, bool> skillInfoStates = new();
     private bool skillInfoExpand = false;
-
-    private string colorHighLight => $"color:{colorHighLightCase()};";
+    private string colorHighLight => $"color:{colorHighLightCase()}";
     private string colorHighLightCase()
     {
         switch (character.Element)
         {
             case ElementType.Aero:
                 return "#23e885";
-                break;
             case ElementType.Electro:
                 return "#b05ae6";
-                break;
             case ElementType.Glacio:
                 return "#4caec2";
-                break;
             case ElementType.Fusion:
-                return "##de1616";
+                return "#de1616";
             case ElementType.Havoc:
                 return "#5e2843";
             case ElementType.Spectro:
@@ -171,6 +186,13 @@
             default: return "#ed3737";
         }
 
+    }
+    private string GetSkillName(SkillType type)
+    {
+        var skill = CharacterSkills.FirstOrDefault(x => x.Type == type);
+        if (skill is not null)
+            return skill.Name;
+        return "";
     }
     private void OnExpandCollapseClick()
     {

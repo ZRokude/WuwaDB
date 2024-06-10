@@ -26,21 +26,21 @@
                                         <MudStack Row="true" Justify="Justify.Center" Wrap="Wrap.Wrap" AlignItems="AlignItems.Center">
                                             <MudTooltip Text="@Characters.Element.ToString()" Color="Color.Dark" Placement="Placement.Bottom">
                                                 <MudIconButton Size="Size.Small">
-                                                    <MudAvatar Size="Size.Medium" Variant="Variant.Outlined">
+                                                    <MudAvatar Size="Size.Medium" Variant="Variant.Filled" Style="color:#878787">
                                                         <MudImage Fluid="true" Src="@($"/Element/{Characters.Element.ToString()}.png")" />
                                                     </MudAvatar>
                                                 </MudIconButton>
                                             </MudTooltip>
                                             <MudTooltip Text="@Characters.Weapon.ToString()" Color="Color.Dark" Placement="Placement.Bottom">
                                                 <MudIconButton Size="Size.Small">
-                                                    <MudAvatar Size="Size.Medium" Variant="Variant.Outlined">
+                                                    <MudAvatar Size="Size.Medium" Variant="Variant.Filled" Style="color:#878787">
                                                         <MudImage Fluid="true" Src="@($"/Weapon/{Characters.Weapon.ToString()}/{GetWeaponImage(Characters.Weapon)}.png")" />
                                                     </MudAvatar>
                                                 </MudIconButton>
                                             </MudTooltip>
                                         </MudStack>
                                         <MudTooltip RootStyle="width:unset!important;" Text="@Characters.Name" Color="Color.Dark" Placement="Placement.Bottom" Class="text-center">
-                                            <MudText Elevation="0" Style="font-family:UnifrakturMaguntia;overflow:hidden;"
+                                            <MudText Elevation="0" Style="font-family:'Arsenal';overflow:hidden;color:#cfcfcf;"
                                                      Typo="Typo.h6" Class="text-center">@Characters.Name</MudText>
                                         </MudTooltip>
                                     </MudStack>

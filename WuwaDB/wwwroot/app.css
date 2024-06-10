@@ -56,3 +56,11 @@ h1:focus {
 .bg-color-transparent{
     background-color:transparent!important;
 }
+@font-face {
+    font-family: UnifrakturMaguntia;
+    src: url('/Font/ttf/UnifrakturMaguntia.ttf') format('truetype')
+}
+@font-face {
+    font-family: Arsenal;
+    src: url('/Font/Arsenal/Arsenal-Regular.otf') format('truetype')
+}

@@ -13,23 +13,12 @@
 
 ::deep.fixed-image-container {
     position: absolute;
-    left: 0;
     overflow: hidden;
     z-index: 1;
 }
-
 ::deep.scrollable-content-container {
     overflow-y: auto;
     height: 100vh;
-}
-
-::deep.character-card-container {
-    height: 100%;
-}
-
-::deep.character-card {
-    width: 100%;
-    height: auto;
 }
 ::deep .character-card-container {
     height: 80vh;
@@ -52,6 +41,25 @@
     max-width: 360px; /* Adjust as needed */
     margin: 0 auto; /* Center the container */
 }
-@media {
-
+::deep .highlight-description{
+    background-color:transparent;
+    font-weight:bold;
+}
+::deep .justify-mud-grid{
+    justify-content:flex-end!important;
+}
+::deep .media-character{
+   display:none 
+}
+@media (max-width: 750px)
+{
+    ::deep .character-card-container {
+        height: 45vh;
+        width: auto;
+        object-position: center;
+        position: unset;
+    }
+    ::deep .justify-mud-grid {
+        justify-content: center!important;
+    }
 }

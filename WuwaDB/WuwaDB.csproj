@@ -25,6 +25,7 @@
   <ItemGroup>
     <Folder Include="wwwroot\Character_Card\" />
     <Folder Include="wwwroot\Character_Icon\" />
+    <Folder Include="wwwroot\Font\Arsenal\" />
   </ItemGroup>
 
 </Project>
