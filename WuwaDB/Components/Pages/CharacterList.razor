@@ -59,45 +59,6 @@
         </MudGrid>
     </MudContainer>
 </div>
-
-
-
-@*<MudItem xl="2" xxl="2" xs="7" sm="3" md="2" lg="2">
-    <MudLink Class="hover-effect" Href="@($"/Character/{Characters.Name}")">
-        <MudCard Style="background-color:transparent;" Class="expand-hover" Elevation="15">
-            <div class="p-2">
-                <MudCardMedia Image="@($"/Character_Icon/{Characters.Image}")" Height="190" Style="background-size:100%!important;">
-                    @* <MudImage Src="@($"/Character_Icon/{Characters.Image}")" Fluid="true" ObjectFit="ObjectFit.Cover"
-                    ObjectPosition="ObjectPosition.Center"/>
-                </MudCardMedia>
-            </div>
-            <MudCardContent Class="p-0 text-center">
-                <MudStack Justify="Justify.Center" Spacing="0">
-                    <MudStack Row="true" Justify="Justify.Center" Wrap="Wrap.NoWrap">
-                        <MudTooltip Text="@Characters.Element.ToString()" Color="Color.Dark">
-                            <MudIconButton Size="Size.Small">
-                                <MudAvatar Variant="Variant.Outlined" Size="Size.Medium">
-                                    <MudImage Fluid="true" Src="@($"/Element/{Characters.Element.ToString()}.png")" />
-                                </MudAvatar>
-                            </MudIconButton>
-                        </MudTooltip>
-                        <MudTooltip Text="@Characters.Weapon.ToString()" Color="Color.Dark">
-                            <MudIconButton Size="Size.Small">
-                                <MudAvatar Variant="Variant.Outlined" Size="Size.Medium">
-                                    <MudImage Fluid="true" Src="@($"/Weapon/{Characters.Weapon.ToString()}/{GetWeaponImage(Characters.Weapon)}.png")" />
-                                </MudAvatar>
-                            </MudIconButton>
-                        </MudTooltip>
-                    </MudStack>
-                    <MudTooltip RootStyle="width:unset!important;" Text="@Characters.Name" Color="Color.Dark" Class="text-center">
-                        <MudText Elevation="0" Style="font-family:UnifrakturMaguntia;overflow:hidden;"
-                                 Typo="Typo.h6" Class="text-center">@Characters.Name</MudText>
-                    </MudTooltip>
-                </MudStack>
-            </MudCardContent>
-        </MudCard>
-    </MudLink>
-</MudItem> *@
 @code {
     
 }

@@ -17,9 +17,9 @@ namespace WuwaDB.Components.Pages
         [Inject] private UserRepository UserRepository { get; set; }
         [Inject] public IDialogService DialogService { get; set; }
         [Parameter] public string CharacterName { get; set; }
-        public Character_Skill CharacterSkill { get; set; } = new();
-        public Character_Stats_Base CharacterStatBase { get; set; } = new();
-        public Character character { get; set; } = new();
+        public Character_Skill? CharacterSkill { get; set; }
+        public Character_Stats_Base? CharacterStatBase { get; set; }
+        public Character? character { get; set; } = new();
         public List<Character_Skill> CharacterSkills { get; set; } = new();
         public List<Character_Skill_Description> CharacterSkillDescriptions { get; set; } = new();
         public List<Character_Skill_Detail>CharacterSkillDetails { get; set; } = new();
@@ -29,8 +29,17 @@ namespace WuwaDB.Components.Pages
         private int[] ATKArray { get;set; }
         private int[] DEFArray { get; set; }
         private int LevelSlider { get; set; } = 1;
-       
 
+        private string[] highLightedTexts = ["Havoc", "Spectro", "Fusion", "Glacio", "Aero", "Electro"];
+
+        private Dictionary<SkillType, bool> collapseStates = new();
+
+        private Dictionary<SkillType, bool> skillDetailStates = new();
+
+        private Dictionary<SkillType, bool> skillInfoStates = new();
+
+        private bool skillInfoExpand = false;
+        private string colorHighLight => $"color:{colorHighLightCase()}";
         protected override async void OnInitialized()
         {
             CharacterStatsGrowthProperties = await UserRepository.GetToListAsync<Character_Stats_Growth_Property>();
@@ -61,10 +70,97 @@ namespace WuwaDB.Components.Pages
                     (new { CharacterId = character.Id }, new string[] { "Character_Skill_Detail", "Character_Skill" });
             }
             if(CharacterStatBase is not null)
-            StatsCalculation();
+                StatsCalculation();
             StateHasChanged();
         }
-      
+        private string colorHighLightCase()
+        {
+            switch (character.Element)
+            {
+                case ElementType.Aero:
+                    return "#23e885";
+                case ElementType.Electro:
+                    return "#b05ae6";
+                case ElementType.Glacio:
+                    return "#4caec2";
+                case ElementType.Fusion:
+                    return "#de1616";
+                case ElementType.Havoc:
+                    return "#5e2843";
+                case ElementType.Spectro:
+                    return "#e0dd16";
+                default: return "#ed3737";
+            }
+
+        }
+        private string GetStatProp(string value)
+        {
+            if (value.Contains("_"))
+            {
+                return string.Join(" ",
+                    value.ToString().Split("_").Select(w => w.Substring(0, 1).ToUpper() + w.Substring(1).ToLower()));
+            }
+            return value;
+        }
+        private string GetSkillName(SkillType type)
+        {
+            var skill = CharacterSkills.FirstOrDefault(x => x.Type == type);
+            if (skill is not null)
+                return skill.Name;
+            return "";
+        }
+        private bool IsCollapsed(SkillType type)
+        {
+            if (collapseStates.TryGetValue(type, out var isCollapsed))
+                return isCollapsed;
+            return false; // Default state if not found
+        }
+
+        private bool SkillDetail(SkillType type)
+        {
+            if (skillDetailStates.TryGetValue(type, out var skillDetail))
+                return skillDetail;
+            return false;
+        }
+
+        private bool SkillInfo(SkillType type)
+        {
+            if (skillInfoStates.TryGetValue(type, out var skillInfo))
+                return skillInfo;
+            return false;
+        }
+
+        private void ToggleSkillInfo(SkillType type)
+        {
+            if (skillInfoStates.ContainsKey(type))
+            {
+                skillInfoStates[type] = true;
+                skillDetailStates[type] = false;
+            }
+
+        }
+
+        private void ToggleSkillDetail(SkillType type)
+        {
+            if (skillDetailStates.ContainsKey(type))
+            {
+                skillDetailStates[type] = true;
+                skillInfoStates[type] = false;
+            }
+        }
+        private void ToggleCollapse(SkillType type)
+        {
+            if (collapseStates.ContainsKey(type))
+                collapseStates[type] = !collapseStates[type];
+            else
+                collapseStates[type] = true;
+            if (!skillDetailStates.ContainsKey(type))
+                skillDetailStates[type] = false;
+            if (!skillInfoStates.ContainsKey(type))
+                skillInfoStates[type] = true;
+        }
+
+
         private void StatsCalculation()
         {
             if (LevelSlider  <= 90)
@@ -124,57 +220,7 @@ namespace WuwaDB.Components.Pages
             var dialog = await DialogService.ShowAsync<EditCharacter>("Edit Character", parameters, options);
             var result = await dialog.Result;
             if (!result.Canceled)
-            {
-                switch (result.Data)
-                {
-                    case "Stat_Base":
-                        OpenDialogEditStat();
-                        break;
-                    case SkillType.Basic_Attack:
-                        OpenDialogSkill(SkillType.Basic_Attack);
-                        break;
-                    case SkillType.Resonance_Skill:
-                        OpenDialogSkill(SkillType.Resonance_Skill);
-                        break;
-                    case SkillType.Forte_Circuit:
-                        OpenDialogSkill(SkillType.Forte_Circuit);
-                        break;
-                    case SkillType.Resonance_Liberation:
-                        OpenDialogSkill(SkillType.Resonance_Liberation);
-                        break;
-                    case SkillType.Intro_Skill:
-                        OpenDialogSkill(SkillType.Intro_Skill);
-                        break;
-                    case SkillType.Outro_Skill:
-                        OpenDialogSkill(SkillType.Outro_Skill);
-                        break;
-                }
-            }
-        }
-
-        private async void OpenDialogEditStat()
-        {
-            var options = new DialogOptions { CloseOnEscapeKey = true };
-            var parameters = new DialogParameters<EditCharacterStats>();
-            parameters.Add(x => x.CharacterId, character.Id);
-            var dialog = await DialogService.ShowAsync<EditCharacterStats>("Edit Character Stats", parameters, options);
-            var result = await dialog.Result;
-            if (!result.Canceled)
-                OnInitialized();
-        }
-
-        private async void OpenDialogSkill(SkillType type)
-        {
-            var skillType = string.Join(" ",
-                type.ToString().Split("_").Select(w => w.Substring(0,1).ToUpper() + w.Substring(1).ToLower()));
-            var options = new DialogOptions { CloseOnEscapeKey = true };
-            var parameters = new DialogParameters<EditCharacterSkill>();
-            parameters.Add(x => x.CharacterId, character.Id);
-            parameters.Add(x => x.SkillType, type);
-            var dialog = await DialogService.ShowAsync<EditCharacterSkill>(skillType, parameters, options);
-            var result= await dialog.Result;
-            if (!result.Canceled)
-                OnInitialized();
+                StateHasChanged();
         }
     }
 }

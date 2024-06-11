@@ -7,6 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="wwwroot\Character_Card\**" />
+    <Content Remove="wwwroot\Character_Card\**" />
+    <EmbeddedResource Remove="wwwroot\Character_Card\**" />
+    <None Remove="wwwroot\Character_Card\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.6" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.6" />
@@ -23,7 +30,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\Character_Card\" />
     <Folder Include="wwwroot\Character_Icon\" />
     <Folder Include="wwwroot\Font\Arsenal\" />
   </ItemGroup>
