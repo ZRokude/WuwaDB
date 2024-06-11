@@ -17,11 +17,7 @@ namespace WuwaDB.Components.MudDialog
         public string[] DescTitles;
         protected override async void OnInitialized()
         {
-            object propFilter = new
-            {
-                CharacterSkillId = SkillId
-            };
-            CharacterSkillDescriptions = await UserRepository.GetToListAsync<Character_Skill_Description>();
+            CharacterSkillDescriptions = await UserRepository.GetToListAsync<Character_Skill_Description>(new {CharacterSkillId = SkillId});
             if (CharacterSkillDescriptions.Count > 0)
             {
                 DescTitles = new string[CharacterSkillDescriptions.Count];

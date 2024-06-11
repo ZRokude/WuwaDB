@@ -70,7 +70,7 @@ namespace WuwaDB.DBAccess.Repository
             return await query.ToListAsync();
         }
         
-        public async Task<T?> GetDataAsync<T>(object propertyFilter) where T : class
+        public async Task<T> GetDataAsync<T>(object propertyFilter) where T : class
         {
             await using WuwaDbContext context = await _context.CreateDbContextAsync();
             var lambdaProperty = ShareRepository.GetObjectAsExpression<T>(propertyFilter);

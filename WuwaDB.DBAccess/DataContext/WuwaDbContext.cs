@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using WuwaDB.DBAccess.Entities.Account;
 using WuwaDB.DBAccess.Entities.Character;
-
+using WuwaDB.DBAccess.Entities.Login;
 
 
 namespace WuwaDB.DBAccess.DataContext
@@ -26,6 +26,7 @@ namespace WuwaDB.DBAccess.DataContext
         public DbSet<Character_Stats_Growth_Property> CharacterStatsGrowthproperties { get; set; }
         public DbSet<Character_Skill_Detail_Number> CharacterSkillDetailNumbers { get; set; }
         public DbSet<Character_Skill_Description> CharacterSkillDescriptions { get; set; }
+        public DbSet<Login_Info> LoginInfo { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
