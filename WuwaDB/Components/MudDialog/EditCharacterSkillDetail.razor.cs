@@ -82,7 +82,7 @@ namespace WuwaDB.Components.MudDialog
                 
         }
 
-        private async Task TextChangedSkillLevel(string value)
+        private void TextChangedSkillLevel(string value)
         {
             if (string.IsNullOrEmpty(value))
             {

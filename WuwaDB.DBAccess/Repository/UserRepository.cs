@@ -21,7 +21,6 @@ namespace WuwaDB.DBAccess.Repository
     public class UserRepository
     {
         private readonly IDbContextFactory<WuwaDbContext> _context;
-        [Inject] private WuwaDbContext dbContext { get; set; }
         [Inject] private SharedRepository ShareRepository { get; set; } = new();
         public UserRepository(IDbContextFactory<WuwaDbContext> context)
         {
