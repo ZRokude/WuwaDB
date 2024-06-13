@@ -139,7 +139,6 @@ namespace WuwaDB.Components.Pages
             }
 
         }
-
         private void ToggleSkillDetail(SkillType type)
         {
             if (skillDetailStates.ContainsKey(type))

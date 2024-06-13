@@ -1,4 +1,5 @@
-﻿@inherits LayoutComponentBase
+﻿@using WuwaDB.Services
+@inherits LayoutComponentBase
 <MudThemeProvider Theme="customTheme" DefaultScrollbar="true"/>
 <MudDialogProvider @rendermode="InteractiveServer" />
 <MudSnackbarProvider @rendermode="InteractiveServer" />
@@ -21,7 +22,7 @@
     <a class="dismiss">🗙</a>
 </div>
 @code{
-
+   
     private readonly MudTheme customTheme = new()
     {
         Palette = new PaletteLight()
