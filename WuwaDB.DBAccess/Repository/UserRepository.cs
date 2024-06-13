@@ -63,7 +63,6 @@ namespace WuwaDB.DBAccess.Repository
                 var lambdaProperty = ShareRepository.GetObjectAsExpression<T>(propertyFilter);
                 query = query.Where(lambdaProperty);
             }
-
             return await query.FirstOrDefaultAsync();
         }
 
