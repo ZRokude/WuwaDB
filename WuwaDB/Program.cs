@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using MudBlazor.Services;
 using WuwaDB.Authentication;
 using WuwaDB.Components;
+using WuwaDB.Components.Pages;
 using WuwaDB.DBAccess.DataContext;
 using WuwaDB.DBAccess.Repository;
 using WuwaDB.Services;
@@ -29,7 +30,7 @@ builder.Services.AddScoped<CustomAuthentication>();
 builder.Services.AddAuthenticationCore();
 builder.Services.AddSingleton<LastestUrl>();
 builder.Services.AddScoped<UrlChangeListenerService>();
-
+builder.Services.AddHostedService<LoginUrlService>();
 builder.Services.AddLogging(config =>
 {
     config.AddConsole();

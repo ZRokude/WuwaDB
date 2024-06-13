@@ -1,6 +1,5 @@
-﻿    @using WuwaDB.DBAccess.Entities.Account
-@using MudBlazor.Extensions
-@using WuwaDB.DBAccess.Enum
+﻿@using WuwaDB.DBAccess.Enum
+@attribute [Authorize(Roles = "Admin")]
 <MudDialog>
     <DialogContent>
         <MudTextField T="string" Variant="Variant.Text" Label="Character Name" @bind-Value="Character.Name"/>

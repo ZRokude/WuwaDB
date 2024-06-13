@@ -12,7 +12,7 @@
         {
             if (!string.IsNullOrEmpty(LastUrl))
                 return LastUrl;
-            return "";
+            return "/";
         }
     }
 

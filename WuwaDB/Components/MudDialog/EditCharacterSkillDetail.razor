@@ -1,4 +1,5 @@
-﻿<MudDialog>
+﻿@attribute [Authorize(Roles = "Admin")]
+<MudDialog>
     <DialogContent>
         <MudAutocomplete T="string" Label="Description Title" @bind-Value="CharacterSkillDetail.SkillDetailsName"
                          CoerceValue="true" CoerceText="true" ResetValueOnEmptyText="true" MaxItems="4" Immediate="true"

@@ -45,21 +45,6 @@ namespace WuwaDB.DBAccess.Repository
 
             await using WuwaDbContext context = await _context.CreateDbContextAsync();
             IQueryable<T> query = context.Set<T>();
-            //if (propertyInclude is not null)
-            //{
-            //    foreach (var property in propertyInclude)
-            //    {
-            //        try
-            //        {
-            //            query = query.Include(property);
-            //        }
-            //        catch (ArgumentException)
-            //        {
-            //            continue;
-            //        }
-
-            //    }
-            //}
             if (propertyFilter is not null)
             {
                 var lambdaProperty = ShareRepository.GetObjectAsExpression<T>(propertyFilter, propertyInclude);
@@ -69,11 +54,17 @@ namespace WuwaDB.DBAccess.Repository
             return await query.ToListAsync();
         }
         
-        public async Task<T> GetDataAsync<T>(object propertyFilter) where T : class
+        public async Task<T> GetDataAsync<T>(object? propertyFilter = null) where T : class
         {
             await using WuwaDbContext context = await _context.CreateDbContextAsync();
-            var lambdaProperty = ShareRepository.GetObjectAsExpression<T>(propertyFilter);
-            return await context.Set<T>().FirstOrDefaultAsync(lambdaProperty);
+            IQueryable<T> query = context.Set<T>();
+            if (propertyFilter is not null)
+            {
+                var lambdaProperty = ShareRepository.GetObjectAsExpression<T>(propertyFilter);
+                query = query.Where(lambdaProperty);
+            }
+
+            return await query.FirstOrDefaultAsync();
         }
 
         

@@ -9,6 +9,8 @@ using System.Data;
 
 using Microsoft.AspNetCore.Authorization.Infrastructure;
 using System.Security.Claims;
+using WuwaDB.Services;
+
 namespace WuwaDB.Components.MudDialog
 {
     public partial class LoginDialog
@@ -19,8 +21,6 @@ namespace WuwaDB.Components.MudDialog
         private Account Account { get; set; } = new Account();
         [CascadingParameter] MudDialogInstance MudDialog { get; set; }
         [Parameter] public string ContentText { get; set; }
-
-        private readonly ILogger<CustomAuthentication> _logger;
 
 
         private string error = string.Empty;
@@ -36,8 +36,7 @@ namespace WuwaDB.Components.MudDialog
         /// </summary>
         private async void Submit()
         {
-            Account = await UserRepository.GetUserDataAsync(model.Username);
-            Console.WriteLine(BC.EnhancedVerify(model.Password, Account.Password));
+            Account = await UserRepository.GetDataAsync<Account>(new{ Username = Account.Username});
             if (Account == null || !BC.EnhancedVerify(model.Password, Account.Password))
             {
                 error = "Email is not found";
@@ -49,22 +48,6 @@ namespace WuwaDB.Components.MudDialog
                 Username = Account.Username,
                 Role = Account.Role.Name.ToString()
             });
-
-            if (Account is Admin)
-            {
-                var session = await customAuthentication.GetAuthenticationStateAsync();
-                Console.WriteLine(session.User.FindAll(ClaimTypes.Role));
-                navigationManager.NavigateTo("/", true);
-
-            }
-            else
-            {
-                var session = await customAuthentication.GetAuthenticationStateAsync();
-                string sessionRole = session.User.FindFirst(ClaimTypes.Role)?.Value.ToString();
-                Console.WriteLine(sessionRole);
-                navigationManager.NavigateTo("/", true);
-
-            }
             MudDialog.Close(DialogResult.Ok(true));
 
         }
@@ -76,9 +59,6 @@ namespace WuwaDB.Components.MudDialog
         {
             public string Username = string.Empty, Password = string.Empty;
         }
-
-
-
         private async Task Authenticate(Account UserAccount)
         {
             CustomAuthentication customAuthentication = (CustomAuthentication)StateProvider;
@@ -87,24 +67,6 @@ namespace WuwaDB.Components.MudDialog
                 Username = UserAccount.Username,
                 Role = UserAccount.Role.ToString()
             });
-
-            if (UserAccount is Admin)
-            {
-                navigationManager.NavigateTo("/", true);
-
-            }
-            else
-            {
-                navigationManager.NavigateTo("/", true);
-            }
-
-
-
-
-
         }
-
-
-
     }
 }

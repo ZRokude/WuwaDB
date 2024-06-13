@@ -12,7 +12,7 @@ namespace WuwaDB.Components.Layout
     {
         [Inject] private AuthenticationStateProvider StateProvider { get; set; }
         [Inject] private AuthenticationStateProvider AuthStateProvider { get; set; } = default!;
-        [Inject] private NavigationManager navigationManager { get; set; } = default!;
+        [Inject] private NavigationManager NavigationManager { get; set; } = default!;
         [Inject] public IDialogService DialogService { get; set; }
         private async Task OpenLoginDialog()
         {
@@ -31,7 +31,7 @@ namespace WuwaDB.Components.Layout
         private async Task LogOutAsync()
         {
             await ((CustomAuthentication)AuthStateProvider).UpdateAuthenticationState(null);
-            navigationManager.NavigateTo("/", true);
+            NavigationManager.NavigateTo("/", true);
 
         }
         private async Task OpenCreateChar()
