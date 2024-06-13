@@ -31,6 +31,8 @@ builder.Services.AddAuthenticationCore();
 builder.Services.AddSingleton<LastestUrl>();
 builder.Services.AddScoped<UrlChangeListenerService>();
 builder.Services.AddHostedService<LoginUrlService>();
+builder.Services.AddAuthorization();
+builder.Services.AddAuthentication();
 builder.Services.AddLogging(config =>
 {
     config.AddConsole();
