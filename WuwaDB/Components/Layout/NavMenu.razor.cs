@@ -13,12 +13,11 @@ namespace WuwaDB.Components.Layout
         [Inject] private AuthenticationStateProvider StateProvider { get; set; }
         [Inject] private AuthenticationStateProvider AuthStateProvider { get; set; } = default!;
         [Inject] private NavigationManager navigationManager { get; set; } = default!;
-
         [Inject] public IDialogService DialogService { get; set; }
         private async Task OpenLoginDialog()
         {
             var options = new DialogOptions { CloseOnEscapeKey = true };
-            var dialog = await DialogService.ShowAsync<Login>("Login", options);
+            var dialog = await DialogService.ShowAsync<LoginDialog>("Login", options);
             var result = await dialog.Result;
 
         }

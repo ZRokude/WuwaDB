@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Identity;
@@ -7,6 +8,7 @@ using WuwaDB.Authentication;
 using WuwaDB.Components;
 using WuwaDB.DBAccess.DataContext;
 using WuwaDB.DBAccess.Repository;
+using WuwaDB.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,6 +27,8 @@ builder.Services.AddScoped<SharedRepository>();
 builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthentication>();
 builder.Services.AddScoped<CustomAuthentication>();
 builder.Services.AddAuthenticationCore();
+builder.Services.AddSingleton<LastestUrl>();
+builder.Services.AddScoped<UrlChangeListenerService>();
 
 builder.Services.AddLogging(config =>
 {
@@ -55,3 +59,4 @@ app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
 
 app.Run();
+

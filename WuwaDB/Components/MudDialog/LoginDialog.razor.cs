@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Authorization.Infrastructure;
 using System.Security.Claims;
 namespace WuwaDB.Components.MudDialog
 {
-    public partial class Login
+    public partial class LoginDialog
     {
         [Inject] private AuthenticationStateProvider StateProvider { get; set; }
         [Inject] private NavigationManager navigationManager { get; set; } = default!;
