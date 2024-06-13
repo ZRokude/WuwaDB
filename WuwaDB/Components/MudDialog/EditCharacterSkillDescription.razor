@@ -1,4 +1,5 @@
-﻿<MudDialog>
+﻿@attribute [Authorize(Roles = "Admin")]
+<MudDialog>
     <DialogContent>
         <MudAutocomplete T="string" Label="Description Title" SearchFunc="SearchDescTitle" 
             @bind-Value="CharacterSkillDescription.DescriptionTitle"

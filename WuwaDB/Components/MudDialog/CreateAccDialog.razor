@@ -1,5 +1,4 @@
-﻿
-@using WuwaDB.DBAccess.Entities.Account
+﻿@attribute [Authorize(Roles = "Admin")]
 <MudDialog>
     <DialogContent>
         <MudSelect T="string" Label="Role" @bind-Value="authModel.Role">

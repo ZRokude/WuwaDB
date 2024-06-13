@@ -1,4 +1,4 @@
-﻿
+﻿@attribute [Authorize(Roles = "Admin")]
 <MudDialog>
     <DialogContent>
         <MudNumericField T="int" Variant="Variant.Outlined" Label="HP" @bind-Value="CharacterStats.HP" />

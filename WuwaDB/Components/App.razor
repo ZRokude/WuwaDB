@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using WuwaDB.Services
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -21,6 +22,7 @@
 </body>
 
 </html>
+
 @inject IFileVersionProvider fileversionprovider
 @code{
     string PathBase = "/";
@@ -29,6 +31,5 @@
     {
         return (fileversionprovider.AddFileVersionToPath(PathBase, path));
     }
-
-
+    
 }
