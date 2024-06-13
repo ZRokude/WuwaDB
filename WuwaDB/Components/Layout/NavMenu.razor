@@ -13,11 +13,6 @@
                 Weapon List
             </MudText>
         </MudNavLink>
-        <MudNavLink @onclick="OpenLoginDialog" Icon="@Icons.Material.Outlined.Login" IconColor="Color.Primary" >
-            <MudText Color="@Color.Secondary">
-                Login
-            </MudText>
-        </MudNavLink>
         <Microsoft.AspNetCore.Components.Authorization.AuthorizeView Roles="Admin">
             <Authorized>
                 <MudNavLink @onclick="OpenRegisterDialog" Icon="@Icons.Material.Outlined.Create" IconColor="Color.Primary">
