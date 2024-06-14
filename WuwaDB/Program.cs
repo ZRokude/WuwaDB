@@ -8,6 +8,8 @@ using WuwaDB.Authentication;
 using WuwaDB.Components;
 using WuwaDB.Components.Pages;
 using WuwaDB.DBAccess.DataContext;
+using WuwaDB.DBAccess.Entities.Account;
+using WuwaDB.DBAccess.Entities.Login;
 using WuwaDB.DBAccess.Repository;
 using WuwaDB.Services;
 
@@ -45,6 +47,19 @@ builder.Services.AddMudServices(x =>
 
 var app = builder.Build();
 
+using (var scope = app.Services.CreateScope())
+{
+    var adminRepository = scope.ServiceProvider.GetRequiredService<AdminRepository>();
+    var userRepository = scope.ServiceProvider.GetRequiredService<UserRepository>();
+    var loginInfo = await userRepository.GetDataAsync<Login_Info>();
+    if (loginInfo is null)
+    {
+        loginInfo = new();
+        loginInfo.LoginUrl = Guid.NewGuid();
+        loginInfo.LastUpdated = DateTime.UtcNow;
+        await adminRepository.SavesAsync(loginInfo);
+    }
+}
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
