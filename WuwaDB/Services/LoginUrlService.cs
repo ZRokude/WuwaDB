@@ -39,6 +39,7 @@ namespace WuwaDB.Services
                 {
                     if (DateTime.UtcNow > InfoUrl.LastUpdated.AddDays(1))
                     {
+                        InfoUrl.LoginUrl = Guid.NewGuid();
                         InfoUrl.LastUpdated = DateTime.UtcNow;
                         await adminRepository.UpdatesAsync(InfoUrl);
                     }

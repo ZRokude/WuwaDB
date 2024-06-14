@@ -4,11 +4,15 @@
 
 <div>
     <MudContainer>
-        <MudToolBar>
-            <MudButton Variant="Variant.Filled" Color="Color.Info" StartIcon="@Icons.Material.Filled.Settings" OnClick="OpenDialog">
-                Edit Character
-            </MudButton>
-        </MudToolBar>
+        <Microsoft.AspNetCore.Components.Authorization.AuthorizeView Roles="Admin">
+            <Authorized>
+                <MudToolBar>
+                    <MudButton Variant="Variant.Filled" Color="Color.Info" StartIcon="@Icons.Material.Filled.Settings" OnClick="OpenDialog">
+                        Edit Character
+                    </MudButton>
+                </MudToolBar>
+            </Authorized>
+        </Microsoft.AspNetCore.Components.Authorization.AuthorizeView>
         <div class="fixed-image-container character-card-container">
             <MudCardMedia Image="@($"/Character_Model/{character.Name}.png")" Class="character-card bg-color-transparent" />
         </div>
@@ -22,15 +26,15 @@
                         @foreach (var property in typeof(Character_Stats_Base).GetProperties())
                         {
                             if (property.Name != "Id" && property.Name != "CharacterId" && property.Name != "Character")
-                            {
-                                @if (CharacterStatBase != null)
-                                {
-                                    var propertyValue = property.GetValue(CharacterStatBase) ?? 0;
-                                    <MudStack Row="true" Justify="Justify.SpaceBetween">
-                                        <MudTooltip Text="@GetStatProp(property.Name)" style="color:#cfcfcf">
-                                            <MudImage Style="width:40px;" Src=@($"Icon/AttributeStat/{property.Name}.png")/>
-                                        </MudTooltip>
-                                        <MudText Align="Align.Center" Style="padding-top:4%;color:#cfcfcf">
+                            { 
+                                <MudStack Row="true" Justify="Justify.SpaceBetween">
+                                    <MudTooltip Text="@GetStatProp(property.Name)" style="color:#cfcfcf;">
+                                        <MudImage Style="width:40px;" Src=@($"Icon/AttributeStat/{property.Name}.png") />
+                                    </MudTooltip>
+                                    @if (CharacterStatBase != null)
+                                    {
+                                        var propertyValue = property.GetValue(CharacterStatBase);
+                                        <MudText Align="Align.Center" Style="padding-top:4%;color:#cfcfcf;">
                                             @if (property.PropertyType == typeof(double))
                                             {
                                                 @($"{propertyValue ?? 0}%")
@@ -39,15 +43,15 @@
                                             {
                                                 @($"{propertyValue}")
                                             }
-
                                         </MudText>
-                                    </MudStack>
-                                }
-                                else
-                                {
-                                    <p>i</p>
-                                }
+                                    }
+                                    else
+                                    {
+                                        <MudText Align="Align.Center" Style="padding-top:4%;color:#cfcfcf;">0</MudText>
+                                    }
+                                </MudStack>
                             }
+                            
                         }
                         <MudSlider @bind-Value="LevelSlider" Min="1" Max="90" Step="1" ValueLabel="true" Immediate="true" Style="color:#cfcfcf;">
                             Level: @LevelSlider
@@ -71,7 +75,7 @@
                                             <MudButton OnClick="() => ToggleSkillDetail(skillType)" Style="color:#cfcfcf;">
                                                 Skill Detail
                                             </MudButton>
-                                            <MudIconButton Icon="@Icons.Material.Filled.ArrowDownward" Size="Size.Small" OnClick="() => ToggleCollapse(skillType)" />
+                                            <MudIconButton Icon="@Icons.Material.Filled.ArrowDownward" Size="Size.Medium" OnClick="() => ToggleCollapse(skillType)" />
                                         </MudStack>
                                     </MudStack>
                                 </MudToolBar>

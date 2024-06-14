@@ -5,6 +5,7 @@ using MudBlazor;
 using System.Security.Claims;
 using WuwaDB.Authentication;
 using WuwaDB.Components.MudDialog;
+using WuwaDB.Services;
 
 namespace WuwaDB.Components.Layout
 {
@@ -13,14 +14,8 @@ namespace WuwaDB.Components.Layout
         [Inject] private AuthenticationStateProvider StateProvider { get; set; }
         [Inject] private AuthenticationStateProvider AuthStateProvider { get; set; } = default!;
         [Inject] private NavigationManager NavigationManager { get; set; } = default!;
-        [Inject] public IDialogService DialogService { get; set; }
-        private async Task OpenLoginDialog()
-        {
-            var options = new DialogOptions { CloseOnEscapeKey = true };
-            var dialog = await DialogService.ShowAsync<LoginDialog>("Login", options);
-            var result = await dialog.Result;
-
-        }
+        [Inject] private IDialogService DialogService { get; set; }
+        [Inject] private LastestUrl LastestUrl { get; set; }
         private async Task OpenRegisterDialog()
         {
             var options = new DialogOptions { CloseOnEscapeKey = true };
@@ -31,7 +26,7 @@ namespace WuwaDB.Components.Layout
         private async Task LogOutAsync()
         {
             await ((CustomAuthentication)AuthStateProvider).UpdateAuthenticationState(null);
-            NavigationManager.NavigateTo("/", true);
+            NavigationManager.NavigateTo($"{LastestUrl.CheckLastUrl()}");
 
         }
         private async Task OpenCreateChar()

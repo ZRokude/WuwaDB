@@ -67,7 +67,19 @@ if (!app.Environment.IsDevelopment())
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
-
+using (var scope = app.Services.CreateScope())
+{
+    var userRepository = scope.ServiceProvider.GetRequiredService<UserRepository>();
+    var adminRepository = scope.ServiceProvider.GetRequiredService<AdminRepository>();
+    var CheckLoginUrl = await userRepository.GetDataAsync<Login_Info>();
+    if(CheckLoginUrl == null)
+    {
+        CheckLoginUrl = new();
+        CheckLoginUrl.LoginUrl = Guid.NewGuid();
+        CheckLoginUrl.LastUpdated = DateTime.UtcNow;
+        await adminRepository.SavesAsync(CheckLoginUrl);
+    }
+}
 app.UseHttpsRedirection();
 
 app.UseStaticFiles();

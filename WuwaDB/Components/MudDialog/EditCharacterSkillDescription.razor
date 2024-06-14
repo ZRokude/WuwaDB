@@ -1,21 +1,26 @@
 ﻿@attribute [Authorize(Roles = "Admin")]
-<MudDialog>
-    <DialogContent>
-        <MudAutocomplete T="string" Label="Description Title" SearchFunc="SearchDescTitle" 
-            @bind-Value="CharacterSkillDescription.DescriptionTitle"
-            CoerceValue="true" CoerceText="true" ResetValueOnEmptyText="true" 
-            SelectOnClick="true" TextChanged="TextChanged"/>
-        <MudTextField T="string" AutoGrow="true" Label="Description" @bind-Value="CharacterSkillDescription.Description"/>
-    </DialogContent>
-    <DialogActions>
-        <MudButton StartIcon="@Icons.Material.Filled.DeleteForever" IconColor="Color.Error" Color="Color.Error">
-            Delete
-        </MudButton>
-        <MudButton StartIcon="@Icons.Material.Filled.Save" OnClick="Save">
-            Save
-        </MudButton>
-    </DialogActions>
-</MudDialog>
+<Microsoft.AspNetCore.Components.Authorization.AuthorizeView Roles="Admin">
+    <Authorized>
+        <MudDialog>
+            <DialogContent>
+                <MudAutocomplete T="string" Label="Description Title" SearchFunc="SearchDescTitle"
+                                 @bind-Value="CharacterSkillDescription.DescriptionTitle"
+                                 CoerceValue="true" CoerceText="true" ResetValueOnEmptyText="true"
+                                 SelectOnClick="true" TextChanged="TextChanged" />
+                <MudTextField T="string" AutoGrow="true" Label="Description" @bind-Value="CharacterSkillDescription.Description" />
+            </DialogContent>
+            <DialogActions>
+                <MudButton StartIcon="@Icons.Material.Filled.DeleteForever" IconColor="Color.Error" Color="Color.Error">
+                    Delete
+                </MudButton>
+                <MudButton StartIcon="@Icons.Material.Filled.Save" OnClick="Save">
+                    Save
+                </MudButton>
+            </DialogActions>
+        </MudDialog>
+    </Authorized>
+</Microsoft.AspNetCore.Components.Authorization.AuthorizeView>
+
 
 @code {
 
