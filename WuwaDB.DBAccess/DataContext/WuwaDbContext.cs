@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using WuwaDB.DBAccess.Entities.Account;
 using WuwaDB.DBAccess.Entities.Character;
 using WuwaDB.DBAccess.Entities.Login;
+using WuwaDB.DBAccess.Entities.Monster;
 
 
 namespace WuwaDB.DBAccess.DataContext
@@ -27,6 +28,9 @@ namespace WuwaDB.DBAccess.DataContext
         public DbSet<Character_Skill_Detail_Number> CharacterSkillDetailNumbers { get; set; }
         public DbSet<Character_Skill_Description> CharacterSkillDescriptions { get; set; }
         public DbSet<Login_Info> LoginInfo { get; set; }
+        public DbSet<Monster> Monsters { get; set; }
+        public DbSet<Monster_Stats_Base> MonsterStatsBases { get; set; }
+        public DbSet<Monster_Stats_Growth_Property> MonsterStatsGrowthProperties { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -63,6 +67,14 @@ namespace WuwaDB.DBAccess.DataContext
                 .HasOne(c=>c.Character)
                 .WithMany(u=>u.CharacterSkills)
                 .HasForeignKey(c => c.CharacterId);
+            modelBuilder.Entity<Monster_Stats_Base>()
+                .HasOne(c => c.Monster)
+                .WithMany(u => u.MonsterStatBases)
+                .HasForeignKey(c => c.MonsterId);
+            modelBuilder.Entity<Monster_Stats_Base_Ele_Res>()
+                .HasOne(c => c.Monster_Stats_Base)
+                .WithMany(u => u.MonsterStatsBaseEleRes)
+                .HasForeignKey(c => c.MonsterStatsBaseId);
             modelBuilder.Entity<Character_Skill>()
                 .HasIndex(c => new { c.CharacterId, c.Type, c.Name})
                 .IsUnique();
@@ -70,12 +82,20 @@ namespace WuwaDB.DBAccess.DataContext
                 .HasIndex(c => new { c.CharacterSkillId, c.SkillDetailsName })
                 .IsUnique();
             modelBuilder.Entity<Character_Skill>()
-                 .HasIndex(c => new { c.Type, c.Name });
-
-            modelBuilder.Entity<Character_Skill_Detail_Number>()
+                 .HasIndex(c => new { c.Type, c.Name })
+                 .IsUnique();
+            modelBuilder.Entity<Monster>()
+                .HasIndex(c => c.Name)
+                .IsUnique();
+            modelBuilder.Entity<Monster_Stats_Base>()
+                .HasIndex(c => c.MonsterId)
+                .IsUnique();
+           modelBuilder.Entity<Character_Skill_Detail_Number>()
                 .HasKey(c => new { c.CharacterSkillDetailId, c.Level });
             modelBuilder.Entity<Character_Skill_Description>()
                 .HasKey(c => new { c.CharacterSkillId, c.DescriptionTitle });
+            modelBuilder.Entity<Monster_Stats_Base_Ele_Res>()
+                .HasKey(c => new { c.MonsterStatsBaseId, c.ElementResist });
         }
 
     }
