@@ -15,10 +15,13 @@ namespace WuwaDB.Components.Pages
         [Inject] private AuthenticationStateProvider StateProvider { get; set; }
         [Inject] private NavigationManager navigationManager { get; set; } = default!;
         [Inject] private UserRepository UserRepository { get; set; }
-        private List<Character> CharList { get; set; } = new();
+        private List<Character> Characters { get; set; } = new();
+        
+        
+        
         protected override async void OnInitialized()
         {
-            CharList = await UserRepository.GetToListAsync<Character>();
+            Characters = await UserRepository.GetToListAsync<Character>();
             StateHasChanged();
         }
 

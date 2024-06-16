@@ -1,10 +1,9 @@
 ﻿using Microsoft.AspNetCore.Components;
 using MudBlazor;
-using WuwaDB.DBAccess.Entities.Character;
 using WuwaDB.DBAccess.Enum;
 using WuwaDB.DBAccess.Repository;
 
-namespace WuwaDB.Components.MudDialog
+namespace WuwaDB.Components.MudDialog.CharacterDialog
 {
     public partial class EditCharacter
     {

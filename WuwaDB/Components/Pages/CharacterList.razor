@@ -2,7 +2,7 @@
 @using System.Diagnostics.Eventing.Reader
 
 <PageTitle>
-    @if (CharList is null)
+    @if (Characters is null)
     {
         <MudProgressCircular Color="Color.Primary" Size="Size.Large" Indeterminate="true" />
     }
@@ -12,9 +12,9 @@
 <div style="margin-top:0!important;padding-top:10px;">
     <MudContainer>
         <MudGrid Justify="Justify.Center">
-            @if (CharList.Count > 0)
+            @if (Characters.Count > 0)
             {
-                @foreach (var Characters in CharList)
+                @foreach (var Characters in Characters)
                 {
                     <MudItem xl="2" xxl="2" xs="8" sm="4" md="3" lg="2">
                         <MudLink Class="hover-effect" Href="@($"/Character/{Characters.Name}")">

@@ -5,6 +5,7 @@ using MudBlazor;
 using System.Security.Claims;
 using WuwaDB.Authentication;
 using WuwaDB.Components.MudDialog;
+using WuwaDB.Components.MudDialog.CharacterDialog;
 using WuwaDB.Services;
 
 namespace WuwaDB.Components.Layout

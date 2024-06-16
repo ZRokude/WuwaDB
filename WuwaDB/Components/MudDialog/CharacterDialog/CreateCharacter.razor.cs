@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Components.Forms;
 
-namespace WuwaDB.Components.MudDialog
+namespace WuwaDB.Components.MudDialog.CharacterDialog
 {
     public partial class CreateCharacter
     {

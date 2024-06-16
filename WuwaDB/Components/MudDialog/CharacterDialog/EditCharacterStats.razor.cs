@@ -3,7 +3,7 @@ using MudBlazor;
 using WuwaDB.DBAccess.Entities.Character;
 using WuwaDB.DBAccess.Repository;
 
-namespace WuwaDB.Components.MudDialog
+namespace WuwaDB.Components.MudDialog.CharacterDialog
 {
     public partial class EditCharacterStats
     {
@@ -16,7 +16,7 @@ namespace WuwaDB.Components.MudDialog
 
         protected override async void OnInitialized()
         {
-            var filterObject = new { CharacterId = CharacterId };
+            var filterObject = new { CharacterId };
             CharacterStats = await UserRepository.GetDataAsync<Character_Stats_Base>(filterObject);
             if (CharacterStats is not null)
                 StatsExist = true;
