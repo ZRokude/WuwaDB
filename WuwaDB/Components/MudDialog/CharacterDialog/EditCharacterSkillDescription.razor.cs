@@ -4,7 +4,7 @@ using System.Collections;
 using WuwaDB.DBAccess.Entities.Character;
 using WuwaDB.DBAccess.Repository;
 
-namespace WuwaDB.Components.MudDialog
+namespace WuwaDB.Components.MudDialog.CharacterDialog
 {
     public partial class EditCharacterSkillDescription
     {
@@ -17,7 +17,7 @@ namespace WuwaDB.Components.MudDialog
         public string[] DescTitles;
         protected override async void OnInitialized()
         {
-            CharacterSkillDescriptions = await UserRepository.GetToListAsync<Character_Skill_Description>(new {CharacterSkillId = SkillId});
+            CharacterSkillDescriptions = await UserRepository.GetToListAsync<Character_Skill_Description>(new { CharacterSkillId = SkillId });
             if (CharacterSkillDescriptions.Count > 0)
             {
                 DescTitles = new string[CharacterSkillDescriptions.Count];
@@ -32,7 +32,7 @@ namespace WuwaDB.Components.MudDialog
         {
             if (string.IsNullOrEmpty(value))
                 return DescTitles;
-            return DescTitles.Where(x=> x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+            return DescTitles.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
 
         }
         private async Task TextChanged(string value)

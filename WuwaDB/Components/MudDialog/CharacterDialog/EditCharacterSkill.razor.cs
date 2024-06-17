@@ -6,7 +6,7 @@ using WuwaDB.DBAccess.Entities.Character;
 using WuwaDB.DBAccess.Enum;
 using WuwaDB.DBAccess.Repository;
 
-namespace WuwaDB.Components.MudDialog
+namespace WuwaDB.Components.MudDialog.CharacterDialog
 {
     public partial class EditCharacterSkill
     {
@@ -22,14 +22,15 @@ namespace WuwaDB.Components.MudDialog
         private bool SkillExist;
         IBrowserFile file;
         private string imageData;
-      
+
         protected override async void OnInitialized()
         {
             CharacterSkill = await UserRepository.GetDataAsync<Character_Skill>(
-                new{
-                Type = SkillType,
-                CharacterId = CharacterId
-                   });
+                new
+                {
+                    Type = SkillType,
+                    CharacterId
+                });
             if (CharacterSkill is not null)
             {
                 SkillExist = true;
@@ -74,7 +75,7 @@ namespace WuwaDB.Components.MudDialog
         private async Task SaveCharacterSkill()
         {
             CharacterSkill.Type = SkillType;
-            
+
             if (SkillExist is not true)
             {
                 CharacterSkill.CharacterId = CharacterId;
@@ -98,7 +99,7 @@ namespace WuwaDB.Components.MudDialog
             var options = new DialogOptions { CloseOnEscapeKey = true, CloseButton = true };
             var parameters = new DialogParameters<EditCharacterSkillDescription>();
             parameters.Add(nameof(EditCharacterSkillDescription.SkillId), CharacterSkill.Id);
-            DialogService.Show<EditCharacterSkillDescription>("Character Skill Description", parameters,options);
+            DialogService.Show<EditCharacterSkillDescription>("Character Skill Description", parameters, options);
         }
 
     }

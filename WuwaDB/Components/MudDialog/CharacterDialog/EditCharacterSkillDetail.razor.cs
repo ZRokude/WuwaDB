@@ -1,15 +1,11 @@
 ﻿using Microsoft.AspNetCore.Components;
 using MudBlazor;
-using System.ComponentModel;
-using System.Linq.Expressions;
-using Microsoft.EntityFrameworkCore;
 using WuwaDB.DBAccess.DataContext;
 using WuwaDB.DBAccess.Entities.Account;
 using WuwaDB.DBAccess.Entities.Character;
 using WuwaDB.DBAccess.Repository;
-using System.Reflection.Metadata.Ecma335;
 
-namespace WuwaDB.Components.MudDialog
+namespace WuwaDB.Components.MudDialog.CharacterDialog
 {
     public partial class EditCharacterSkillDetail
     {
@@ -34,7 +30,7 @@ namespace WuwaDB.Components.MudDialog
             if (CharacterSkillDetails.Count > 0)
             {
                 SkillDetailNames = new string[CharacterSkillDetails.Count];
-                for(int i = 0; i< CharacterSkillDetails.Count; i++) 
+                for (int i = 0; i < CharacterSkillDetails.Count; i++)
                 {
                     SkillDetailNames[i] = CharacterSkillDetails[i].SkillDetailsName;
                 }
@@ -79,7 +75,7 @@ namespace WuwaDB.Components.MudDialog
                 CharacterSkillDetailNumber.Multiplier = null;
                 SkillLevels = null;
             }
-                
+
         }
 
         private void TextChangedSkillLevel(string value)
@@ -120,7 +116,7 @@ namespace WuwaDB.Components.MudDialog
                 CharacterSkillDetailNumber.CharacterSkillDetailId = CharacterSkillDetail.Id;
             }
 
-            var Match = CharacterSkillDetailNumbers.FirstOrDefault(x => x.Level == CharacterSkillDetailNumber.Level 
+            var Match = CharacterSkillDetailNumbers.FirstOrDefault(x => x.Level == CharacterSkillDetailNumber.Level
                                                                         && x.CharacterSkillDetailId == CharacterSkillDetailNumber.CharacterSkillDetailId);
             if (Match is not null)
                 await AdminRepository.UpdatesAsync(CharacterSkillDetailNumber);

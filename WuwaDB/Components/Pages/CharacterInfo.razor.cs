@@ -6,6 +6,7 @@ using WuwaDB.Components.MudDialog;
 using WuwaDB.DBAccess.Repository;
 using WuwaDB.DBAccess.Entities.Character;
 using WuwaDB.DBAccess.Enum;
+using WuwaDB.Components.MudDialog.CharacterDialog;
 using Microsoft.IdentityModel.Tokens;
 
 namespace WuwaDB.Components.Pages
