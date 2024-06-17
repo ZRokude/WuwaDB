@@ -12,8 +12,7 @@ namespace WuwaDB.DBAccess.DataContext
     public class WuwaDbContext : DbContext
     {
         
-        public WuwaDbContext(DbContextOptions<WuwaDbContext> options)
-            : base(options)
+        public WuwaDbContext(DbContextOptions<WuwaDbContext> options) : base(options)
         {
         }
         public DbSet<User> Users { get; set; }
