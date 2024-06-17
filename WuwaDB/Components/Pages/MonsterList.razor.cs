@@ -6,6 +6,5 @@ namespace WuwaDB.Components.Pages
     {
         public List<Monster> Monsters { get; set; }
 
-        
     }
 }

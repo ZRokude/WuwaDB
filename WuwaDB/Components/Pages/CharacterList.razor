@@ -1,13 +1,7 @@
 ﻿@page "/Character/List"
 @using System.Diagnostics.Eventing.Reader
 
-<PageTitle>
-    @if (Characters is null)
-    {
-        <MudProgressCircular Color="Color.Primary" Size="Size.Large" Indeterminate="true" />
-    }
-    Character List
-</PageTitle>
+<PageTitle>Character List</PageTitle>
 
 <div style="margin-top:0!important;padding-top:10px;">
     <MudContainer>
@@ -53,9 +47,7 @@
             else
             {
                 <MudProgressCircular Color="Color.Error" Size="Size.Large" Indeterminate="true"></MudProgressCircular>
-            }
-               
-            
+            } 
         </MudGrid>
     </MudContainer>
 </div>
