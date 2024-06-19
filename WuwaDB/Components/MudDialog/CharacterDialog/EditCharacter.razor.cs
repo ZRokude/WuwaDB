@@ -43,6 +43,17 @@ namespace WuwaDB.Components.MudDialog.CharacterDialog
             if (!result.Canceled)
                 MudDialog.Close(DialogResult.Ok(true));
         }
+
+        private async void OpenDialogCharacterInfo()
+        {
+            var options = new DialogOptions { CloseOnEscapeKey = true, CloseButton = true };
+            var parameters = new DialogParameters<EditCharacterInfo>();
+            parameters.Add(x=>x.CharacterId, CharacterId);
+            var dialog = await DialogService.ShowAsync<EditCharacterInfo>("Edit Character Info", parameters, options);
+            var result = await dialog.Result;
+            if (!result.Canceled)
+                MudDialog.Close(DialogResult.Ok(true));
+        }
         private void Cancel() => MudDialog.Close(DialogResult.Cancel());
     }
 }

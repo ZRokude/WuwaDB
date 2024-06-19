@@ -1,7 +1,7 @@
 ﻿@using WuwaDB.DBAccess.Enum
 @attribute [Authorize(Roles = "Admin")]
-<Microsoft.AspNetCore.Components.Authorization.AuthorizeView Roles="Admin">
-    <Authorized>
+@* <Microsoft.AspNetCore.Components.Authorization.AuthorizeView Roles="Admin">
+    <Authorized> *@
         <MudDialog>
             <DialogContent>
                 <MudStack Spacing="2">
@@ -26,8 +26,8 @@
                     <MudButton StartIcon="@Icons.Material.Filled.Settings" OnClick="OpenDialogOutroSkill">
                         Outro Skill
                     </MudButton>
-                    <MudButton StartIcon="@Icons.Material.Filled.Settings">
-                        Edit Character Misc
+                    <MudButton StartIcon="@Icons.Material.Filled.Settings" OnClick="OpenDialogCharacterInfo">
+                        Edit Character Info
                     </MudButton>
                 </MudStack>
             </DialogContent>
@@ -35,8 +35,8 @@
 
             </DialogActions>
         </MudDialog>
-    </Authorized>
-</Microsoft.AspNetCore.Components.Authorization.AuthorizeView>
+  @*   </Authorized>
+</Microsoft.AspNetCore.Components.Authorization.AuthorizeView> *@
 @code {
 
 }

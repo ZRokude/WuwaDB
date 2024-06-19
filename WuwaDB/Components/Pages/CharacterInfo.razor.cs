@@ -20,7 +20,7 @@ namespace WuwaDB.Components.Pages
         [Parameter] public string CharacterName { get; set; }
         public Character_Skill? CharacterSkill { get; set; }
         public Character_Stats_Base? CharacterStatBase { get; set; }
-        public Character? character { get; set; } = new();
+        public Character? Character { get; set; } = new();
         public List<Character_Skill> CharacterSkills { get; set; } = new();
         public List<Character_Skill_Description> CharacterSkillDescriptions { get; set; } = new();
         public List<Character_Skill_Detail>CharacterSkillDetails { get; set; } = new();
@@ -44,31 +44,31 @@ namespace WuwaDB.Components.Pages
         protected override async void OnInitialized()
         {
             CharacterStatsGrowthProperties = await UserRepository.GetToListAsync<Character_Stats_Growth_Property>();
-            character = await UserRepository.GetDataAsync<Character>(new {Name = CharacterName});
-            if (character is not null)
+            Character = await UserRepository.GetDataAsync<Character>(new {Name = CharacterName});
+            if (Character is not null)
             {
                 CharacterStatBase =
                     await UserRepository.GetDataAsync<Character_Stats_Base>(propertyFilter: new
-                    { CharacterId = character.Id });
+                    { CharacterId = Character.Id });
                 CharacterSkills = 
                     await UserRepository.GetToListAsync<Character_Skill>(propertyFilter: new 
-                    { CharacterId = character.Id });
+                    { CharacterId = Character.Id });
             }
             if (CharacterSkills.Count > 0)
             {
                 byte[] ImageByte = CharacterSkills[0].ImageFile;
                 CharacterSkillDescriptions =
                     await UserRepository.GetToListAsync<Character_Skill_Description>
-                    ( new{ CharacterId = character.Id }, new string[] {"Character_Skill"});
+                    ( new{ CharacterId = Character.Id }, new string[] {"Character_Skill"});
                 CharacterSkillDetails =
                     await UserRepository.GetToListAsync<Character_Skill_Detail>
-                    (new {CharacterId = character.Id}, new string[] {"Character_Skill"});
+                    (new {CharacterId = Character.Id}, new string[] {"Character_Skill"});
 
             }
             if (CharacterSkillDetails.Count > 0)
             {
                 CharacterSkillDetailNumbers = await UserRepository.GetToListAsync<Character_Skill_Detail_Number>
-                    (new { CharacterId = character.Id }, new string[] { "Character_Skill_Detail", "Character_Skill" });
+                    (new { CharacterId = Character.Id }, new string[] { "Character_Skill_Detail", "Character_Skill" });
             }
             if(CharacterStatBase is not null)
                 StatsCalculation();
@@ -76,7 +76,7 @@ namespace WuwaDB.Components.Pages
         }
         private string colorHighLightCase()
         {
-            switch (character.Element)
+            switch (Character.Element)
             {
                 case ElementType.Aero:
                     return "#23e885";
@@ -185,7 +185,8 @@ namespace WuwaDB.Components.Pages
                 };
             }
         }
-        private string GetImage(SkillType type)
+
+        private string GetImage(SkillType? type = null)
         {
             var skillType = CharacterSkills.FirstOrDefault(x => x.Type == type);
 

@@ -4,17 +4,17 @@
 
 <div>
     <MudContainer>
-        <Microsoft.AspNetCore.Components.Authorization.AuthorizeView Roles="Admin">
-            <Authorized>
+        @* <Microsoft.AspNetCore.Components.Authorization.AuthorizeView Roles="Admin">
+            <Authorized> *@
                 <MudToolBar>
                     <MudButton Variant="Variant.Filled" Color="Color.Info" StartIcon="@Icons.Material.Filled.Settings" OnClick="OpenDialog">
                         Edit Character
                     </MudButton>
                 </MudToolBar>
-            </Authorized>
-        </Microsoft.AspNetCore.Components.Authorization.AuthorizeView>
+            @* </Authorized>
+        </Microsoft.AspNetCore.Components.Authorization.AuthorizeView> *@
         <div class="fixed-image-container character-card-container">
-            <MudCardMedia Image="@($"/Character_Model/{character.Name}.png")" Class="character-card bg-color-transparent" />
+            <MudCardMedia Class="character-card bg-color-transparent" />
         </div>
         <MudGrid Class="justify-mud-grid" Spacing="0">
             <MudItem>
