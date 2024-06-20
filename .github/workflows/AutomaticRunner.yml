@@ -14,9 +14,9 @@ jobs:
     runs-on: self-hosted
     steps:
         - name: IIS Server Stop
-          run: powershell.exe -Command "Import-Module WebAdministration; Stop-Website -Name 'example.com';"
+          run: powershell.exe -Command "Stop-Website -Name 'wuwadanjin"
         - name: IIS Server Start
-          run: powershell.exe -Command "Import-Module WebAdministration; Start-Website -Name 'example.com';"
+          run: powershell.exe -Command "Start-Website -Name 'wuwadanjin'"
       # - name: Update Database
       #   run: dotnet ef database update --project WuwaDB.DBAccess --startup-project WuwaDB
       # - name: Publish
