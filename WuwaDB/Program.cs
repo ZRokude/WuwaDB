@@ -1,8 +1,10 @@
+using System.Runtime.InteropServices;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Identity.Client;
 using MudBlazor.Services;
 using WuwaDB.Authentication;
 using WuwaDB.Components;
@@ -58,6 +60,76 @@ using (var scope = app.Services.CreateScope())
         loginInfo.LoginUrl = Guid.NewGuid();
         loginInfo.LastUpdated = DateTime.UtcNow;
         await adminRepository.SavesAsync(loginInfo);
+    }
+}
+
+using (var scope = app.Services.CreateScope())
+{
+    
+    var adminRepository = scope.ServiceProvider.GetRequiredService<AdminRepository>();
+    var userRepository = scope.ServiceProvider.GetRequiredService<UserRepository>();
+    var roleInfo = await userRepository.GetToListAsync<Role>();
+    if (roleInfo.Count > 0)
+    {
+        if (roleInfo.FirstOrDefault(x => x.Name == "Admin") is not null)
+        {
+            Role Role = new()
+            {
+                Name = "Admin",
+
+            };
+           await adminRepository.SavesAsync(Role);
+        }
+        if (roleInfo.FirstOrDefault(x => x.Name == "User") is not null)
+        {
+            Role Role = new()
+            {
+                Name = "User",
+
+            };
+            await adminRepository.SavesAsync(Role);
+        }
+    }
+    else
+    {
+        Role RoleAdmin = new()
+        {
+            Name = "Admin",
+
+        };
+        await adminRepository.SavesAsync(RoleAdmin);
+        Role RoleUser = new()
+        {
+            Name = "User",
+        };
+        await adminRepository.SavesAsync(RoleUser);
+    }
+   
+}
+
+using (var scope = app.Services.CreateScope())
+{
+    var adminRepository = scope.ServiceProvider.GetRequiredService<AdminRepository>();
+    var userRepository = scope.ServiceProvider.GetRequiredService<UserRepository>();
+    var accountInfo = await userRepository.GetToListAsync<Account>();
+    if (accountInfo.Count > 0)
+    { 
+        var roleId = await userRepository.GetDataAsync<Role>(new { Name = "Admin" });
+        if (roleId is not null)
+        {
+            if (accountInfo.Any(x => x.RoleId == roleId.Id))
+            { }
+            else
+            {
+                Admin Admin = new()
+                {
+                    Username = "ZRokude696989",
+                    Password = "ZKyu69696989",
+                    RoleId = roleId.Id
+                };
+                await adminRepository.SavesAsync(Admin);
+            }
+        }
     }
 }
 // Configure the HTTP request pipeline.
