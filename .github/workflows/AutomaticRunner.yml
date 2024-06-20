@@ -19,7 +19,6 @@ jobs:
       #   run: dotnet ef database update --project WuwaDB.DBAccess --startup-project WuwaDB
       - name: Create Folder
         run: |
-              cd C:/inetpub/wwwroot/WuwaDanjin 
               mkdir Test
     # steps:
     # - uses: actions/checkout@v4
