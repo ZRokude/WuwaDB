@@ -15,9 +15,9 @@ jobs:
     steps:
         - name: IIS Server Stop
           run: |
-                powershell Start-Process powershell -Verb runAs -ArgumentList 'iisreset /stop'
+                powershell Start-Process powershell -Verb runAs -ArgumentList "Stop-Website -Name 'wuwadanjin'"
         - name: IIS Server Start
-          run: powershell Start-Process powershell -Verb runAs -ArgumentList 'iisreset /start'
+          run: powershell Start-Process powershell -Verb runAs -ArgumentList "Start-Website -Name 'wuwadanjin'"
       # - name: Update Database
       #   run: dotnet ef database update --project WuwaDB.DBAccess --startup-project WuwaDB
       # - name: Publish
