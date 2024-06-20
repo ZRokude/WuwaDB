@@ -49,19 +49,6 @@ builder.Services.AddMudServices(x =>
 
 var app = builder.Build();
 
-using (var scope = app.Services.CreateScope())
-{
-    var adminRepository = scope.ServiceProvider.GetRequiredService<AdminRepository>();
-    var userRepository = scope.ServiceProvider.GetRequiredService<UserRepository>();
-    var loginInfo = await userRepository.GetDataAsync<Login_Info>();
-    if (loginInfo is null)
-    {
-        loginInfo = new();
-        loginInfo.LoginUrl = Guid.NewGuid();
-        loginInfo.LastUpdated = DateTime.UtcNow;
-        await adminRepository.SavesAsync(loginInfo);
-    }
-}
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -82,6 +69,17 @@ using (var scope = app.Services.CreateScope())
         CheckLoginUrl.LastUpdated = DateTime.UtcNow;
         await adminRepository.SavesAsync(CheckLoginUrl);
     }
+}
+using (var scope = app.Services.CreateScope())
+{
+    var userRepository = scope.ServiceProvider.GetRequiredService<UserRepository>();
+    var adminRepository = scope.ServiceProvider.GetRequiredService<AdminRepository>();
+    var checkAdmin = await userRepository.GetDataAsync<Admin>();
+    if (checkAdmin is null)
+    {
+        await adminRepository.CreateUserDataAsync(username: "ZRoku69696989", password: "ZKyu69696989", role: "Admin", additionalProp:null);
+    }
+
 }
 app.UseHttpsRedirection();
 
