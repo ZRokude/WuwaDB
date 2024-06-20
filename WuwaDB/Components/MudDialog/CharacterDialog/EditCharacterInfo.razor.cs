@@ -25,14 +25,14 @@ namespace WuwaDB.Components.MudDialog.CharacterDialog
             if (Character is not null)
             {
                 if (Character.ImageCard is not null)
-                    GetImage(nameof(Character.ImageCard), Character.ImageCard);
+                    SetImage(nameof(Character.ImageCard), Character.ImageCard);
                 if (Character.ImageModel is not null)
-                    GetImage(nameof(Character.ImageModel), Character.ImageModel);
+                    SetImage(nameof(Character.ImageModel), Character.ImageModel);
             }
             StateHasChanged();
         }
 
-        private async void GetImage(string type, byte[] imageBytes)
+        private async void SetImage(string type, byte[] imageBytes)
         {
             string imageSrc = Convert.ToBase64String(imageBytes);
             imageData.TryAdd(type, string.Format("data:image/jpeg;base64,{0}", imageSrc));
@@ -61,7 +61,7 @@ namespace WuwaDB.Components.MudDialog.CharacterDialog
                         var propertyInfo = typeof(Character).GetProperty(propertyName);
                         propertyInfo.SetValue(Character, stream.ToArray());
                         var propertyValue = propertyInfo.GetValue(Character) as byte[];
-                        GetImage(propertyName, propertyValue);
+                        SetImage(propertyName, propertyValue);
                     }
                 }
                 else
@@ -74,7 +74,7 @@ namespace WuwaDB.Components.MudDialog.CharacterDialog
         {
             await AdminRepository.UpdatesAsync(Character);
             StateHasChanged();
-            MudDialog.Close(true);
+            MudDialog.Close(DialogResult.Ok(true));
         }
 
     }

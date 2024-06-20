@@ -38,12 +38,17 @@ namespace WuwaDB.Components.Pages
         private Dictionary<SkillType, bool> skillDetailStates = new();
 
         private Dictionary<SkillType, bool> skillInfoStates = new();
+        private Dictionary<string, string> imageData = new();
 
         private bool skillInfoExpand = false;
         private string colorHighLight => $"color:{colorHighLightCase()}";
+        private bool isLoading { get; set; } = false;
         protected override async void OnInitialized()
         {
+            isLoading = true;
+
             CharacterStatsGrowthProperties = await UserRepository.GetToListAsync<Character_Stats_Growth_Property>();
+
             Character = await UserRepository.GetDataAsync<Character>(new {Name = CharacterName});
             if (Character is not null)
             {
@@ -53,16 +58,27 @@ namespace WuwaDB.Components.Pages
                 CharacterSkills = 
                     await UserRepository.GetToListAsync<Character_Skill>(propertyFilter: new 
                     { CharacterId = Character.Id });
+                if (Character.ImageModel is not null)
+                   SetImage(nameof(Character.ImageModel), Character.ImageModel);
+                
             }
             if (CharacterSkills.Count > 0)
             {
-                byte[] ImageByte = CharacterSkills[0].ImageFile;
                 CharacterSkillDescriptions =
                     await UserRepository.GetToListAsync<Character_Skill_Description>
                     ( new{ CharacterId = Character.Id }, new string[] {"Character_Skill"});
                 CharacterSkillDetails =
                     await UserRepository.GetToListAsync<Character_Skill_Detail>
                     (new {CharacterId = Character.Id}, new string[] {"Character_Skill"});
+                foreach (var CharacterSkill in CharacterSkills)
+                {
+                    if (CharacterSkill.ImageFile is not null)
+                    {
+                        var skillValue = Enum.GetValues(typeof(SkillType)).ToString();
+                        SetImage(skillValue, CharacterSkill.ImageFile);
+                    }
+                      
+                }
 
             }
             if (CharacterSkillDetails.Count > 0)
@@ -72,8 +88,12 @@ namespace WuwaDB.Components.Pages
             }
             if(CharacterStatBase is not null)
                 StatsCalculation();
+
+            isLoading = false;
+
             StateHasChanged();
         }
+
         private string colorHighLightCase()
         {
             switch (Character.Element)
@@ -160,7 +180,6 @@ namespace WuwaDB.Components.Pages
                 skillInfoStates[type] = true;
         }
 
-
         private void StatsCalculation()
         {
             if (LevelSlider  <= 90)
@@ -186,23 +205,13 @@ namespace WuwaDB.Components.Pages
             }
         }
 
-        private string GetImage(SkillType? type = null)
+        private void SetImage(string type, byte[] image)
         {
-            var skillType = CharacterSkills.FirstOrDefault(x => x.Type == type);
-
-            if (skillType is not null)
-            {
-                var ImageByte = skillType.ImageFile;
-                if(ImageByte is not null)
-                {
-                    string imageSrc = Convert.ToBase64String(ImageByte);
-
-                    return string.Format("data:image/jpeg;base64,{0}", imageSrc);
-                }
-            }
-            return null;
+            string imageSrc = Convert.ToBase64String(image);
+            string imageString = string.Format("data:image/jpeg;base64,{0}", imageSrc);
+            imageData.TryAdd(type, imageString);
         }
-        
+
         private void LevelChanged(string value)
         {
             int Level = Convert.ToInt16(value) - 1;
@@ -217,11 +226,16 @@ namespace WuwaDB.Components.Pages
         {
             var options = new DialogOptions { CloseOnEscapeKey = true };
             var parameters = new DialogParameters<EditCharacter>();
-            parameters.Add(x=> x.CharacterId, character.Id);
+            parameters.Add(x=> x.CharacterId, Character.Id);
             var dialog = await DialogService.ShowAsync<EditCharacter>("Edit Character", parameters, options);
             var result = await dialog.Result;
             if (!result.Canceled)
+            {
+                OnInitialized();
                 StateHasChanged();
+            }
+               
+                
         }
     }
 }

@@ -8,34 +8,40 @@
         <MudGrid Justify="Justify.Center">
             @if (Characters.Count > 0)
             {
-                @foreach (var Characters in Characters)
+                @foreach (var Character in Characters)
                 {
                     <MudItem xl="2" xxl="2" xs="8" sm="4" md="3" lg="2">
-                        <MudLink Class="hover-effect" Href="@($"/Character/{Characters.Name}")">
+                        <MudLink Class="hover-effect" Href="@($"/Character/{Character.Name}")">
                             <MudCard Style="background-color:transparent;" Class="expand-hover" Elevation="15">
-                                <MudCardMedia Height="250">
-                                </MudCardMedia>
+                                @if (imageCard.TryGetValue(Character.Name, out var image))
+                                {
+                                    <MudCardMedia Height="250" Image="@image"></MudCardMedia>
+                                }
+                                else
+                                {
+                                    <MudCardMedia Height="250"></MudCardMedia>
+                                }
                                 <MudCardContent Class="p-0 text-center">
                                     <MudStack Justify="Justify.Center" Spacing="0">
                                         <MudStack Row="true" Justify="Justify.Center" Wrap="Wrap.Wrap" AlignItems="AlignItems.Center">
-                                            <MudTooltip Text="@Characters.Element.ToString()" Color="Color.Dark" Placement="Placement.Bottom">
+                                            <MudTooltip Text="@Character.Element.ToString()" Color="Color.Dark" Placement="Placement.Bottom">
                                                 <MudIconButton Size="Size.Small">
                                                     <MudAvatar Size="Size.Medium" Variant="Variant.Filled" Style="color:#878787">
-                                                        <MudImage Fluid="true" Src="@($"/Element/{Characters.Element.ToString()}.png")" />
+                                                        <MudImage Fluid="true" Src="@($"/Element/{Character.Element.ToString()}.png")"/>
                                                     </MudAvatar>
                                                 </MudIconButton>
                                             </MudTooltip>
-                                            <MudTooltip Text="@Characters.Weapon.ToString()" Color="Color.Dark" Placement="Placement.Bottom">
+                                            <MudTooltip Text="@Character.Weapon.ToString()" Color="Color.Dark" Placement="Placement.Bottom">
                                                 <MudIconButton Size="Size.Small">
                                                     <MudAvatar Size="Size.Medium" Variant="Variant.Filled" Style="color:#878787">
-                                                        <MudImage Fluid="true" Src="@($"/Weapon/{Characters.Weapon.ToString()}/{GetWeaponImage(Characters.Weapon)}.png")" />
+                                                        <MudImage Fluid="true" Src="@($"/Weapon/{Character.Weapon.ToString()}/{GetWeaponImage(Character.Weapon)}.png")" />
                                                     </MudAvatar>
                                                 </MudIconButton>
                                             </MudTooltip>
                                         </MudStack>
-                                        <MudTooltip RootStyle="width:unset!important;" Text="@Characters.Name" Color="Color.Dark" Placement="Placement.Bottom" Class="text-center">
+                                        <MudTooltip RootStyle="width:unset!important;" Text="@Character.Name" Color="Color.Dark" Placement="Placement.Bottom" Class="text-center">
                                             <MudText Elevation="0" Style="font-family:'Arsenal';overflow:hidden;color:#cfcfcf;"
-                                                     Typo="Typo.h6" Class="text-center">@Characters.Name</MudText>
+                                                     Typo="Typo.h6" Class="text-center">@Character.Name</MudText>
                                         </MudTooltip>
                                     </MudStack>
                                 </MudCardContent>
@@ -44,10 +50,6 @@
                     </MudItem>
                 }
             }
-            else
-            {
-                <MudProgressCircular Color="Color.Error" Size="Size.Large" Indeterminate="true"></MudProgressCircular>
-            } 
         </MudGrid>
     </MudContainer>
 </div>
