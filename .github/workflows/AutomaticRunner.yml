@@ -18,9 +18,9 @@ jobs:
 
     steps:
         - name: IIS Server Stop
-          run: appcmd stop sites "wuwadanjin.com"
+          run: Stop-Website -Name "wuwadanjin.com"
         - name: IIS Server Start
-          run: appcmd start sites "wuwadanjin.com"
+          run: Start-Website -Name  "wuwadanjin.com"
       # - name: Update Database
       #   run: dotnet ef database update --project WuwaDB.DBAccess --startup-project WuwaDB
       # - name: Publish
