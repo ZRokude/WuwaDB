@@ -15,9 +15,9 @@ jobs:
     steps:
         - name: IIS Server Stop
           run: |
-                powershell Start-Process powershell -Verb runAs -ArgumentList "Stop-Website -Name 'wuwadanjin'"
+                powershell Start-Process powershell -Verb runAs -ArgumentList "Stop-Website 'wuwadanjin'"
         - name: IIS Server Start
-          run: powershell Start-Process powershell -Verb runAs -ArgumentList "Start-Website -Name 'wuwadanjin'"
+          run: powershell Start-Process powershell -Verb runAs -ArgumentList "Start-Website 'wuwadanjin'"
       # - name: Update Database
       #   run: dotnet ef database update --project WuwaDB.DBAccess --startup-project WuwaDB
       # - name: Publish
