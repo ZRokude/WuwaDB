@@ -15,10 +15,10 @@ jobs:
     steps:
         - name: IIS Server Stop
           run: |
-                powershell Start-Process powershell -Verb runAs -Command "Stop-Website -Name 'wuwadanjin'"
+                powershell.exe -Verb runAs -Command "Stop-Website -Name 'wuwadanjin'"
         - name: IIS Server Start
           run: |
-                powershell Start-Process powershell -Verb runAs -Command "Start-Website -Name 'wuwadanjin'"
+                powershell.exe powershell -Verb runAs -Command "Start-Website -Name 'wuwadanjin'"
       # - name: Update Database
       #   run: dotnet ef database update --project WuwaDB.DBAccess --startup-project WuwaDB
       # - name: Publish
