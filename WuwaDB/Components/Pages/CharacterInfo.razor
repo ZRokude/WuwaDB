@@ -7,19 +7,19 @@
     @if (!isLoading)
     {
         <MudContainer>
-            @* <Microsoft.AspNetCore.Components.Authorization.AuthorizeView Roles="Admin">
-        <Authorized> *@
-            <MudToolBar>
-                <MudButton Variant="Variant.Filled" Color="Color.Info" StartIcon="@Icons.Material.Filled.Settings" OnClick="OpenDialog">
-                    Edit Character
-                </MudButton>
-            </MudToolBar>
-            @* </Authorized>
-        </Microsoft.AspNetCore.Components.Authorization.AuthorizeView> *@
+            <Microsoft.AspNetCore.Components.Authorization.AuthorizeView Roles="Admin">
+                <Authorized>
+                    <MudToolBar>
+                        <MudButton Variant="Variant.Filled" Color="Color.Info" StartIcon="@Icons.Material.Filled.Settings" OnClick="OpenDialog">
+                            Edit Character
+                        </MudButton>
+                    </MudToolBar>
+                </Authorized>
+            </Microsoft.AspNetCore.Components.Authorization.AuthorizeView>
             <div class="fixed-image-container character-card-container">
                 @if (imageData.TryGetValue(nameof(Character.ImageModel), out var image))
                 {
-                    <MudCardMedia Image="@image" Class="character-card bg-color-transparent" />
+                    <MudCardMedia Image="@image" Class="character-card bg-color-transparent"/>
                 }
             </div>
             <MudGrid Class="justify-mud-grid" Spacing="0">
@@ -35,7 +35,7 @@
                                 {
                                     <MudStack Row="true" Justify="Justify.SpaceBetween">
                                         <MudTooltip Text="@GetStatProp(property.Name)" style="color:#cfcfcf;">
-                                            <MudImage Style="width:40px;" Src=@($"Icon/AttributeStat/{property.Name}.png") />
+                                            <MudImage Style="width:40px;" Src=@($"Icon/AttributeStat/{property.Name}.png")/>
                                         </MudTooltip>
                                         @if (CharacterStatBase != null)
                                         {
@@ -62,7 +62,7 @@
                             <MudSlider @bind-Value="LevelSlider" Min="1" Max="90" Step="1" ValueLabel="true" Immediate="true" Style="color:#cfcfcf;">
                                 Level: @LevelSlider
                                 <MudAutocomplete T="int" @bind-Value="LevelSlider" TextChanged="LevelChanged"
-                                                 Immediate="true" Style="display:none!important;" />
+                                                 Immediate="true" Style="display:none!important;"/>
                             </MudSlider>
                         </MudPaper>
                         @foreach (SkillType skillType in Enum.GetValues(typeof(SkillType)))
@@ -74,7 +74,7 @@
                                             <MudTooltip Text="@GetSkillName(skillType)">
                                                 @if (imageData.TryGetValue(skillType.ToString(), out var image))
                                                 {
-                                                    <MudImage Style="width:50px;" Src="@image" />
+                                                    <MudImage Style="width:50px;" Src="@image"/>
                                                 }
                                             </MudTooltip>
                                             <MudStack Spacing="1" Row="true">
@@ -84,7 +84,7 @@
                                                 <MudButton OnClick="() => ToggleSkillDetail(skillType)" Style="color:#cfcfcf;">
                                                     Skill Detail
                                                 </MudButton>
-                                                <MudIconButton Icon="@Icons.Material.Filled.ArrowDownward" Size="Size.Medium" OnClick="() => ToggleCollapse(skillType)" />
+                                                <MudIconButton Icon="@Icons.Material.Filled.ArrowDownward" Size="Size.Medium" OnClick="() => ToggleCollapse(skillType)"/>
                                             </MudStack>
                                         </MudStack>
                                     </MudToolBar>
@@ -106,7 +106,7 @@
                                                             <MudText Align="Align.Center" @key="@title.Description" Style="color:#cfcfcf;">
                                                                 <MudHighlighter HighlightedTexts="highLightedTexts" UntilNextBoundary="true"
                                                                                 Text="@title.Description"
-                                                                                Style="@colorHighLight" Class="highlight-description" />
+                                                                                Style="@colorHighLight" Class="highlight-description"/>
                                                             </MudText>
                                                         }
                                                     }
@@ -126,7 +126,7 @@
                                                 if (type is not null)
                                                 {
                                                     var skillDetails = CharacterSkillDetails.Where(
-                                                    x => x.CharacterSkillId == type.Id).ToList();
+                                                        x => x.CharacterSkillId == type.Id).ToList();
                                                     if (skillDetails.Count > 0)
                                                     {
                                                         foreach (var skillDetail in skillDetails)
