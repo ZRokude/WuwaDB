@@ -25,17 +25,33 @@
                 </MudSelect>
                 <MudTextField T="string" AutoGrow="true" Label="Description" @bind-Value="Character.Description">
                 </MudTextField>
-                <MudFileUpload Context="MudUpload" T="IBrowserFile" OnFilesChanged="OnFilesChanged" MaximumFileCount="20971520" Accept=".png, .jpg, .jpeg">
-                    <ButtonTemplate Context="MudUpload">
+                <MudFileUpload Context="MudUploadImageModel" T="IBrowserFile" OnFilesChanged="OnChangedImageModel" MaximumFileCount="20971520" Accept=".png, .jpg, .jpeg">
+                    <ButtonTemplate Context="MudUploadImageModel">
                         <MudFab HtmlTag="label"
                                 Color="Color.Success"
                                 Icon="@Icons.Material.Filled.AttachFile"
-                                for="@MudUpload.Id" />
+                                Label="Image Model"
+                                for="@MudUploadImageModel.Id" />
                     </ButtonTemplate>
                     <SelectedTemplate>
-                        @if (file is not null)
+                        @if (imageData.TryGetValue(nameof(Character.ImageModel), out var image))
                         {
-                            <MudText> @file.Name @file.Size</MudText>
+                            <MudImage Src="@image"/>
+                        }
+                    </SelectedTemplate>
+                </MudFileUpload>
+                <MudFileUpload Context="MudUploadImageCard" T="IBrowserFile" OnFilesChanged="OnChangedImageCard" MaximumFileCount="20971520" Accept=".png, .jpg, .jpeg">
+                    <ButtonTemplate Context="MudUploadImageCard">
+                        <MudFab HtmlTag="label"
+                                Color="Color.Success"
+                                Icon="@Icons.Material.Filled.AttachFile"
+                                Label="Image Card"
+                                for="@MudUploadImageCard.Id" />
+                    </ButtonTemplate>
+                    <SelectedTemplate>
+                        @if (imageData.TryGetValue(nameof(Character.ImageCard), out var image))
+                        {
+                            <MudImage Src="@image"/>
                         }
                     </SelectedTemplate>
                 </MudFileUpload>

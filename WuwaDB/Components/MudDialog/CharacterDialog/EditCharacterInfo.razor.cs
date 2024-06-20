@@ -1,38 +1,43 @@
-﻿using Microsoft.AspNetCore.Components.Authorization;
+﻿using System.Reflection;
 using Microsoft.AspNetCore.Components;
-using MudBlazor;
-using WuwaDB.DBAccess.Repository;
-using WuwaDB.DBAccess.Entities.Character;
-using System.Diagnostics;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Components.Forms;
+using Microsoft.EntityFrameworkCore.Diagnostics;
+using Microsoft.EntityFrameworkCore.Migrations.Operations;
+using MudBlazor;
+using WuwaDB.DBAccess.Entities.Character;
+using WuwaDB.DBAccess.Repository;
 
 namespace WuwaDB.Components.MudDialog.CharacterDialog
 {
-    public partial class CreateCharacter
+    public partial class EditCharacterInfo
     {
-        [Inject] private AuthenticationStateProvider StateProvider { get; set; }
-        [Inject] private NavigationManager navigationManager { get; set; } = default!;
-        [Inject] private AdminRepository AdminRepository { get; set; }
-        [Inject] private IWebHostEnvironment HostEnvironment { get; set; }
+        [Inject] AdminRepository AdminRepository { get; set; }
+        [Inject] UserRepository UserRepository { get; set; }
         [Inject] ISnackbar Snackbar { get; set; }
         [CascadingParameter] MudDialogInstance MudDialog { get; set; }
-        private Character Character { get; set; } = new Character();
-        IBrowserFile file;
+        [Parameter] public Guid CharacterId { get; set; }
+        public Character Character { get; set; } = new();
+        private IBrowserFile file;
         private Dictionary<string, string> imageData = new();
-        private async Task Submit()
+        protected override async void OnInitialized()
         {
-            await AdminRepository.SavesAsync(Character);
+            Character = await UserRepository.GetDataAsync<Character>(new { Id = CharacterId });
+            if (Character is not null)
+            {
+                if (Character.ImageCard is not null)
+                    SetImage(nameof(Character.ImageCard), Character.ImageCard);
+                if (Character.ImageModel is not null)
+                    SetImage(nameof(Character.ImageModel), Character.ImageModel);
+            }
             StateHasChanged();
-            MudDialog.Close(DialogResult.Ok(true));
         }
-        private void Cancel() => MudDialog.Cancel();
-        private async void GetImage(string type, byte[] imageBytes)
+
+        private async void SetImage(string type, byte[] imageBytes)
         {
             string imageSrc = Convert.ToBase64String(imageBytes);
             imageData.TryAdd(type, string.Format("data:image/jpeg;base64,{0}", imageSrc));
         }
+
         private async void OnChangedImageModel(InputFileChangeEventArgs e) =>
             await OnFilesChanged(e, nameof(Character.ImageModel));
         private async void OnChangedImageCard(InputFileChangeEventArgs e) =>
@@ -56,14 +61,22 @@ namespace WuwaDB.Components.MudDialog.CharacterDialog
                         var propertyInfo = typeof(Character).GetProperty(propertyName);
                         propertyInfo.SetValue(Character, stream.ToArray());
                         var propertyValue = propertyInfo.GetValue(Character) as byte[];
-                        GetImage(propertyName, propertyValue);
+                        SetImage(propertyName, propertyValue);
                     }
                 }
                 else
                     Console.WriteLine("Something make file can't be read");
             }
+            
             StateHasChanged();
         }
+        private async Task UpdateCharacter()
+        {
+            await AdminRepository.UpdatesAsync(Character);
+            StateHasChanged();
+            MudDialog.Close(DialogResult.Ok(true));
+        }
+
     }
 
 }

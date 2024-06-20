@@ -15,9 +15,8 @@ namespace WuwaDB.DBAccess.Entities.Character
         public ElementType Element { get; set; }
         public RarityType Rarity { get; set; }
         public WeaponType Weapon { get; set; }
-        public string? Image { get; set; }
-        public byte[]? ImageFile { get; set; }
-
+        public byte[]? ImageModel { get; set; }
+        public byte[]? ImageCard { get; set; }
         public ICollection<Character_Skill> CharacterSkills { get; set; }
         public ICollection<VoiceActor> VoiceActors { get; set; }
         public ICollection<Character_Stats_Base> CharacterStatBases { get; set; }

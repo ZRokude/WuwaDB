@@ -1,4 +1,4 @@
-﻿@using WuwaDB.Services
+﻿
 @inherits LayoutComponentBase
 <MudThemeProvider Theme="customTheme" DefaultScrollbar="true"/>
 <MudDialogProvider @rendermode="InteractiveServer" />
@@ -6,13 +6,11 @@
 <MudPopoverProvider @rendermode="InteractiveServer"/>
 
 <MudLayout>
-    <HeaderSidebar/>
-    <div style="position:absolute;top: 0; left: 0; bottom: 0; right: 0;">
+    <div class="body-background">
+        <HeaderSidebar/>
         <MudMainContent>
-                <div class="body-background">
-                    @Body
-                </div>
-        </MudMainContent>
+            @Body
+        </MudMainContent>   
     </div>
 </MudLayout>
 
