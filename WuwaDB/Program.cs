@@ -63,68 +63,6 @@ using (var scope = app.Services.CreateScope())
     }
 }
 
-using (var scope = app.Services.CreateScope())
-{
-    
-    var adminRepository = scope.ServiceProvider.GetRequiredService<AdminRepository>();
-    var userRepository = scope.ServiceProvider.GetRequiredService<UserRepository>();
-    var roleInfo = await userRepository.GetToListAsync<Role>();
-    if (roleInfo.Count > 0)
-    {
-        if (roleInfo.FirstOrDefault(x => x.Name == "Admin") is not null)
-        {
-            Role Role = new()
-            {
-                Name = "Admin",
-
-            };
-           await adminRepository.SavesAsync(Role);
-        }
-        if (roleInfo.FirstOrDefault(x => x.Name == "User") is not null)
-        {
-            Role Role = new()
-            {
-                Name = "User",
-
-            };
-            await adminRepository.SavesAsync(Role);
-        }
-    }
-    else
-    {
-        Role RoleAdmin = new()
-        {
-            Name = "Admin",
-
-        };
-        await adminRepository.SavesAsync(RoleAdmin);
-        Role RoleUser = new()
-        {
-            Name = "User",
-        };
-        await adminRepository.SavesAsync(RoleUser);
-    }
-   
-}
-
-using (var scope = app.Services.CreateScope())
-{
-    var adminRepository = scope.ServiceProvider.GetRequiredService<AdminRepository>();
-    var userRepository = scope.ServiceProvider.GetRequiredService<UserRepository>();
-    var accountInfo = await userRepository.GetDataAsync<Admin>();
-    if (accountInfo is not null)
-    {
-        var role = userRepository.GetDataAsync<Role>(new{ Name = "Admin" });
-        Admin Admin = new()
-        {
-            Username = "ZRokude69696989",
-            Password = "ZKyu6969696989",
-            RoleId = role.Result.Id
-        };
-        await adminRepository.SavesAsync(Admin);
-    }
-
-}
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
