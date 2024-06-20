@@ -15,14 +15,14 @@ jobs:
     steps:
         - name: IIS Server Stop
           run: |
-                powershell
-                Import-Module WebAdministration
-                Stop-Website -Name "wuwadanjin"
+                 Start-Process powershell 
+                 -ArgumentList "Import-Module WebAdministration; 
+                 Stop-Website -Name 'wuwadanjin'" -Verb RunAs -Wait
         - name: IIS Server Start
           run: |
-                 powershell
-                 Import-Module WebAdministration
-                 Start-Website -Name "wuwadanjin"
+                 Start-Process powershell 
+                 -ArgumentList "Import-Module WebAdministration; 
+                 Stop-Website -Name 'wuwadanjin'" -Verb RunAs -Wait
       # - name: Update Database
       #   run: dotnet ef database update --project WuwaDB.DBAccess --startup-project WuwaDB
       # - name: Publish
