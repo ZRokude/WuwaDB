@@ -15,11 +15,15 @@ jobs:
     runs-on: self-hosted
 
     steps:
+        - name: IIS Server Stop
+          run: iisreset /stop
+        - name: IIS Server Start
+          run: iisreset /start
       # - name: Update Database
       #   run: dotnet ef database update --project WuwaDB.DBAccess --startup-project WuwaDB
-      - name: Publish
-        run: |
-              dotnet publish "C:/inetpub/wwwroot/Wuwadanjin/WuwaDB/WuwaDB/WuwaDB.csproj" -c Release -o C:/inetpub/wwwroot/Wuwadanjin/Publish2
+      # - name: Publish
+      #   run: |
+      #         dotnet publish "C:/inetpub/wwwroot/Wuwadanjin/WuwaDB/WuwaDB/WuwaDB.csproj" -c Release -o C:/inetpub/wwwroot/Wuwadanjin/Publish2
     # steps:
     # - uses: actions/checkout@v4
     # - name: Setup .NET
