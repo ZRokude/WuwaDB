@@ -1,0 +1,38 @@
+# This workflow will build a .NET project
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
+
+name: .NET
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  build:
+
+    runs-on: self-hosted
+
+    steps:
+      # - name: Update Database
+      #   run: dotnet ef database update --project WuwaDB.DBAccess --startup-project WuwaDB
+      - name: Create Folder
+        run: |
+              cd C:/inetpub/wwwroot/WuwaDanjin 
+              mkdir Test
+    # steps:
+    # - uses: actions/checkout@v4
+    # - name: Setup .NET
+    #   uses: actions/setup-dotnet@v4
+    #   with:
+    #     dotnet-version: 8.0.x
+    # - name: Restore dependencies
+    #   run: dotnet restore
+    # - name: Build
+    #   run: dotnet build --no-restore
+    # - name: Test
+    #   run: dotnet test --no-build --verbosity normal
+    # - name: Update Database
+    #   run: dotnet ef database update --project WuwaDB.DBAccess --startup-project WuwaDB
+    # - name: Publish
