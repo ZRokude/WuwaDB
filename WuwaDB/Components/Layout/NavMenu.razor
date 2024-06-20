@@ -31,12 +31,15 @@
                 </MudNavLink>
             </Authorized>
         </Microsoft.AspNetCore.Components.Authorization.AuthorizeView>
-        <MudNavLink @onclick="OpenCreateChar" IconColor="Color.Primary">
-            <MudText Color="@Color.Secondary">
-                Create Character
-            </MudText>
-        </MudNavLink>
-        
+        <Microsoft.AspNetCore.Components.Authorization.AuthorizeView Roles="Admin">
+            <Authorized>
+                <MudNavLink @onclick="OpenCreateChar" IconColor="Color.Primary">
+                    <MudText Color="@Color.Secondary">
+                        Create Character
+                    </MudText>
+                </MudNavLink>
+            </Authorized>
+        </Microsoft.AspNetCore.Components.Authorization.AuthorizeView>
     </MudNavMenu>
 </MudPaper>
 
