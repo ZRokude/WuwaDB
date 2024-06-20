@@ -14,7 +14,7 @@ jobs:
     runs-on: self-hosted
     steps:
         - name: IIS Server Stop
-          run: powershell.exe -Command "Stop-Website -Name 'wuwadanjin"
+          run: powershell.exe -Command "Stop-Website -Name 'wuwadanjin'"
         - name: IIS Server Start
           run: powershell.exe -Command "Start-Website -Name 'wuwadanjin'"
       # - name: Update Database
