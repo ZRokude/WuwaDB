@@ -8,10 +8,10 @@ on:
     branches: [ "Dev" ]
   pull_request:
     branches: [ "Dev" ]
-
+permissions: write-all 
 jobs:
   build:
-
+    
     runs-on: self-hosted
 
     steps:
