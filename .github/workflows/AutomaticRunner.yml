@@ -11,14 +11,16 @@ on:
 permissions: write-all 
 jobs:
   build:
-    
     runs-on: self-hosted
+    defaults:
+      run:
+        shell: cmd
 
     steps:
         - name: IIS Server Stop
-          run: iisreset /stop
+          run: appcmd stop sites "wuwadanjin.com"
         - name: IIS Server Start
-          run: iisreset /start
+          run: appcmd start sites "wuwadanjin.com"
       # - name: Update Database
       #   run: dotnet ef database update --project WuwaDB.DBAccess --startup-project WuwaDB
       # - name: Publish
