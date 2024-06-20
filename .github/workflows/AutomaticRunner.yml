@@ -15,7 +15,7 @@ jobs:
     steps:
         - name: IIS Server Stop
           run: |
-                powershell.exe Start-Process powershell -Verb runAs  -ArgumentList "Stop-Website -Name 'wuwadanjin'"
+                powershell.exe powershell -Verb runas -Command "Stop-Website -Name 'wuwadanjin'"
         - name: IIS Server Start
           run: |
                 powershell.exe Start-Process powershell -Verb runAs  -ArgumentList "Start-Website -Name 'wuwadanjin'"
