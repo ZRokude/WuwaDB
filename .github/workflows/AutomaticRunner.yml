@@ -17,10 +17,10 @@ jobs:
     steps:
       # - name: Update Database
       #   run: dotnet ef database update --project WuwaDB.DBAccess --startup-project WuwaDB
-      - name: Create Folder
+      - name: Publish
         run: |
-              mkdir Test
-              cp Test C:/inetpub/wwwroot/WuwaDanjin
+              cd C:/inetpub/wwwrooot/Wuwadanjin/WuwaDB
+              dotnet publish -c Release -o C:/inetpub/wwwroot/Wuwadanjin/Publish2
     # steps:
     # - uses: actions/checkout@v4
     # - name: Setup .NET
