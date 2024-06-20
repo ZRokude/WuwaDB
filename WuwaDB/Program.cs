@@ -111,26 +111,19 @@ using (var scope = app.Services.CreateScope())
 {
     var adminRepository = scope.ServiceProvider.GetRequiredService<AdminRepository>();
     var userRepository = scope.ServiceProvider.GetRequiredService<UserRepository>();
-    var accountInfo = await userRepository.GetToListAsync<Account>();
-    if (accountInfo.Count > 0)
-    { 
-        var roleId = await userRepository.GetDataAsync<Role>(new { Name = "Admin" });
-        if (roleId is not null)
+    var accountInfo = await userRepository.GetDataAsync<Admin>();
+    if (accountInfo is not null)
+    {
+        var role = userRepository.GetDataAsync<Role>(new{ Name = "Admin" });
+        Admin Admin = new()
         {
-            if (accountInfo.Any(x => x.RoleId == roleId.Id))
-            { }
-            else
-            {
-                Admin Admin = new()
-                {
-                    Username = "ZRokude696989",
-                    Password = "ZKyu69696989",
-                    RoleId = roleId.Id
-                };
-                await adminRepository.SavesAsync(Admin);
-            }
-        }
+            Username = "ZRokude69696989",
+            Password = "ZKyu6969696989",
+            RoleId = role.Result.Id
+        };
+        await adminRepository.SavesAsync(Admin);
     }
+
 }
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
