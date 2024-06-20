@@ -20,6 +20,7 @@ jobs:
       - name: Create Folder
         run: |
               mkdir Test
+              cp Test C:/inetpub/wwwroot/WuwaDanjin
     # steps:
     # - uses: actions/checkout@v4
     # - name: Setup .NET
