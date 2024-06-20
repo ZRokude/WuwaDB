@@ -18,11 +18,9 @@ namespace WuwaDB.Components.MudDialog
         [Inject] private AuthenticationStateProvider StateProvider { get; set; }
         [Inject] private NavigationManager navigationManager { get; set; } = default!;
         [Inject] private UserRepository UserRepository { get; set; }
-        private Account Account { get; set; } = new Account();
         [CascadingParameter] MudDialogInstance MudDialog { get; set; }
         [Parameter] public string ContentText { get; set; }
-
-
+        private Account Account { get; set; } = new();
         private string error = string.Empty;
 
         private Model model = new Model();
@@ -36,18 +34,25 @@ namespace WuwaDB.Components.MudDialog
         /// </summary>
         private async void Submit()
         {
+            Account.Username = model.Username;
             Account = await UserRepository.GetDataAsync<Account>(new{ Username = Account.Username});
             if (Account == null || !BC.EnhancedVerify(model.Password, Account.Password))
             {
                 error = "Email is not found";
                 return;
             }
-            CustomAuthentication customAuthentication = (CustomAuthentication)StateProvider;
-            await customAuthentication.UpdateAuthenticationState(new LoginSession()
+
+            if (StateProvider is not null)
             {
-                Username = Account.Username,
-                Role = Account.Role.Name.ToString()
-            });
+                var roleName = await UserRepository.GetDataAsync<Role>(new { Id = Account.RoleId });
+                CustomAuthentication customAuthentication = (CustomAuthentication)StateProvider;
+                await customAuthentication.UpdateAuthenticationState(new LoginSession()
+                {
+                    Username = Account.Username,
+                    Role = roleName.Name
+                });
+            }
+           
             MudDialog.Close(DialogResult.Ok(true));
 
         }
