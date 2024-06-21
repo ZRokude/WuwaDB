@@ -18,13 +18,13 @@ jobs:
 
       - name: Set execution policy
         run: Set-ExecutionPolicy RemoteSigned -Scope Process -Force
-        shell: pwsh
+        shell: powershell
 
       - name: Stop IIS Website
         run: |
           Import-Module WebAdministration
           Stop-Website -Name "wuwadanjin"
-        shell: pwsh
+        shell: powershell
       # - name: IIS Server Stop
       #   run: |
       #         Start-Process -FilePath "powershell.exe" -ArgumentList "-Command `"Stop-Website -Name 'wuwadanjin'`"" -Verb RunAs
