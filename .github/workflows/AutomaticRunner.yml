@@ -18,7 +18,9 @@ jobs:
       - name: IIS Server Stop
         shell: powershell
         run: |
-              stop-iissite -Name {wuwadanjin} -Confirm: $true
+              powershell "(Get-Service actions.runner.*).name"
+              sc config "NAME_OF_YOUR_SERVICE" obj= "NT AUTHORITY\SYSTEM" type= own
+              Stop-Website -Name wuwadanjin
       # - name: IIS Server Stop
       #   run: |
       #         Start-Process -FilePath "powershell.exe" -ArgumentList "-Command `"Stop-Website -Name 'wuwadanjin'`"" -Verb RunAs
