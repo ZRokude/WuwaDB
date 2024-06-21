@@ -15,16 +15,10 @@ jobs:
     steps:
       # - name: Checkout Repository
       #   uses: actions/checkout@v3
-
-      - name: Stop IIS Website
+      
+      - name: IIS Server Stop
         run: |
-         Import-Module IISAdministration
-         $site = Get-IISSite "wuwadanjin"
-         $site.Stop()
-
-        # - name: IIS Server Stop
-        #   run: |
-        #          Start-Process -FilePath "powershell.exe" -ArgumentList "-Command `"& { Stop-Website -Name 'wuwadanjin'}`"" -Verb RunAs -Wait
+              Start-Process -FilePath "powershell.exe" -ArgumentList "-Command `"& { Stop-Website -Name 'wuwadanjin'}`"" -Verb RunAs -Wait
         # - name: IIS Server Start
         #   run: |
         #          Start-Process powershell 
