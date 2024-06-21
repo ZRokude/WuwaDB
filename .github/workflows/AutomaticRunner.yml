@@ -16,14 +16,8 @@ jobs:
       # - name: Checkout Repository
       #   uses: actions/checkout@v3
 
-      - name: Set execution policy
-        run: Set-ExecutionPolicy RemoteSigned -Scope Process -Force
-        shell: powershell
-
       - name: Stop IIS Website
-        run: |
-          Import-Module WebAdministration
-          Stop-Website -Name "wuwadanjin"
+        run: Stop-Website -Name "wuwadanjin"
         shell: powershell
       # - name: IIS Server Stop
       #   run: |
