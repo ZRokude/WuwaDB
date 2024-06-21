@@ -18,8 +18,7 @@ jobs:
       - name: IIS Server Stop
         shell: powershell
         run: |
-              Import-Module WebAdministration 
-              Stop-Website -Name wuwadanjin
+              stop-iissite -Name {wuwadanjin} -Confirm: $true
       # - name: IIS Server Stop
       #   run: |
       #         Start-Process -FilePath "powershell.exe" -ArgumentList "-Command `"Stop-Website -Name 'wuwadanjin'`"" -Verb RunAs
