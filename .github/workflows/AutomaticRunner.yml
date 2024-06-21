@@ -19,7 +19,7 @@ jobs:
         shell: powershell
         run: |
               powershell "(Get-Service actions.runner.*).name"
-              sc config "NAME_OF_YOUR_SERVICE" obj= "NT AUTHORITY\SYSTEM" type= own
+              sc config "actions-runner.ZRokude-WuwaDB.WUWADANJIN" obj="NT AUTHORITY\SYSTEM" type= own
               Stop-Website -Name wuwadanjin
       # - name: IIS Server Stop
       #   run: |
