@@ -15,12 +15,16 @@ jobs:
     steps:
       # - name: Checkout Repository
       #   uses: actions/checkout@v3
-      - name: IIS Server Stop
-        shell: powershell
+
+      - name: Set execution policy
+        run: Set-ExecutionPolicy RemoteSigned -Scope Process -Force
+        shell: pwsh
+
+      - name: Stop IIS Website
         run: |
-              powershell "(Get-Service actions.runner.*).name"
-              sc config "actions-runner.ZRokude-WuwaDB.WUWADANJIN" obj="NT AUTHORITY\SYSTEM" type= own
-              Stop-Website -Name wuwadanjin
+          Import-Module WebAdministration
+          Stop-Website -Name "wuwadanjin"
+        shell: pwsh
       # - name: IIS Server Stop
       #   run: |
       #         Start-Process -FilePath "powershell.exe" -ArgumentList "-Command `"Stop-Website -Name 'wuwadanjin'`"" -Verb RunAs
