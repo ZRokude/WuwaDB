@@ -18,7 +18,7 @@ jobs:
       
       - name: IIS Server Stop
         run: |
-              Start-Process -FilePath "powershell.exe" -ArgumentList "-Command `"&  Stop-Website -Name 'wuwadanjin'`"" -Verb RunAs -Wait
+              Start-Process -FilePath "powershell.exe" -ArgumentList "-Command `"Stop-Website -Name 'wuwadanjin'`"" -Verb RunAs
         # - name: IIS Server Start
         #   run: |
         #          Start-Process powershell 
