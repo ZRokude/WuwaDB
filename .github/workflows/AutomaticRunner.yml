@@ -16,9 +16,10 @@ jobs:
       # - name: Checkout Repository
       #   uses: actions/checkout@v3
       - name: IIS Server Stop
+        shell: powershell
         run: |
-              powershell
-              -Command "Stop-Website -Name wuwadanjin"
+              Import-Module WebAdministration 
+              Stop-Website -Name wuwadanjin
       # - name: IIS Server Stop
       #   run: |
       #         Start-Process -FilePath "powershell.exe" -ArgumentList "-Command `"Stop-Website -Name 'wuwadanjin'`"" -Verb RunAs
