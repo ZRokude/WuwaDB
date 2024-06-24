@@ -74,7 +74,7 @@ namespace WuwaDB.Components.Pages
                 {
                     if (CharacterSkill.ImageFile is not null)
                     {
-                        var skillValue = Enum.GetValues(typeof(SkillType)).ToString();
+                        var skillValue = Enum.GetName(typeof(SkillType), CharacterSkill.Type);
                         SetImage(skillValue, CharacterSkill.ImageFile);
                     }
                       

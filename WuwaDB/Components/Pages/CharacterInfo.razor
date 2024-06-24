@@ -4,7 +4,7 @@
 @using WuwaDB.Components.Shared
 
 <div>
-    @if (!isLoading)
+    @if (isLoading is false)
     {
         <MudContainer>
             <Microsoft.AspNetCore.Components.Authorization.AuthorizeView Roles="Admin">
