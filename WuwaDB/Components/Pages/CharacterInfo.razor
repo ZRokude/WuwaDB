@@ -17,10 +17,7 @@
                 </Authorized>
             </Microsoft.AspNetCore.Components.Authorization.AuthorizeView>
             <div class="fixed-image-container character-card-container">
-                @if (imageData.TryGetValue(nameof(Character.ImageModel), out var image))
-                {
-                    <MudCardMedia Image="@image" Class="character-card bg-color-transparent"/>
-                }
+                <MudCardMedia Image="@(imageData.GetValueOrDefault(nameof(Character.ImageModel)))" Class="character-card bg-color-transparent"/>
             </div>
             <MudGrid Class="justify-mud-grid" Spacing="0">
                 <MudItem>
@@ -72,10 +69,7 @@
                                     <MudToolBar WrapContent="true" Class="justify-content-center">
                                         <MudStack Row="true" AlignItems="AlignItems.End" Spacing="3">
                                             <MudTooltip Text="@GetSkillName(skillType)">
-                                                @if (imageData.TryGetValue(skillType.ToString(), out var image))
-                                                {
-                                                    <MudImage Style="width:50px;" Src="@image"/>
-                                                }
+                                                <MudImage Style="width:50px;" Src="@(imageData.GetValueOrDefault(skillType.ToString()))" />
                                             </MudTooltip>
                                             <MudStack Spacing="1" Row="true">
                                                 <MudButton OnClick="() => ToggleSkillInfo(skillType)" Style="color:#cfcfcf;">

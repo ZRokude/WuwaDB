@@ -30,9 +30,8 @@ namespace WuwaDB.Components.Pages
                 if(Character.ImageCard is not null)
                     SetImage(Character.Name, Character.ImageCard);
             }
-            StateHasChanged();
-
             isLoading = false;
+            StateHasChanged();
         }
         private void SetImage(string type, byte[] image)
         {
