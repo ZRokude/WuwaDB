@@ -25,17 +25,25 @@ namespace WuwaDB.Components.Pages
             isLoading = true;
 
             Characters = await UserRepository.GetToListAsync<Character>();
-            if(Characters.Count > 0 )
-            {
-                foreach (var Character in Characters)
-                {
-                    var Image = await UserRepository.GetDataAsync<Character_ImageCard>(new { CharacterId = Character.Id });
-                    if (Image is not null)
-                        SetImage(Character.Name, Image.Image);
-                }
-            }
             isLoading = false;
             StateHasChanged();
+        }
+
+        protected override async Task OnAfterRenderAsync(bool firstRender)
+        {
+            if (firstRender)
+            {
+                if (Characters.Count > 0)
+                {
+                    foreach (var Character in Characters)
+                    {
+                        var Image = await UserRepository.GetDataAsync<Character_ImageCard>(new { CharacterId = Character.Id });
+                        if (Image is not null)
+                            SetImage(Character.Name, Image.Image);
+                    }
+                }
+                await InvokeAsync(StateHasChanged);
+            }
         }
         private void SetImage(string type, byte[] image)
         {
