@@ -29,9 +29,9 @@
                         for="@MudUploadImageModel.Id" />
             </ButtonTemplate>
             <SelectedTemplate>
-                @if (imageData.ContainsKey(nameof(Character.ImageModel)))
+                @if (imageData.ContainsKey(nameof(CharacterImageModel)))
                 {
-                    @if (imageData.TryGetValue(nameof(Character.ImageModel), out var image))
+                    @if (imageData.TryGetValue(nameof(CharacterImageModel), out var image))
                     {
                         <MudImage Src="@image"/>
                     }
@@ -47,9 +47,9 @@
                         for="@MudUploadImageCard.Id" />
             </ButtonTemplate>
             <SelectedTemplate>
-                @if (imageData.ContainsKey(nameof(Character.ImageCard)))
+                @if (imageData.ContainsKey(nameof(CharacterImageCard)))
                 {
-                    @if (imageData.TryGetValue(nameof(Character.ImageCard), out var image))
+                    @if (imageData.TryGetValue(nameof(CharacterImageCard), out var image))
                     {
                         <MudImage Src="@image"/>
                     }

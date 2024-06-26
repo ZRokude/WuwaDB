@@ -58,9 +58,10 @@ namespace WuwaDB.Components.Pages
                 CharacterSkills = 
                     await UserRepository.GetToListAsync<Character_Skill>(propertyFilter: new 
                     { CharacterId = Character.Id });
-                if (Character.ImageModel is not null)
-                   SetImage(nameof(Character.ImageModel), Character.ImageModel);
-                
+                var CharacterImageModel = await UserRepository.GetDataAsync<Character_ImageModel>(new {CharacterId = Character.Id});
+                if (CharacterImageModel is not null)
+                    SetImage(nameof(CharacterImageModel), CharacterImageModel.Image);
+
             }
             if (CharacterSkills.Count > 0)
             {

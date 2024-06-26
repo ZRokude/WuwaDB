@@ -15,15 +15,28 @@ namespace WuwaDB.Components.MudDialog.CharacterDialog
         [Inject] private AuthenticationStateProvider StateProvider { get; set; }
         [Inject] private NavigationManager navigationManager { get; set; } = default!;
         [Inject] private AdminRepository AdminRepository { get; set; }
+        [Inject] private UserRepository UserRepository { get; set; }
         [Inject] private IWebHostEnvironment HostEnvironment { get; set; }
         [Inject] ISnackbar Snackbar { get; set; }
         [CascadingParameter] MudDialogInstance MudDialog { get; set; }
-        private Character Character { get; set; } = new Character();
+        private Character Character { get; set; } = new();
+        private Character_ImageCard CharacterImageCard { get; set; } = new();
+        private Character_ImageModel CharacterImageModel { get; set;} = new();
         IBrowserFile file;
         private Dictionary<string, string> imageData = new();
         private async Task Submit()
         {
             await AdminRepository.SavesAsync(Character);
+            var checkCharacterImageCard = await UserRepository.GetDataAsync<Character_ImageCard>(new {CharacterId = Character.Id});
+            var checkCharacterImageModel = await UserRepository.GetDataAsync<Character_ImageModel>(new {CharacterId = Character.Id});
+            if (checkCharacterImageCard != null)
+                await AdminRepository.UpdatesAsync(CharacterImageCard);
+            else
+                await AdminRepository.SavesAsync(CharacterImageCard);
+            if(checkCharacterImageModel is not null)
+                await AdminRepository.UpdatesAsync(CharacterImageModel);
+            else
+                await AdminRepository.SavesAsync(CharacterImageModel);
             StateHasChanged();
             MudDialog.Close(DialogResult.Ok(true));
         }
@@ -31,12 +44,15 @@ namespace WuwaDB.Components.MudDialog.CharacterDialog
         private async void GetImage(string type, byte[] imageBytes)
         {
             string imageSrc = Convert.ToBase64String(imageBytes);
-            imageData.TryAdd(type, string.Format("data:image/jpeg;base64,{0}", imageSrc));
+            if (!imageData.ContainsKey(type))
+                imageData.TryAdd(type, string.Format("data:image/jpeg;base64,{0}", imageSrc));
+            else
+                imageData[type] = imageSrc;
         }
         private async void OnChangedImageModel(InputFileChangeEventArgs e) =>
-            await OnFilesChanged(e, nameof(Character.ImageModel));
+            await OnFilesChanged(e, nameof(CharacterImageModel));
         private async void OnChangedImageCard(InputFileChangeEventArgs e) =>
-            await OnFilesChanged(e, nameof(Character.ImageCard));
+            await OnFilesChanged(e, nameof(CharacterImageCard));
         private async Task OnFilesChanged(InputFileChangeEventArgs e, string propertyName)
         {
             file = e.File;
