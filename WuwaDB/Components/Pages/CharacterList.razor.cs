@@ -16,14 +16,12 @@ namespace WuwaDB.Components.Pages
         [Inject] private NavigationManager navigationManager { get; set; } = default!;
         [Inject] private UserRepository UserRepository { get; set; }
         private List<Character> Characters { get; set; } = new();
-
-        private Dictionary<string, string> imageCard = new();
+        private List<Character_ImageCard> CharacterImageCards { get; set; } = new();
 
         private bool isLoading = false;
-        protected override async void OnInitialized()
+        protected override async Task OnInitializedAsync()
         {
             isLoading = true;
-
             Characters = await UserRepository.GetToListAsync<Character>();
             isLoading = false;
             StateHasChanged();
@@ -33,23 +31,17 @@ namespace WuwaDB.Components.Pages
         {
             if (firstRender)
             {
-                if (Characters.Count > 0)
-                {
-                    foreach (var Character in Characters)
-                    {
-                        var Image = await UserRepository.GetDataAsync<Character_ImageCard>(new { CharacterId = Character.Id });
-                        if (Image is not null)
-                            SetImage(Character.Name, Image.Image);
-                    }
-                }
-                await InvokeAsync(StateHasChanged);
+                CharacterImageCards = await UserRepository.GetToListAsync<Character_ImageCard>();
+                StateHasChanged() ;
             }
         }
-        private void SetImage(string type, byte[] image)
+        private string SetImage(byte[]? image = null)
         {
-            string imageSrc = Convert.ToBase64String(image);
+            string imageSrc = "";
+            if (image is not null)
+                imageSrc = Convert.ToBase64String(image);
             string imageString = string.Format("data:image/jpeg;base64,{0}", imageSrc);
-            imageCard.TryAdd(type, imageString);
+            return imageString;
         }
         string GetWeaponImage(WeaponType weaponType)
         {
