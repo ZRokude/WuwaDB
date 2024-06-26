@@ -25,10 +25,14 @@ namespace WuwaDB.Components.Pages
             isLoading = true;
 
             Characters = await UserRepository.GetToListAsync<Character>();
-            foreach(var Character in Characters)
+            if(Characters.Count > 0 )
             {
-                if(Character.ImageCard is not null)
-                    SetImage(Character.Name, Character.ImageCard);
+                foreach (var Character in Characters)
+                {
+                    var Image = await UserRepository.GetDataAsync<Character_ImageCard>(new { CharacterId = Character.Id });
+                    if (Image is not null)
+                        SetImage(Character.Name, Image.Image);
+                }
             }
             isLoading = false;
             StateHasChanged();
