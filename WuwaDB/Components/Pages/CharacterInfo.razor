@@ -84,6 +84,14 @@
                                     </MudToolBar>
                                     <MudStack Justify="Justify.Center" AlignItems="AlignItems.Center">
                                         <MudCollapse Expanded="@IsCollapsed(skillType)">
+                                            @if(!string.IsNullOrEmpty(CharacterSkill.Description))
+                                            {
+                                                <MudText Align="Align.Center" @key="@CharacterSkill.Description" Style="color:#cfcfcf;">
+                                                    <MudHighlighter HighlightedTexts="highLightedTexts" UntilNextBoundary="true"
+                                                                    Text="@CharacterSkill.Description"
+                                                                    Style="@colorHighLight" Class="highlight-description" />
+                                                </MudText>
+                                            }
                                             @if (SkillInfo(skillType) == true)
                                             {
                                                 var type = CharacterSkills.FirstOrDefault(x => x.Type == skillType);
