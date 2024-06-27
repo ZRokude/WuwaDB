@@ -49,7 +49,10 @@ namespace WuwaDB.Components.MudDialog.CharacterDialog
         private async void SetImage(string type, byte[] imageBytes)
         {
             string imageSrc = Convert.ToBase64String(imageBytes);
-            imageData.TryAdd(type, string.Format("data:image/jpeg;base64,{0}", imageSrc));
+            if (!imageData.ContainsKey(type))
+                imageData.TryAdd(type, string.Format("data:image/jpeg;base64,{0}", imageSrc));
+            else
+                imageData[type] = imageSrc;
         }
 
         private async void OnChangedImageModel(InputFileChangeEventArgs e) =>

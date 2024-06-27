@@ -27,32 +27,48 @@ namespace WuwaDB.Components.MudDialog.CharacterDialog
         private Dictionary<string, string> imageData = new();
         private async Task Submit()
         {
+            await AdminRepository.SavesAsync(Character);
             foreach (var image in imageData)
             {
-                string fileName = image.Key + Character.Name;
                 string folderName = image.Key.Replace("CharacterImage", string.Empty);
+                string fileName = $"{folderName}_{Character.Name}.png";
                 var path = Path.Combine(HostEnvironment.WebRootPath, "Character", folderName, fileName);
+                Directory.CreateDirectory(Path.GetDirectoryName(path));
                 var base64Data = image.Value.Replace("data:image/jpeg;base64,", string.Empty)
                                                   .Replace("data:image/png;base64,", string.Empty);
                 byte[] imageBytes = Convert.FromBase64String(base64Data);
                 await File.WriteAllBytesAsync(path, imageBytes);
             }
-            await AdminRepository.SavesAsync(Character);
-            var checkCharacterImageCard = await UserRepository.GetDataAsync<Character_ImageCard>(new {CharacterId = Character.Id});
-            var checkCharacterImageModel = await UserRepository.GetDataAsync<Character_ImageModel>(new {CharacterId = Character.Id});
-            if (checkCharacterImageCard != null)
-                await AdminRepository.UpdatesAsync(CharacterImageCard);
-            else
-                await AdminRepository.SavesAsync(CharacterImageCard);
-            if(checkCharacterImageModel is not null)
-                await AdminRepository.UpdatesAsync(CharacterImageModel);
-            else
-                await AdminRepository.SavesAsync(CharacterImageModel);
+            
+            if (imageData.TryGetValue(nameof(CharacterImageCard), out var imageCard))
+            {
+                var base64String = imageCard.Replace("data:image/jpeg;base64,", string.Empty);
+                CharacterImageCard.CharacterId = Character.Id;
+                CharacterImageCard.Image = Convert.FromBase64String(base64String);
+                var check = await UserRepository.GetDataAsync<Character_ImageCard>(new { CharacterId = Character.Id });
+                if (check is not null)
+                    await AdminRepository.UpdatesAsync(CharacterImageCard);
+                else
+                    await AdminRepository.SavesAsync(CharacterImageCard);
+
+            }
+            if (imageData.TryGetValue(nameof(CharacterImageModel), out var imageModel))
+            {
+                var base64String = imageModel.Replace("data:image/jpeg;base64,", string.Empty);
+                CharacterImageModel.CharacterId = Character.Id;
+                CharacterImageModel.Image = Convert.FromBase64String(base64String);
+                var check = await UserRepository.GetDataAsync<Character_ImageModel>(new { CharacterId = Character.Id });
+                if (check is not null)
+                    await AdminRepository.UpdatesAsync(CharacterImageModel);
+                else
+                    await AdminRepository.SavesAsync(CharacterImageModel);
+
+            }
             StateHasChanged();
             MudDialog.Close(DialogResult.Ok(true));
         }
         private void Cancel() => MudDialog.Cancel();
-        private async void GetImage(string type, byte[] imageBytes)
+        private async void SetImage(string type, byte[] imageBytes)
         {
             string imageSrc = Convert.ToBase64String(imageBytes);
             if (!imageData.ContainsKey(type))
@@ -61,9 +77,9 @@ namespace WuwaDB.Components.MudDialog.CharacterDialog
                 imageData[type] = imageSrc;
         }
         private async void OnChangedImageModel(InputFileChangeEventArgs e) =>
-            await OnFilesChanged(e, nameof(CharacterImageModel) + Character.Name);
+            await OnFilesChanged(e, nameof(CharacterImageModel));
         private async void OnChangedImageCard(InputFileChangeEventArgs e) =>
-            await OnFilesChanged(e, nameof(CharacterImageCard) + Character.Name);
+            await OnFilesChanged(e, nameof(CharacterImageCard));
         private async Task OnFilesChanged(InputFileChangeEventArgs e, string propertyName)
         {
             file = e.File;
@@ -80,10 +96,7 @@ namespace WuwaDB.Components.MudDialog.CharacterDialog
                     using (var stream = new MemoryStream())
                     {
                         await fileRead.CopyToAsync(stream);
-                        var propertyInfo = typeof(Character).GetProperty(propertyName);
-                        propertyInfo.SetValue(Character, stream.ToArray());
-                        var propertyValue = propertyInfo.GetValue(Character) as byte[];
-                        GetImage(propertyName, propertyValue);
+                        SetImage(propertyName, stream.ToArray());
                     }
                 }
                 else
