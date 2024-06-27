@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.EntityFrameworkCore.Migrations.Operations;
 using MudBlazor;
@@ -17,6 +18,8 @@ namespace WuwaDB.Components.MudDialog.CharacterDialog
         [CascadingParameter] MudDialogInstance MudDialog { get; set; }
         [Parameter] public Guid CharacterId { get; set; }
         public Character Character { get; set; } = new();
+        public Character_ImageModel CharacterImageModel { get; set; } = new();
+        public Character_ImageCard  CharacterImageCard { get; set; }=new();
         private IBrowserFile file;
         private Dictionary<string, string> imageData = new();
         protected override async void OnInitialized()
@@ -24,10 +27,20 @@ namespace WuwaDB.Components.MudDialog.CharacterDialog
             Character = await UserRepository.GetDataAsync<Character>(new { Id = CharacterId });
             if (Character is not null)
             {
-                if (Character.ImageCard is not null)
-                    SetImage(nameof(Character.ImageCard), Character.ImageCard);
-                if (Character.ImageModel is not null)
-                    SetImage(nameof(Character.ImageModel), Character.ImageModel);
+                 var checkCharacterImageCard = await UserRepository.GetDataAsync<Character_ImageCard>(new { CharacterId = CharacterId });
+                 var checkCharacterImageModel = await UserRepository.GetDataAsync<Character_ImageModel>(new { CharacterId = CharacterId });
+                if (checkCharacterImageCard is not null)
+                {
+                    CharacterImageCard = checkCharacterImageCard;
+                    SetImage(nameof(CharacterImageCard), CharacterImageCard.Image);
+                }
+                    
+                if (checkCharacterImageModel is not null)
+                {
+                    CharacterImageModel = checkCharacterImageModel;
+                    SetImage(nameof(CharacterImageModel), CharacterImageModel.Image);
+                }
+                    
             }
             StateHasChanged();
         }
@@ -39,9 +52,9 @@ namespace WuwaDB.Components.MudDialog.CharacterDialog
         }
 
         private async void OnChangedImageModel(InputFileChangeEventArgs e) =>
-            await OnFilesChanged(e, nameof(Character.ImageModel));
+            await OnFilesChanged(e, nameof(CharacterImageModel));
         private async void OnChangedImageCard(InputFileChangeEventArgs e) =>
-            await OnFilesChanged(e, nameof(Character.ImageCard));
+            await OnFilesChanged(e, nameof(CharacterImageCard));
         private async Task OnFilesChanged(InputFileChangeEventArgs e, string propertyName)
         {
             file = e.File;
@@ -58,10 +71,11 @@ namespace WuwaDB.Components.MudDialog.CharacterDialog
                     using (var stream = new MemoryStream())
                     {
                         await fileRead.CopyToAsync(stream);
-                        var propertyInfo = typeof(Character).GetProperty(propertyName);
-                        propertyInfo.SetValue(Character, stream.ToArray());
-                        var propertyValue = propertyInfo.GetValue(Character) as byte[];
-                        SetImage(propertyName, propertyValue);
+                        var imageData = stream.ToArray();
+                        //var propertyInfo = typeof(T).GetProperty("Image");
+                        //propertyInfo.SetValue(typeof(T), stream.ToArray());
+                        //var propertyValue = propertyInfo.GetValue(typeof(T)) as byte[];
+                        SetImage(propertyName, imageData);
                     }
                 }
                 else
@@ -72,6 +86,30 @@ namespace WuwaDB.Components.MudDialog.CharacterDialog
         }
         private async Task UpdateCharacter()
         {
+            if (imageData.TryGetValue(nameof(CharacterImageCard), out var imageCard))
+            {
+                var base64String = imageCard.Replace("data:image/jpeg;base64,", string.Empty);
+                CharacterImageCard.CharacterId = Character.Id;
+                CharacterImageCard.Image = Convert.FromBase64String(base64String);
+                var check = await UserRepository.GetDataAsync<Character_ImageCard>(new { CharacterId = Character.Id });
+                if (check is not null)
+                    await AdminRepository.UpdatesAsync(CharacterImageCard);
+                else 
+                    await AdminRepository.SavesAsync(CharacterImageCard);
+
+            }
+            if (imageData.TryGetValue(nameof(CharacterImageModel), out var imageModel))
+            {
+                var base64String = imageModel.Replace("data:image/jpeg;base64,", string.Empty);
+                CharacterImageModel.CharacterId = Character.Id;
+                CharacterImageModel.Image = Convert.FromBase64String(base64String);
+                var check = await UserRepository.GetDataAsync<Character_ImageModel>(new { CharacterId = Character.Id });
+                if (check is not null)
+                    await AdminRepository.UpdatesAsync(CharacterImageModel);
+                else
+                    await AdminRepository.SavesAsync(CharacterImageModel);
+                
+            }
             await AdminRepository.UpdatesAsync(Character);
             StateHasChanged();
             MudDialog.Close(DialogResult.Ok(true));

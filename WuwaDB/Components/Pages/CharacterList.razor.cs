@@ -3,6 +3,7 @@ using System.Runtime.InteropServices.JavaScript;
 using System.Xml;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.Extensions.Caching.Memory;
 using MudBlazor;
 using WuwaDB.DBAccess.Entities.Character;
 using WuwaDB.DBAccess.Enum;
@@ -15,29 +16,34 @@ namespace WuwaDB.Components.Pages
         [Inject] private AuthenticationStateProvider StateProvider { get; set; }
         [Inject] private NavigationManager navigationManager { get; set; } = default!;
         [Inject] private UserRepository UserRepository { get; set; }
+        [Inject] IMemoryCache MemoryCache { get; set; }
         private List<Character> Characters { get; set; } = new();
-
-        private Dictionary<string, string> imageCard = new();
+        private List<Character_ImageCard> CharacterImageCards { get; set; } = new();
 
         private bool isLoading = false;
-        protected override async void OnInitialized()
+        protected override async Task OnInitializedAsync()
         {
             isLoading = true;
-
             Characters = await UserRepository.GetToListAsync<Character>();
-            foreach(var Character in Characters)
-            {
-                if(Character.ImageCard is not null)
-                    SetImage(Character.Name, Character.ImageCard);
-            }
             isLoading = false;
             StateHasChanged();
         }
-        private void SetImage(string type, byte[] image)
+
+        protected override async Task OnAfterRenderAsync(bool firstRender)
         {
-            string imageSrc = Convert.ToBase64String(image);
+            if (firstRender)
+            {
+                CharacterImageCards = await UserRepository.GetToListAsync<Character_ImageCard>();
+                StateHasChanged() ;
+            }
+        }
+        private string SetImage(byte[]? image = null)
+        {
+            string imageSrc = "";
+            if (image is not null)
+                imageSrc = Convert.ToBase64String(image);
             string imageString = string.Format("data:image/jpeg;base64,{0}", imageSrc);
-            imageCard.TryAdd(type, imageString);
+            return imageString;
         }
         string GetWeaponImage(WeaponType weaponType)
         {

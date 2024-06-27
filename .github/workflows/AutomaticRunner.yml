@@ -1,0 +1,49 @@
+# This workflow will build a .NET project
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
+
+name: .NET
+
+on:
+  push:
+    branches: [ "Dev" ]
+  pull_request:
+    branches: [ "Dev" ]
+permissions: write-all 
+jobs:
+  build:
+    runs-on: self-hosted
+    steps:
+      # - name: Checkout Repository
+      #   uses: actions/checkout@v3
+
+      - name: Stop IIS Website
+        run: Stop-Website -Name wuwadanjin
+        shell: powershell
+      # - name: IIS Server Stop
+      #   run: |
+      #         Start-Process -FilePath "powershell.exe" -ArgumentList "-Command `"Stop-Website -Name 'wuwadanjin'`"" -Verb RunAs
+        # - name: IIS Server Start
+        #   run: |
+        #          Start-Process powershell 
+        #          -ArgumentList "Import-Module WebAdministration; 
+        #          Stop-Website -Name 'wuwadanjin'" -Verb RunAs -Wait
+      # - name: Update Database
+      #   run: dotnet ef database update --project WuwaDB.DBAccess --startup-project WuwaDB
+      # - name: Publish
+      #   run: |
+      #         dotnet publish "C:/inetpub/wwwroot/Wuwadanjin/WuwaDB/WuwaDB/WuwaDB.csproj" -c Release -o C:/inetpub/wwwroot/Wuwadanjin/Publish2
+    # steps:
+    # - uses: actions/checkout@v4
+    # - name: Setup .NET
+    #   uses: actions/setup-dotnet@v4
+    #   with:
+    #     dotnet-version: 8.0.x
+    # - name: Restore dependencies
+    #   run: dotnet restore
+    # - name: Build
+    #   run: dotnet build --no-restore
+    # - name: Test
+    #   run: dotnet test --no-build --verbosity normal
+    # - name: Update Database
+    #   run: dotnet ef database update --project WuwaDB.DBAccess --startup-project WuwaDB
+    # - name: Publish

@@ -1,5 +1,6 @@
 ﻿@page "/Character/List"
 @using System.Diagnostics.Eventing.Reader
+@rendermode InteractiveAuto
 
 <PageTitle>Character List</PageTitle>
 
@@ -15,7 +16,7 @@
                         <MudItem xl="2" xxl="2" xs="8" sm="4" md="3" lg="2">
                             <MudLink Class="hover-effect" Href="@($"/Character/{Character.Name}")">
                                 <MudCard Style="background-color:transparent;" Class="expand-hover" Elevation="15">
-                                    <MudCardMedia Height="250" Image="@((imageCard.GetValueOrDefault(Character.Name)))"></MudCardMedia>
+                                    <MudCardMedia Height="250" Image="@(SetImage(CharacterImageCards?.FirstOrDefault(x=>x.CharacterId == Character.Id)?.Image))"></MudCardMedia>
                                     <MudCardContent Class="p-0 text-center">
                                         <MudStack Justify="Justify.Center" Spacing="0">
                                             <MudStack Row="true" Justify="Justify.Center" Wrap="Wrap.Wrap" AlignItems="AlignItems.Center">

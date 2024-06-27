@@ -17,7 +17,7 @@
                 </Authorized>
             </Microsoft.AspNetCore.Components.Authorization.AuthorizeView>
             <div class="fixed-image-container character-card-container">
-                <MudCardMedia Image="@(imageData.GetValueOrDefault(nameof(Character.ImageModel)))" Class="character-card bg-color-transparent"/>
+                <MudCardMedia Image="@(imageData.GetValueOrDefault("CharacterImageModel"))" Class="character-card bg-color-transparent"/>
             </div>
             <MudGrid Class="justify-mud-grid" Spacing="0">
                 <MudItem>
