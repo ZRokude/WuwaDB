@@ -22,14 +22,20 @@ namespace WuwaDB.Components.MudDialog.CharacterDialog
         private Character Character { get; set; } = new();
         private Character_ImageCard CharacterImageCard { get; set; } = new();
         private Character_ImageModel CharacterImageModel { get; set;} = new();
-        IBrowserFile file;
+        IBrowserFile file; 
+        IBrowserFile fileCopy;
         private Dictionary<string, string> imageData = new();
         private async Task Submit()
         {
             foreach (var image in imageData)
             {
-                string fileName = image.Key;
-
+                string fileName = image.Key + Character.Name;
+                string folderName = image.Key.Replace("CharacterImage", string.Empty);
+                var path = Path.Combine(HostEnvironment.WebRootPath, "Character", folderName, fileName);
+                var base64Data = image.Value.Replace("data:image/jpeg;base64,", string.Empty)
+                                                  .Replace("data:image/png;base64,", string.Empty);
+                byte[] imageBytes = Convert.FromBase64String(base64Data);
+                await File.WriteAllBytesAsync(path, imageBytes);
             }
             await AdminRepository.SavesAsync(Character);
             var checkCharacterImageCard = await UserRepository.GetDataAsync<Character_ImageCard>(new {CharacterId = Character.Id});
@@ -55,9 +61,9 @@ namespace WuwaDB.Components.MudDialog.CharacterDialog
                 imageData[type] = imageSrc;
         }
         private async void OnChangedImageModel(InputFileChangeEventArgs e) =>
-            await OnFilesChanged(e, nameof(CharacterImageModel));
+            await OnFilesChanged(e, nameof(CharacterImageModel) + Character.Name);
         private async void OnChangedImageCard(InputFileChangeEventArgs e) =>
-            await OnFilesChanged(e, nameof(CharacterImageCard));
+            await OnFilesChanged(e, nameof(CharacterImageCard) + Character.Name);
         private async Task OnFilesChanged(InputFileChangeEventArgs e, string propertyName)
         {
             file = e.File;

@@ -15,6 +15,7 @@ namespace WuwaDB.Components.MudDialog.CharacterDialog
         [Inject] AdminRepository AdminRepository { get; set; }
         [Inject] UserRepository UserRepository { get; set; }
         [Inject] ISnackbar Snackbar { get; set; }
+        [Inject] IWebHostEnvironment HostEnvironment { get; set; }
         [CascadingParameter] MudDialogInstance MudDialog { get; set; }
         [Parameter] public Guid CharacterId { get; set; }
         public Character Character { get; set; } = new();
@@ -109,6 +110,16 @@ namespace WuwaDB.Components.MudDialog.CharacterDialog
                 else
                     await AdminRepository.SavesAsync(CharacterImageModel);
                 
+            }
+            foreach (var image in imageData)
+            {
+                string folderName = image.Key.Replace("CharacterImage", string.Empty);
+                string fileName = $"{folderName}_{Character.Name}.png";
+                var path = Path.Combine(HostEnvironment.WebRootPath, "Character", folderName, fileName);
+                var base64Data = image.Value.Replace("data:image/jpeg;base64,", string.Empty)
+                    .Replace("data:image/png;base64,", string.Empty);
+                byte[] imageBytes = Convert.FromBase64String(base64Data);
+                await File.WriteAllBytesAsync(path, imageBytes);
             }
             await AdminRepository.UpdatesAsync(Character);
             StateHasChanged();
