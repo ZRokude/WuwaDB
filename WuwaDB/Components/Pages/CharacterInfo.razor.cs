@@ -71,15 +71,15 @@ namespace WuwaDB.Components.Pages
                 CharacterSkillDetails =
                     await UserRepository.GetToListAsync<Character_Skill_Detail>
                     (new {CharacterId = Character.Id}, new string[] {"Character_Skill"});
-                foreach (var CharacterSkill in CharacterSkills)
-                {
-                    if (CharacterSkill.ImageFile is not null)
-                    {
-                        var skillValue = Enum.GetName(typeof(SkillType), CharacterSkill.Type);
-                        SetImage(skillValue, CharacterSkill.ImageFile);
-                    }
+                //foreach (var CharacterSkill in CharacterSkills)
+                //{
+                //    if (CharacterSkill.ImageFile is not null)
+                //    {
+                //        var skillValue = Enum.GetName(typeof(SkillType), CharacterSkill.Type);
+                //        SetImage(skillValue, CharacterSkill.ImageFile);
+                //    }
                       
-                }
+                //}
 
             }
             if (CharacterSkillDetails.Count > 0)
@@ -212,7 +212,8 @@ namespace WuwaDB.Components.Pages
             string imageString = string.Format("data:image/jpeg;base64,{0}", imageSrc);
             imageData.TryAdd(type, imageString);
         }
-
+        private string GetImageSkillRoot(string CharacterName, string SkillName) => $"Character/SkillIcon/{CharacterName}/{SkillName}.png";
+        private string GetImageModelRoot (string Name) => $"Character/Model/Model_{Name}.png";
         private void LevelChanged(string value)
         {
             int Level = Convert.ToInt16(value) - 1;

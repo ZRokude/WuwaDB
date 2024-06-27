@@ -116,6 +116,7 @@ namespace WuwaDB.Components.MudDialog.CharacterDialog
                 string folderName = image.Key.Replace("CharacterImage", string.Empty);
                 string fileName = $"{folderName}_{Character.Name}.png";
                 var path = Path.Combine(HostEnvironment.WebRootPath, "Character", folderName, fileName);
+                Directory.CreateDirectory(Path.GetDirectoryName(path));
                 var base64Data = image.Value.Replace("data:image/jpeg;base64,", string.Empty)
                     .Replace("data:image/png;base64,", string.Empty);
                 byte[] imageBytes = Convert.FromBase64String(base64Data);
