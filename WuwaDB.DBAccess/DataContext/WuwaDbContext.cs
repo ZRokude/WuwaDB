@@ -72,19 +72,23 @@ namespace WuwaDB.DBAccess.DataContext
             modelBuilder.Entity<Character_Skill_Detail>()
                 .HasOne(c => c.Character_Skill)
                 .WithMany(u => u.Character_Skill_Details)
-                .HasForeignKey(c => c.CharacterSkillId);
+                .HasForeignKey(c => c.CharacterSkillId)
+                .OnDelete(DeleteBehavior.Cascade);
             modelBuilder.Entity<Character_Skill_Detail_Number>()
                 .HasOne(c => c.Character_Skill_Detail)
                 .WithMany(u => u.Character_Skill_Detail_Numbers)
-                .HasForeignKey(c => c.CharacterSkillDetailId);
+                .HasForeignKey(c => c.CharacterSkillDetailId)
+                .OnDelete(DeleteBehavior.Cascade);
             modelBuilder.Entity<Character_Skill_Description>()
                 .HasOne(c => c.Character_Skill)
                 .WithMany(u => u.Character_Skill_Descriptions)
-                .HasForeignKey(c => c.CharacterSkillId);
+                .HasForeignKey(c => c.CharacterSkillId)
+                .OnDelete(DeleteBehavior.Cascade);
             modelBuilder.Entity<Character_Skill>()
-                .HasOne(c=>c.Character)
-                .WithMany(u=>u.CharacterSkills)
-                .HasForeignKey(c => c.CharacterId);
+                .HasOne(c => c.Character)
+                .WithMany(u => u.CharacterSkills)
+                .HasForeignKey(c => c.CharacterId)
+                .OnDelete(DeleteBehavior.Cascade);
             modelBuilder.Entity<Monster_Stats_Base>()
                 .HasOne(c => c.Monster)
                 .WithMany(u => u.MonsterStatBases)
@@ -96,17 +100,20 @@ namespace WuwaDB.DBAccess.DataContext
             modelBuilder.Entity<Character_ImageCard>()
                 .HasOne(c => c.Character)
                 .WithMany(u => u.CharacterImageCards)
-                .HasForeignKey(c => c.CharacterId);
+                .HasForeignKey(c => c.CharacterId)
+                .OnDelete(DeleteBehavior.Cascade);
             modelBuilder.Entity<Character_ImageModel>()
                .HasOne(c => c.Character)
                .WithMany(u => u.CharacterImageModels)
-               .HasForeignKey(c => c.CharacterId);
+               .HasForeignKey(c => c.CharacterId)
+               .OnDelete(DeleteBehavior.Cascade);
             modelBuilder.Entity<Character_Skill_Image>()
                 .HasOne(c => c.CharacterSkill)
                 .WithMany(u => u.CharacterSkillImages)
-                .HasForeignKey(c => c.CharacterSkillId);
-            
-           modelBuilder.Entity<Character_Skill_Detail_Number>()
+                .HasForeignKey(c => c.CharacterSkillId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Character_Skill_Detail_Number>()
                 .HasKey(c => new { c.CharacterSkillDetailId, c.Level });
             modelBuilder.Entity<Character_Skill_Description>()
                 .HasKey(c => new { c.CharacterSkillId, c.DescriptionTitle });

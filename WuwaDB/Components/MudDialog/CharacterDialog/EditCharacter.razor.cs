@@ -12,6 +12,7 @@ namespace WuwaDB.Components.MudDialog.CharacterDialog
         [CascadingParameter] MudDialogInstance MudDialog { get; set; }
         [Parameter] public Guid CharacterId { get; set; }
         [Inject] private IDialogService DialogService { get; set; }
+        [Inject] ISnackbar Snackbar { get; set; }
 
         private void OpenDialogStats() => OpenDialogEditStat();
         private void OpenDialogBasicAttack() => OpenDialogSkill(SkillType.Basic_Attack);
@@ -55,5 +56,18 @@ namespace WuwaDB.Components.MudDialog.CharacterDialog
                 MudDialog.Close(DialogResult.Ok(true));
         }
         private void Cancel() => MudDialog.Close(DialogResult.Cancel());
+
+        private async void OpenDialogDeleteAllCharacterInfo()
+        {
+            var options = new DialogOptions { CloseOnEscapeKey = true, CloseButton = true };
+            var parameters = new DialogParameters<DeleteCharacter>();
+            parameters.Add(x =>x.CharacterId, CharacterId);
+            var dialog = await DialogService.ShowAsync<DeleteCharacter>("Delete Character", parameters, options);
+            var result = await dialog.Result;
+            if(!result.Cancelled)
+            {
+                Snackbar.Add("Delete Successful", Severity.Success, config => { config.HideIcon = true; }); 
+            }
+        }
     }
 }

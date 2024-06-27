@@ -42,6 +42,15 @@ namespace WuwaDB.DBAccess.Repository
             context.Entry(entity).State = EntityState.Modified;
             await context.SaveChangesAsync();
         }
+        public async Task DeletAsync<T>(object propertyFilter) where T : class
+        {
+            await using WuwaDbContext context = await _context.CreateDbContextAsync();
+            IQueryable<T> query = context.Set<T>();
+            var lambdaProperty = ShareRepository.GetObjectAsExpression<T>(propertyFilter);
+            var where = await query.Where(lambdaProperty).ToListAsync();
+            context.RemoveRange(where);  
+            await context.SaveChangesAsync();
+        }
         public async Task CreateUserDataAsync(string username, string password, string role, string[] additionalProp)
         {
             int i = 0;
@@ -98,5 +107,6 @@ namespace WuwaDB.DBAccess.Repository
             await context.AddAsync(account);
             await context.SaveChangesAsync();
         }
+
     }
 }
