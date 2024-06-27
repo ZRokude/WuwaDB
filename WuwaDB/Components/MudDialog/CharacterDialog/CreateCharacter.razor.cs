@@ -23,6 +23,11 @@ namespace WuwaDB.Components.MudDialog.CharacterDialog
         private Dictionary<string, string> imageData = new();
         private async Task Submit()
         {
+            foreach (var image in imageData)
+            {
+                string fileName = image.Key;
+
+            }
             await AdminRepository.SavesAsync(Character);
             StateHasChanged();
             MudDialog.Close(DialogResult.Ok(true));
@@ -34,9 +39,9 @@ namespace WuwaDB.Components.MudDialog.CharacterDialog
             imageData.TryAdd(type, string.Format("data:image/jpeg;base64,{0}", imageSrc));
         }
         private async void OnChangedImageModel(InputFileChangeEventArgs e) =>
-            await OnFilesChanged(e, nameof(Character.ImageModel));
+            await OnFilesChanged(e, nameof(Character.ImageModel) + Character.Name);
         private async void OnChangedImageCard(InputFileChangeEventArgs e) =>
-            await OnFilesChanged(e, nameof(Character.ImageCard));
+            await OnFilesChanged(e, nameof(Character.ImageCard) + Character.Name);
         private async Task OnFilesChanged(InputFileChangeEventArgs e, string propertyName)
         {
             file = e.File;

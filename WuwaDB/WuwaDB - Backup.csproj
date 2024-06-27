@@ -30,10 +30,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\Character\Card\" />
-    <Folder Include="wwwroot\Character\Model\" />
     <Folder Include="wwwroot\Character_Icon\" />
     <Folder Include="wwwroot\Font\Arsenal\" />
+    <Folder Include="wwwroot\NewFolder\" />
   </ItemGroup>
 
 </Project>
