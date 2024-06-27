@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Reflection.Metadata.Ecma335;
 using System.Runtime.InteropServices.JavaScript;
 using System.Xml;
 using Microsoft.AspNetCore.Components;
@@ -29,22 +30,23 @@ namespace WuwaDB.Components.Pages
             StateHasChanged();
         }
 
-        protected override async Task OnAfterRenderAsync(bool firstRender)
-        {
-            if (firstRender)
-            {
-                CharacterImageCards = await UserRepository.GetToListAsync<Character_ImageCard>();
-                StateHasChanged() ;
-            }
-        }
-        private string SetImage(byte[]? image = null)
-        {
-            string imageSrc = "";
-            if (image is not null)
-                imageSrc = Convert.ToBase64String(image);
-            string imageString = string.Format("data:image/jpeg;base64,{0}", imageSrc);
-            return imageString;
-        }
+        private string GetImageRoot(string Name) => $"Character/Card/Card_{Name}.png";
+        //protected override async Task OnAfterRenderAsync(bool firstRender)
+        //{
+        //    if (firstRender)
+        //    {
+        //        CharacterImageCards = await UserRepository.GetToListAsync<Character_ImageCard>();
+        //        StateHasChanged();
+        //    }
+        //}
+        //private string SetImage(byte[]? image = null)
+        //{
+        //    string imageSrc = "";
+        //    if (image is not null)
+        //        imageSrc = Convert.ToBase64String(image);
+        //    string imageString = string.Format("data:image/jpeg;base64,{0}", imageSrc);
+        //    return imageString;
+        //}
         string GetWeaponImage(WeaponType weaponType)
         {
             switch (weaponType)
