@@ -31,6 +31,8 @@ namespace WuwaDB.Components.Pages
         }
 
         private string GetImageRoot(string Name) => $"Character/Card/Card_{Name}.png";
+
+        private string GetRarity(RarityType rarity) => rarity.ToString();
         //protected override async Task OnAfterRenderAsync(bool firstRender)
         //{
         //    if (firstRender)

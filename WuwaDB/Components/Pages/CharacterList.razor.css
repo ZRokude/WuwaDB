@@ -11,10 +11,17 @@
         text-decoration: none;
         -webkit-transform: scale(1.2);
         transform: scale(1.2);
-        box-shadow: 0 0 10px #ffcc00;
         transform: scale(1.05);
-        background-color: rgba(255, 204, 0, 0.5) !important;
+        
     }
+::deep .SSR:hover {
+    background-color: rgba(255, 204, 0, 0.5) !important;
+    box-shadow: 0 0 10px #ffcc00;
+}
+::deep .SR:hover {
+    background-color: rgba(148, 58, 172, 0.5) !important;
+    box-shadow: 0 0 10px #943aac80;
+}
 ::deep .character-card {
     width: 100% !important;
     height: 100% !important;

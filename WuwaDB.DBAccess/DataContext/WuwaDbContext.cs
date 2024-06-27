@@ -101,6 +101,10 @@ namespace WuwaDB.DBAccess.DataContext
                .HasOne(c => c.Character)
                .WithMany(u => u.CharacterImageModels)
                .HasForeignKey(c => c.CharacterId);
+            modelBuilder.Entity<Character_Skill_Image>()
+                .HasOne(c => c.CharacterSkill)
+                .WithMany(u => u.CharacterSkillImages)
+                .HasForeignKey(c => c.CharacterSkillId);
             
            modelBuilder.Entity<Character_Skill_Detail_Number>()
                 .HasKey(c => new { c.CharacterSkillDetailId, c.Level });
@@ -112,7 +116,9 @@ namespace WuwaDB.DBAccess.DataContext
                 .HasKey(c => c.CharacterId);
             modelBuilder.Entity<Character_ImageModel>()
                 .HasKey(c => c.CharacterId);
-            
+            modelBuilder.Entity<Character_Skill_Image>()
+                .HasKey(c => new { c.CharacterSkillId, c.Type });
+
         }
 
     }
