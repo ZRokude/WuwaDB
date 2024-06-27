@@ -3,6 +3,7 @@ using System.Runtime.InteropServices.JavaScript;
 using System.Xml;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.Extensions.Caching.Memory;
 using MudBlazor;
 using WuwaDB.DBAccess.Entities.Character;
 using WuwaDB.DBAccess.Enum;
@@ -15,6 +16,7 @@ namespace WuwaDB.Components.Pages
         [Inject] private AuthenticationStateProvider StateProvider { get; set; }
         [Inject] private NavigationManager navigationManager { get; set; } = default!;
         [Inject] private UserRepository UserRepository { get; set; }
+        [Inject] IMemoryCache MemoryCache { get; set; }
         private List<Character> Characters { get; set; } = new();
         private List<Character_ImageCard> CharacterImageCards { get; set; } = new();
 
