@@ -21,6 +21,7 @@ namespace WuwaDB.Components.MudDialog.CharacterDialog
         [Inject] private IDialogService DialogService { get; set; }
         [Inject] IWebHostEnvironment HostEnvironment { get; set; }
         private Character_Skill CharacterSkill { get; set; } = new();
+        private Character_Skill_Image CharacterSkillImage { get; set; } = new();
         private Guid? CharacterSkillId;
         private bool SkillExist;
         IBrowserFile file;
@@ -40,8 +41,6 @@ namespace WuwaDB.Components.MudDialog.CharacterDialog
             {
                 SkillExist = true;
                 CharacterSkillId = CharacterSkill.Id;
-                if (CharacterSkill.ImageFile is not null)
-                    GetImage();
             }
             else
                 CharacterSkill = new();
@@ -49,7 +48,7 @@ namespace WuwaDB.Components.MudDialog.CharacterDialog
         }
         private async void GetImage()
         {
-            string imageSrc = Convert.ToBase64String(CharacterSkill.ImageFile);
+            string imageSrc = Convert.ToBase64String(CharacterSkillImage.Image);
             imageData = string.Format("data:image/jpeg;base64,{0}", imageSrc);
         }
         private async Task FilesChanged(InputFileChangeEventArgs e)
@@ -68,7 +67,7 @@ namespace WuwaDB.Components.MudDialog.CharacterDialog
                     using (var stream = new MemoryStream())
                     {
                         await fileRead.CopyToAsync(stream);
-                        CharacterSkill.ImageFile = stream.ToArray();
+                        CharacterSkillImage.Image = stream.ToArray();
                     }
                 }
                 else
