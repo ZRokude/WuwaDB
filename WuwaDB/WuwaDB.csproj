@@ -8,9 +8,13 @@
 
   <ItemGroup>
     <Compile Remove="wwwroot\Character_Card\**" />
+    <Compile Remove="wwwroot\Character_Icon\**" />
     <Content Remove="wwwroot\Character_Card\**" />
+    <Content Remove="wwwroot\Character_Icon\**" />
     <EmbeddedResource Remove="wwwroot\Character_Card\**" />
+    <EmbeddedResource Remove="wwwroot\Character_Icon\**" />
     <None Remove="wwwroot\Character_Card\**" />
+    <None Remove="wwwroot\Character_Icon\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -32,7 +36,7 @@
   <ItemGroup>
     <Folder Include="wwwroot\Character\Card\" />
     <Folder Include="wwwroot\Character\Model\" />
-    <Folder Include="wwwroot\Character_Icon\" />
+    <Folder Include="wwwroot\Character\SkillIcon\" />
     <Folder Include="wwwroot\Font\Arsenal\" />
   </ItemGroup>
 

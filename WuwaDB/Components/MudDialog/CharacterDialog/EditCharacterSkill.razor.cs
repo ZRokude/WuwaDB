@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
+using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 using MudBlazor;
 using WuwaDB.DBAccess.Entities.Account;
 using WuwaDB.DBAccess.Entities.Character;
@@ -17,14 +19,17 @@ namespace WuwaDB.Components.MudDialog.CharacterDialog
         [Parameter] public SkillType SkillType { get; set; }
         [Inject] ISnackbar Snackbar { get; set; }
         [Inject] private IDialogService DialogService { get; set; }
+        [Inject] IWebHostEnvironment HostEnvironment { get; set; }
         private Character_Skill CharacterSkill { get; set; } = new();
         private Guid? CharacterSkillId;
         private bool SkillExist;
         IBrowserFile file;
         private string imageData;
+        private Character Character { get; set; }
 
         protected override async void OnInitialized()
         {
+            Character = await UserRepository.GetDataAsync<Character>(new{Id = CharacterId});
             CharacterSkill = await UserRepository.GetDataAsync<Character_Skill>(
                 new
                 {
@@ -83,6 +88,17 @@ namespace WuwaDB.Components.MudDialog.CharacterDialog
             }
             else
                 await AdminRepository.UpdatesAsync(CharacterSkill);
+            if(!imageData.IsNullOrEmpty())
+            {
+                string fileName = $"{CharacterSkill.Name}.png";
+                var pathDirectory = Path.Combine(HostEnvironment.WebRootPath, "Character", "SkillIcon", Character.Name);
+                var path = Path.Combine(HostEnvironment.WebRootPath, "Character", "SkillIcon", Character.Name, fileName);
+                Directory.CreateDirectory(Path.GetDirectoryName(path));
+                var base64Data = imageData.Replace("data:image/jpeg;base64,", string.Empty)
+                    .Replace("data:image/png;base64,", string.Empty);
+                byte[] imageBytes = Convert.FromBase64String(base64Data);
+                await File.WriteAllBytesAsync(path, imageBytes);
+            }
             StateHasChanged();
             MudDialog.Close(DialogResult.Ok(true));
         }
