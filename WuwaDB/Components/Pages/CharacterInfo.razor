@@ -64,7 +64,7 @@
                         </MudPaper>
                         @foreach (SkillType skillType in Enum.GetValues(typeof(SkillType)))
                         {
-                            <MudStack AlignItems="AlignItems.End">(
+                            <MudStack AlignItems="AlignItems.End">
                                 <MudPaper Elevation="5" Class="custom-paper">
                                     <MudToolBar WrapContent="true" Class="justify-content-center">
                                         <MudStack Row="true" AlignItems="AlignItems.End" Spacing="3">
@@ -114,14 +114,6 @@
                                                             </MudText>
                                                         }
                                                     }
-                                                    else
-                                                    {
-                                                        <MudText Style="color:#cfcfcf;">No skill info available.</MudText>
-                                                    }
-                                                }
-                                                else
-                                                {
-                                                    <MudText Style="color:#cfcfcf;">No skill info available.</MudText>
                                                 }
                                             }
                                             @if (SkillDetail(skillType) == true)
@@ -142,14 +134,6 @@
                                                             </MudStack>
                                                         }
                                                     }
-                                                    else
-                                                    {
-                                                        <MudText Style="color:#cfcfcf">No skill detail available.</MudText>
-                                                    }
-                                                }
-                                                else
-                                                {
-                                                    <MudText Style="color:#cfcfcf">No skill detail available.</MudText>
                                                 }
                                             }
                                         </MudCollapse>
