@@ -21,6 +21,8 @@ namespace WuwaDB.Components.MudDialog.CharacterDialog
         private void OpenDialogResonanceLiberation() => OpenDialogSkill(SkillType.Resonance_Liberation);
         private void OpenDialogIntroSkill() => OpenDialogSkill(SkillType.Intro_Skill);
         private void OpenDialogOutroSkill() => OpenDialogSkill(SkillType.Outro_Skill);
+        private void OpenDialogInherentSkill_1() => OpenDialogSkill(SkillType.Inherint_Skill_1);
+        private void OpenDialogInherentSkill_2() => OpenDialogSkill(SkillType.Inherint_Skill_2);
         private async void OpenDialogSkill(SkillType type)
         {
             var skillType = string.Join(" ",
@@ -68,6 +70,10 @@ namespace WuwaDB.Components.MudDialog.CharacterDialog
             {
                 Snackbar.Add("Delete Successful", Severity.Success, config => { config.HideIcon = true; }); 
             }
+        }
+        private async void OpenDialogInherentSkill2()
+        {
+
         }
     }
 }
