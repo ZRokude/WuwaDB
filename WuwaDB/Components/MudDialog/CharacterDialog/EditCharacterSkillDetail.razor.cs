@@ -89,12 +89,12 @@ namespace WuwaDB.Components.MudDialog.CharacterDialog
             else
             {
                 var matchSkillDetailLevel =
-                CharacterSkillDetailNumbers.FirstOrDefault(
-                    x => x.CharacterSkillDetailId == CharacterSkillDetails.FirstOrDefault(x => x.SkillDetailsName == CharacterSkillDetail.SkillDetailsName).Id && x.Level.ToString() == value) ?? null;
+                CharacterSkillDetailNumbers.Find(
+                    x => x.CharacterSkillDetailId == CharacterSkillDetails.Find(x => x.SkillDetailsName == CharacterSkillDetail.SkillDetailsName)?.Id && x.Level.ToString() == value) ?? null;
                 if (matchSkillDetailLevel is not null)
                 {
                     var SkillDetailId =
-                        CharacterSkillDetails.FirstOrDefault(x =>
+                        CharacterSkillDetails.First(x =>
                             x.SkillDetailsName == CharacterSkillDetail.SkillDetailsName).Id;
                     var matchSkillDetailNumbers = CharacterSkillDetailNumbers.Where(x =>
                         x.Level.ToString() == value
@@ -106,9 +106,9 @@ namespace WuwaDB.Components.MudDialog.CharacterDialog
         }
         private async Task Save()
         {
-            if (CharacterSkillDetails.FirstOrDefault(x => x.SkillDetailsName == CharacterSkillDetail.SkillDetailsName)
+            if (CharacterSkillDetails.Find(x => x.SkillDetailsName == CharacterSkillDetail.SkillDetailsName)
                 is not null)
-                CharacterSkillDetailNumber.CharacterSkillDetailId = CharacterSkillDetails.FirstOrDefault(x => x.SkillDetailsName == CharacterSkillDetail.SkillDetailsName).Id;
+                CharacterSkillDetailNumber.CharacterSkillDetailId = CharacterSkillDetails.First(x => x.SkillDetailsName == CharacterSkillDetail.SkillDetailsName).Id;
             else
             {
                 CharacterSkillDetail.CharacterSkillId = SkillId;
@@ -116,7 +116,7 @@ namespace WuwaDB.Components.MudDialog.CharacterDialog
                 CharacterSkillDetailNumber.CharacterSkillDetailId = CharacterSkillDetail.Id;
             }
 
-            var Match = CharacterSkillDetailNumbers.FirstOrDefault(x => x.Level == CharacterSkillDetailNumber.Level
+            var Match = CharacterSkillDetailNumbers.Find(x => x.Level == CharacterSkillDetailNumber.Level
                                                                         && x.CharacterSkillDetailId == CharacterSkillDetailNumber.CharacterSkillDetailId);
             if (Match is not null)
                 await AdminRepository.UpdatesAsync(CharacterSkillDetailNumber);
