@@ -96,7 +96,7 @@
                                                             <MudText Align="Align.Center" Style="color:#D8D8D8;font-family:'HHenum-Regular';font-size:22px;">
                                                                 <MudHighlighter HighlightedTexts="highLightedTexts" UntilNextBoundary="true"
                                                                                 Text="@segment"
-                                                                                Style="@($"{colorHighLight};font-family:HHenum-Regular;font-size:18px;")" Class="highlight-description" />
+                                                                                Style="@($"{colorHighLight};font-family:HHenum-Regular;font-size:22px;")" Class="highlight-description" />
                                                             </MudText>
                                                         }
                                                         <br />
@@ -114,7 +114,7 @@
                                                                 <MudText Align="Align.Center" Style="color:#D8D8D8;font-family:'HHenum-Regular';font-size:22px;">
                                                                     <MudHighlighter HighlightedTexts="highLightedTexts" UntilNextBoundary="true"
                                                                                     Text="@segment"
-                                                                                    Style="@($"{colorHighLight};font-family:HHenum-Regular;font-size:18px;")" Class="highlight-description" />
+                                                                                    Style="@($"{colorHighLight};font-family:HHenum-Regular;font-size:22px;")" Class="highlight-description" />
                                                                 </MudText>
                                                             }
                                                             <br />
@@ -136,8 +136,8 @@
                                                         {
                                                             
                                                             <MudStack Row="true" Spacing="15" Wrap="Wrap.Wrap" Justify="Justify.SpaceBetween">
-                                                                <MudText Style="color:#cfcfcf;"> @skillDetail.SkillDetailsName</MudText>
-                                                                <MudText Style="color:#cfcfcf;">@($"{GetSkillDetailNumber(SkillTypeLevelSlider[skillType], skillDetail.Id)}%") </MudText>
+                                                                <MudText Style="color:#cfcfcf;font-family:HHenum-Regular;font-size:22px;"> @skillDetail.SkillDetailsName</MudText>
+                                                                <MudText Style="color:#cfcfcf;font-family:HHenum-Regular;font-size:22px;">@($"{GetSkillDetailNumber(SkillTypeLevelSlider[skillType], skillDetail.Id)}%") </MudText>
                                                             </MudStack>
 
                                                         }
