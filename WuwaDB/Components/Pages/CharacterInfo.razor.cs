@@ -98,6 +98,15 @@ namespace WuwaDB.Components.Pages
             var number = CharacterSkillDetailNumbers.Find(x => x.CharacterSkillDetailId == Id && x.Level == level)?.Number.ToString();
             return number ?? null;
         }
+        private string GetSkillDetailMultiplier(int level, Guid Id)
+        {
+            var multiplier = CharacterSkillDetailNumbers.Find(x => x.CharacterSkillDetailId == Id && x.Level == level)?.Multiplier.ToString();
+            if(multiplier is not null)
+            {
+                return string.Join("*", multiplier);
+            }
+            return string.Empty;
+        }
         private void SkillDetailLevelChanged(string value)
         {
             
