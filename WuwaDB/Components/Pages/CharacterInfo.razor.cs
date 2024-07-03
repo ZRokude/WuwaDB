@@ -94,6 +94,22 @@ namespace WuwaDB.Components.Pages
 
             StateHasChanged();
         }
+        private string TextSkillInfo(SkillType type)
+        {
+            var Text = CharacterSkills.First(x => x.Type == type)?.Description;
+            return Text;
+        }
+        IEnumerable<string> GetHighlightedSegments(string text)
+        {
+            var segments = text.Split('.');
+            foreach (var segment in segments)
+            {
+                if (!string.IsNullOrWhiteSpace(segment))
+                {
+                    yield return segment.Trim() + ".";
+                }
+            }
+        }
 
         private string colorHighLightCase()
         {
