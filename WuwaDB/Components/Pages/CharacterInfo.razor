@@ -92,11 +92,15 @@
                                                 {
                                                     if (!string.IsNullOrEmpty(CharacterSkills.FirstOrDefault(x => x.Type == skillType)?.Description))
                                                     {
-                                                        <MudText Align="Align.Center" @key="@CharacterSkills.FirstOrDefault(x=>x.Type == skillType)?.Description" Style="color:#cfcfcf;">
-                                                            <MudHighlighter HighlightedTexts="highLightedTexts" UntilNextBoundary="true"
-                                                                            Text="@CharacterSkills.FirstOrDefault(x=>x.Type == skillType)?.Description"
-                                                                            Style="@colorHighLight" Class="highlight-description" />
-                                                        </MudText>
+                                                        foreach (var segment in GetHighlightedSegments(TextSkillInfo(skillType)))
+                                                        {
+                                                            <MudText Align="Align.Center" @key="@segment" Style="color:#cfcfcf;">
+                                                                <MudHighlighter HighlightedTexts="highLightedTexts" UntilNextBoundary="true"
+                                                                                Text="@segment"
+                                                                                Style="@colorHighLight" Class="highlight-description" />
+                                                            </MudText>
+                                                        }
+                                                        
                                                     }
                                                     var characterSkillDesc = CharacterSkillDescriptions.Where(x => x.CharacterSkillId == type.Id).ToList();
                                                     if (characterSkillDesc.Count > 0)
@@ -107,11 +111,15 @@
                                                             <MudText Align="Align.Center" Style="color:#cfcfcf;font-weight:bold;">
                                                                 @title.DescriptionTitle
                                                             </MudText>
-                                                            <MudText Align="Align.Center" @key="@title.Description" Style="color:#cfcfcf;">
-                                                                <MudHighlighter HighlightedTexts="highLightedTexts" UntilNextBoundary="true"
-                                                                                Text="@title.Description"
-                                                                                Style="@colorHighLight" Class="highlight-description"/>
-                                                            </MudText>
+                                                            foreach(var segment in GetHighlightedSegments(title.Description))
+                                                            {
+                                                                <MudText Align="Align.Center" @key="@title.Description" Style="color:#cfcfcf;">
+                                                                    <MudHighlighter HighlightedTexts="highLightedTexts" UntilNextBoundary="true"
+                                                                                    Text="@title.Description"
+                                                                                    Style="@colorHighLight" Class="highlight-description" />
+                                                                </MudText>
+                                                            }
+                                                            
                                                         }
                                                     }
                                                 }
