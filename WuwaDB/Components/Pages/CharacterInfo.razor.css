@@ -44,6 +44,8 @@
 ::deep .highlight-description{
     background-color:transparent;
     font-weight:bold;
+    font-family: HHenum-Italic;
+    font-size: 18px
 }
 ::deep .justify-mud-grid{
     justify-content:flex-end!important;
