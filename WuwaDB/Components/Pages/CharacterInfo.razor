@@ -113,9 +113,9 @@
                                                             </MudText>
                                                             foreach(var segment in GetHighlightedSegments(title.Description))
                                                             {
-                                                                <MudText Align="Align.Center" @key="@title.Description" Style="color:#cfcfcf;">
+                                                                <MudText Align="Align.Center" @key="@segment" Style="color:#cfcfcf;">
                                                                     <MudHighlighter HighlightedTexts="highLightedTexts" UntilNextBoundary="true"
-                                                                                    Text="@title.Description"
+                                                                                    Text="@segment"
                                                                                     Style="@colorHighLight" Class="highlight-description" />
                                                                 </MudText>
                                                             }
