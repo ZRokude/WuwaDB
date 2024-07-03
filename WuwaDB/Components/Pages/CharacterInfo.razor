@@ -94,7 +94,7 @@
                                                     {
                                                         foreach (var segment in GetHighlightedSegments(TextSkillInfo(skillType)))
                                                         {
-                                                            <MudText Align="Align.Center" @key="@segment" Style="color:#cfcfcf;">
+                                                            <MudText Align="Align.Center" Style="color:#cfcfcf;">
                                                                 <MudHighlighter HighlightedTexts="highLightedTexts" UntilNextBoundary="true"
                                                                                 Text="@segment"
                                                                                 Style="@colorHighLight" Class="highlight-description" />
@@ -113,7 +113,7 @@
                                                             </MudText>
                                                             foreach(var segment in GetHighlightedSegments(title.Description))
                                                             {
-                                                                <MudText Align="Align.Center" @key="@segment" Style="color:#cfcfcf;">
+                                                                <MudText Align="Align.Center" Style="color:#cfcfcf;">
                                                                     <MudHighlighter HighlightedTexts="highLightedTexts" UntilNextBoundary="true"
                                                                                     Text="@segment"
                                                                                     Style="@colorHighLight" Class="highlight-description" />
