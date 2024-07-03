@@ -58,8 +58,8 @@
                             }
                             <MudSlider @bind-Value="LevelSlider" Min="1" Max="90" Step="1" ValueLabel="true" Immediate="true" Style="color:#cfcfcf;">
                                 Level: @LevelSlider
-                                <MudAutocomplete T="int" @bind-Value="LevelSlider" TextChanged="LevelChanged"
-                                                 Immediate="true" Style="display:none!important;"/>
+                                <MudAutocomplete T="int" @bind-Value="LevelSlider" TextChanged="StatLevelChanged"
+                                                 Immediate="true" Style="display:none!important;" Disabled="true"/>
                             </MudSlider>
                         </MudPaper>
                         @foreach (SkillType skillType in Enum.GetValues(typeof(SkillType)))
@@ -134,14 +134,22 @@
                                                     {
                                                         foreach (var skillDetail in skillDetails)
                                                         {
-                                                            var skillDetailNumber = CharacterSkillDetailNumbers.FirstOrDefault(x => x.CharacterSkillDetailId == skillDetail.Id);
+                                                            
                                                             <MudStack Row="true" Spacing="15" Wrap="Wrap.Wrap" Justify="Justify.SpaceBetween">
                                                                 <MudText Style="color:#cfcfcf;"> @skillDetail.SkillDetailsName</MudText>
-                                                                <MudText Style="color:#cfcfcf;">@($"{skillDetailNumber.Number}%") </MudText>
+                                                                <MudText Style="color:#cfcfcf;">@($"{GetSkillDetailNumber(SkillTypeLevelSlider[skillType], skillDetail.Id)}%") </MudText>
                                                             </MudStack>
+
                                                         }
                                                     }
+                                                    
                                                 }
+                                                <MudSlider @bind-Value="SkillTypeLevelSlider[skillType]" Min="1" Max="20" Step="1" ValueLabel="true" Immediate="true" Style="color:#cfcfcf;">
+                                                    <MudTextField T="int" @bind-Value="SkillTypeLevelSlider[skillType]" Style="display:none!important;" 
+                                                                  Disabled="true" TextChanged="SkillDetailLevelChanged">
+
+                                                    </MudTextField>
+                                                </MudSlider>
                                             }
                                         </MudCollapse>
                                     </MudStack>

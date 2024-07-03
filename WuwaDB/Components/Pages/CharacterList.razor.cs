@@ -33,22 +33,7 @@ namespace WuwaDB.Components.Pages
         private string GetImageRoot(string Name) => $"Character/Card/Card_{Name}.png";
 
         private string GetRarity(RarityType rarity) => rarity.ToString();
-        //protected override async Task OnAfterRenderAsync(bool firstRender)
-        //{
-        //    if (firstRender)
-        //    {
-        //        CharacterImageCards = await UserRepository.GetToListAsync<Character_ImageCard>();
-        //        StateHasChanged();
-        //    }
-        //}
-        //private string SetImage(byte[]? image = null)
-        //{
-        //    string imageSrc = "";
-        //    if (image is not null)
-        //        imageSrc = Convert.ToBase64String(image);
-        //    string imageString = string.Format("data:image/jpeg;base64,{0}", imageSrc);
-        //    return imageString;
-        //}
+        
         string GetWeaponImage(WeaponType weaponType)
         {
             switch (weaponType)

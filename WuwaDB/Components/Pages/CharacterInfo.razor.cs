@@ -8,6 +8,9 @@ using WuwaDB.DBAccess.Entities.Character;
 using WuwaDB.DBAccess.Enum;
 using WuwaDB.Components.MudDialog.CharacterDialog;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.Extensions.ObjectPool;
+using System.Reflection.Metadata.Ecma335;
+using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace WuwaDB.Components.Pages
 {
@@ -39,6 +42,7 @@ namespace WuwaDB.Components.Pages
 
         private Dictionary<SkillType, bool> skillInfoStates = new();
         private Dictionary<string, string> imageData = new();
+        private Dictionary<SkillType, int> SkillTypeLevelSlider = new();
 
         private bool skillInfoExpand = false;
         private string colorHighLight => $"color:{colorHighLightCase()}";
@@ -71,15 +75,7 @@ namespace WuwaDB.Components.Pages
                 CharacterSkillDetails =
                     await UserRepository.GetToListAsync<Character_Skill_Detail>
                     (new {CharacterId = Character.Id}, new string[] {"Character_Skill"});
-                //foreach (var CharacterSkill in CharacterSkills)
-                //{
-                //    if (CharacterSkill.ImageFile is not null)
-                //    {
-                //        var skillValue = Enum.GetName(typeof(SkillType), CharacterSkill.Type);
-                //        SetImage(skillValue, CharacterSkill.ImageFile);
-                //    }
-                      
-                //}
+                
 
             }
             if (CharacterSkillDetails.Count > 0)
@@ -89,10 +85,22 @@ namespace WuwaDB.Components.Pages
             }
             if(CharacterStatBase is not null)
                 StatsCalculation();
-
+            foreach(SkillType type in  Enum.GetValues(typeof(SkillType)))
+            {
+                SkillTypeLevelSlider.Add(type, 1);
+            }
             isLoading = false;
 
             StateHasChanged();
+        }
+        private string GetSkillDetailNumber(int level, Guid Id)
+        {
+            var number = CharacterSkillDetailNumbers.Find(x => x.CharacterSkillDetailId == Id && x.Level == level)?.Number.ToString();
+            return number ?? null;
+        }
+        private void SkillDetailLevelChanged(string value)
+        {
+            
         }
         private string TextSkillInfo(SkillType type)
         {
@@ -230,7 +238,7 @@ namespace WuwaDB.Components.Pages
         }
         private string GetImageSkillRoot(string CharacterName, string SkillName) => $"Character/SkillIcon/{CharacterName}/{SkillName}.png";
         private string GetImageModelRoot (string Name) => $"Character/Model/Model_{Name}.png";
-        private void LevelChanged(string value)
+        private void StatLevelChanged(string value)
         {
             int Level = Convert.ToInt16(value) - 1;
             if (HPArray is not null)
