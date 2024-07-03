@@ -58,9 +58,17 @@ h1:focus {
 }
 @font-face {
     font-family: UnifrakturMaguntia;
-    src: url('/Font/ttf/UnifrakturMaguntia.ttf') format('truetype')
+    src: url('/Font/ttf/UnifrakturMaguntia.ttf') format('truetype');
 }
 @font-face {
     font-family: Arsenal;
-    src: url('/Font/Arsenal/Arsenal-Regular.otf') format('truetype')
+    src: url('/Font/Arsenal/Arsenal-Regular.otf') format('truetype');
+}
+@font-face {
+    font-family: HHenum-regular;
+    src: url('/Font/hhenum/Hhenum-Regular.otf') format('truetype');
+}
+@font-face {
+    font-family: HHenum-italic;
+    src: url('/Font/hhenum/Hhenum-Italic.otf') format('truetype');
 }

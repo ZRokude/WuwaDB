@@ -72,10 +72,10 @@
                                                 <MudImage Style="width:50px;" Src="@(GetImageSkillRoot(CharacterName, GetSkillName(skillType)))" />
                                             </MudTooltip>
                                             <MudStack Spacing="1" Row="true">
-                                                <MudButton OnClick="() => ToggleSkillInfo(skillType)" Style="color:#cfcfcf;">
+                                                <MudButton OnClick="() => ToggleSkillInfo(skillType)" Style="color:#cfcfcf;font-family:'HHenum-Regular;">
                                                     Skill Info
                                                 </MudButton>
-                                                <MudButton OnClick="() => ToggleSkillDetail(skillType)" Style="color:#cfcfcf;">
+                                                <MudButton OnClick="() => ToggleSkillDetail(skillType)" Style="color:#cfcfcf;font-family:'HHenum-Regular;">
                                                     Skill Detail
                                                 </MudButton>
                                                 <MudIconButton Icon="@Icons.Material.Filled.ArrowDownward" Size="Size.Medium" OnClick="() => ToggleCollapse(skillType)"/>
@@ -84,7 +84,6 @@
                                     </MudToolBar>
                                     <MudStack Justify="Justify.Center" AlignItems="AlignItems.Center">
                                         <MudCollapse Expanded="@IsCollapsed(skillType)">
-                                            
                                             @if (SkillInfo(skillType) == true)
                                             {
                                                 var type = CharacterSkills.FirstOrDefault(x => x.Type == skillType);
@@ -94,10 +93,10 @@
                                                     {
                                                         foreach (var segment in GetHighlightedSegments(TextSkillInfo(skillType)))
                                                         {
-                                                            <MudText Align="Align.Center" Style="color:#cfcfcf;">
+                                                            <MudText Align="Align.Center" Style="color:#D8D8D8;font-family:'HHenum-Regular';font-size:18px;">
                                                                 <MudHighlighter HighlightedTexts="highLightedTexts" UntilNextBoundary="true"
                                                                                 Text="@segment"
-                                                                                Style="@colorHighLight" Class="highlight-description" />
+                                                                                Style="@($"{colorHighLight};font-family:HHenum-Regular;font-size:18px;")" Class="highlight-description" />
                                                             </MudText>
                                                         }
                                                         <br />
@@ -105,21 +104,19 @@
                                                     var characterSkillDesc = CharacterSkillDescriptions.Where(x => x.CharacterSkillId == type.Id).ToList();
                                                     if (characterSkillDesc.Count > 0)
                                                     {
-                                                        
                                                         foreach (var title in characterSkillDesc)
                                                         {
-                                                            <MudText Align="Align.Center" Style="color:#cfcfcf;font-weight:bold;">
+                                                            <MudText Align="Align.Center" Style="color:#cfcfcf;font-weight:bold;font-family:'HHenum-Italic';font-size:18px;">
                                                                 @title.DescriptionTitle
                                                             </MudText>
                                                             foreach(var segment in GetHighlightedSegments(title.Description))
                                                             {
-                                                                <MudText Align="Align.Center" Style="color:#cfcfcf;">
+                                                                <MudText Align="Align.Center" Style="color:#D8D8D8;font-family:'HHenum-Regular'font-size:18px;">
                                                                     <MudHighlighter HighlightedTexts="highLightedTexts" UntilNextBoundary="true"
                                                                                     Text="@segment"
-                                                                                    Style="@colorHighLight" Class="highlight-description" />
+                                                                                    Style="@($"{colorHighLight};font-family:HHenum-Regular;font-size:18px;")" Class="highlight-description" />
                                                                 </MudText>
                                                             }
-                                                            
                                                         }
                                                         <br />
                                                     }
