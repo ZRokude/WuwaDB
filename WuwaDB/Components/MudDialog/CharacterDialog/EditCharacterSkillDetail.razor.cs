@@ -112,7 +112,14 @@ namespace WuwaDB.Components.MudDialog.CharacterDialog
             var Match = CharacterSkillDetailNumbers.Find(x => x.Level == CharacterSkillDetailNumber.Level
                                                                         && x.CharacterSkillDetailId == CharacterSkillDetailNumber.CharacterSkillDetailId);
             if (Match is not null)
+            {
                 await AdminRepository.UpdatesAsync(CharacterSkillDetailNumber);
+                foreach(var NumberMultiplier in CharacterSkillDetailNumber.NumberMultipliers)
+                {
+                    await AdminRepository.UpdatesAsync(NumberMultiplier);
+                }
+            }
+                
             else
                 await AdminRepository.SavesAsync(CharacterSkillDetailNumber);
             MudDialog.Close(DialogResult.Ok(true));
