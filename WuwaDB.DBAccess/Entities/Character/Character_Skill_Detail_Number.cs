@@ -21,6 +21,7 @@ namespace WuwaDB.DBAccess.Entities.Character
     {
         public int Id { get; set; }
         public double Number { get; set; }
+        public bool IsPercentage { get; set; } = true;
         public int? Multiplier { get; set; }
         public Guid CharacterSkillDetailId { get; set; }
         public int Level { get; set; }

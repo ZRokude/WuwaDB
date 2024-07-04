@@ -103,9 +103,17 @@ namespace WuwaDB.Components.Pages
                 foreach (var number in numbers)
                 {
                     if (i > 0)
-                        numberJoin = numberJoin + " + " + number.Number + "%";
+                    {
+                        numberJoin = numberJoin + " + " + number.Number;
+                        if (number.IsPercentage)
+                            numberJoin = numberJoin + "%";
+                    }
                     else
-                        numberJoin = number.Number + "%";
+                    {
+                        numberJoin = number.Number.ToString();
+                        if(number.IsPercentage)
+                            numberJoin = numberJoin + "%";
+                    }
                     if (number.Multiplier is not null)
                         numberJoin = numberJoin + " * " + number.Multiplier;
                     i++;
