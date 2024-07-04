@@ -11,6 +11,7 @@ using System.Dynamic;
 using WuwaDB.DBAccess.Entities.Account;
 using BC = BCrypt.Net.BCrypt;
 using Microsoft.AspNetCore.Components;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 namespace WuwaDB.DBAccess.Repository
 {
     public class AdminRepository
