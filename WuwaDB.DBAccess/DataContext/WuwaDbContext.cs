@@ -30,6 +30,7 @@ namespace WuwaDB.DBAccess.DataContext
         public DbSet<Monster> Monsters { get; set; }
         public DbSet<Monster_Stats_Base> MonsterStatsBases { get; set; }
         public DbSet<Monster_Stats_Growth_Property> MonsterStatsGrowthProperties { get; set; }
+        public DbSet<NumberMultiplier> NumberMultipliers { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -39,6 +40,11 @@ namespace WuwaDB.DBAccess.DataContext
                 .HasDiscriminator<string>("Discriminator")
                 .HasValue<Admin>("Admin")
                 .HasValue<User>("User");
+            modelBuilder.Entity<NumberMultiplier>()
+                .HasOne(c=> c.Character_Skill_Detail_Number)
+                .WithMany(u=>u.NumberMultipliers)
+                .HasForeignKey(c => new{c.CharacterSkillDetailId, c.Level})
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Account>()
                 .HasIndex(c => c.Username)
@@ -125,6 +131,8 @@ namespace WuwaDB.DBAccess.DataContext
                 .HasKey(c => c.CharacterId);
             modelBuilder.Entity<Character_Skill_Image>()
                 .HasKey(c => new { c.CharacterSkillId, c.Type });
+            modelBuilder.Entity<NumberMultiplier>()
+                .HasKey(c => c.Id);
 
         }
 

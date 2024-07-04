@@ -14,8 +14,17 @@
                 }
                 @if(CharacterSkillDetailNumber.Level > 0)
                 {
-                    <MudNumericField T="double" Step="0.01" Label="Skill Detail Percentage" @bind-Value="CharacterSkillDetailNumber.Number" />
-                    <MudNumericField T="int?" Label="Skill Detail Multiplier" @bind-Value="CharacterSkillDetailNumber.Multiplier" />
+                    foreach(var numberMultiplier in CharacterSkillDetailNumber.NumberMultipliers)
+                    {
+                        <MudNumericField T="double" Step="0.01" Label="Skill Detail Percentage" @bind-Value="numberMultiplier.Number" />
+                        <MudNumericField T="int?" Label="Skill Detail Multiplier" @bind-Value="numberMultiplier.Multiplier" />
+                    }
+                    <MudStack Row="true">
+                        <MudIconButton Icon="@Icons.Material.Filled.Add" OnClick="AddIndexListNumber" />
+                        <MudIconButton Icon="@Icons.Material.Filled.Remove" OnClick="MinIndexListNumber" />
+
+                    </MudStack>
+                   
                 }
             </DialogContent>
             <DialogActions>

@@ -95,18 +95,33 @@ namespace WuwaDB.Components.Pages
         }
         private string GetSkillDetailNumber(int level, Guid Id)
         {
-            var number = CharacterSkillDetailNumbers.Find(x => x.CharacterSkillDetailId == Id && x.Level == level)?.Number.ToString();
-            return number ?? null;
-        }
-        private string GetSkillDetailMultiplier(int level, Guid Id)
-        {
-            var multiplier = CharacterSkillDetailNumbers.Find(x => x.CharacterSkillDetailId == Id && x.Level == level)?.Multiplier.ToString();
-            if(multiplier is not null)
+            var numbers = CharacterSkillDetailNumbers.FirstOrDefault(x => x.CharacterSkillDetailId == Id && x.Level == level)?.NumberMultipliers;
+            int i = 0;
+            string numberJoin = "";
+            if(numbers is not null)
             {
-                return string.Join("*", multiplier);
+                foreach (var number in numbers)
+                {
+                    if (i == 1)
+                        numberJoin = "+" + number.Number + "%";
+                    else
+                        numberJoin = number.Number.ToString() + "%";
+                    if (number.Multiplier is not null)
+                        numberJoin = string.Join("*", number.Multiplier.ToString());
+                    i++;
+                }
             }
-            return string.Empty;
+            return numberJoin;
         }
+        //private string GetSkillDetailMultiplier(int level, Guid Id)
+        //{
+        //    var multiplier = CharacterSkillDetailNumbers.Find(x => x.CharacterSkillDetailId == Id && x.Level == level)?.Multiplier.ToString();
+        //    if(multiplier is not null)
+        //    {
+        //        return string.Join("*", multiplier);
+        //    }
+        //    return string.Empty;
+        //}
         private void SkillDetailLevelChanged(string value)
         {
             
