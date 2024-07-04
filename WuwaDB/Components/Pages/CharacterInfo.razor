@@ -93,10 +93,10 @@
                                                     {
                                                         foreach (var segment in GetHighlightedSegments(TextSkillInfo(skillType)))
                                                         {
-                                                            <MudText Align="Align.Center" Style="color:#D8D8D8;font-family:'HHenum-Regular';font-size:150%;">
+                                                            <MudText Align="Align.Center" Style="color:#D8D8D8;font-family:'HHenum-Regular';font-size:175%;">
                                                                 <MudHighlighter HighlightedTexts="highLightedTexts" UntilNextBoundary="true"
                                                                                 Text="@segment"
-                                                                                Style="@($"{colorHighLight};font-family:HHenum-Regular;font-size:125%;")" Class="highlight-description" />
+                                                                                Style="@($"{colorHighLight};font-family:HHenum-Regular;font-size:140%;")" Class="highlight-description" />
                                                             </MudText>
                                                         }
                                                         <br />
@@ -106,15 +106,15 @@
                                                     {
                                                         foreach (var title in characterSkillDesc)
                                                         {
-                                                            <MudText Align="Align.Center" Style="color:#CDBC64;font-weight:bold;font-family:'HHenum-Italic';font-size:200%;">
+                                                            <MudText Align="Align.Center" Style="color:#CDBC64;font-weight:bold;font-family:'HHenum-Italic';font-size:225%;">
                                                                 @title.DescriptionTitle
                                                             </MudText>
                                                             foreach(var segment in GetHighlightedSegments(title.Description))
                                                             {
-                                                                <MudText Align="Align.Center" Style="color:#D8D8D8;font-family:'HHenum-Regular';font-size:150%;">
+                                                                <MudText Align="Align.Center" Style="color:#D8D8D8;font-family:'HHenum-Regular';font-size:175%;">
                                                                     <MudHighlighter HighlightedTexts="highLightedTexts" UntilNextBoundary="true"
                                                                                     Text="@segment"
-                                                                                    Style="@($"{colorHighLight};font-family:HHenum-Regular;font-size:125%;")" Class="highlight-description" />
+                                                                                    Style="@($"{colorHighLight};font-family:HHenum-Regular;font-size:140%;")" Class="highlight-description" />
                                                                 </MudText>
                                                             }
                                                             <br />
@@ -135,9 +135,9 @@
                                                         foreach (var skillDetail in skillDetails)
                                                         {
                                                             
-                                                            <MudStack Row="true" Spacing="15" Wrap="Wrap.Wrap" Justify="Justify.SpaceBetween" >
-                                                                <MudText Style="color:#cfcfcf;font-family:HHenum-Regular;font-size:125%;"> @skillDetail.SkillDetailsName</MudText>
-                                                                <MudText Style="color:#cfcfcf;font-family:HHenum-Regular;font-size:125%;">
+                                                            <MudStack Row="true" Spacing="7" Wrap="Wrap.Wrap" Justify="Justify.SpaceBetween" >
+                                                                <MudText Style="color:#cfcfcf;font-family:HHenum-Regular;font-size:150%%;"> @skillDetail.SkillDetailsName</MudText>
+                                                                <MudText Style="color:#cfcfcf;font-family:HHenum-Regular;font-size:150%;">
                                                                     @($"{GetSkillDetailNumber(SkillTypeLevelSlider[skillType], skillDetail.Id)}")
                                                                 </MudText>
                                                             </MudStack>
