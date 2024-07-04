@@ -128,7 +128,7 @@ namespace WuwaDB.Components.Pages
         }
         private string TextSkillInfo(SkillType type)
         {
-            var Text = CharacterSkills.First(x => x.Type == type)?.Description;
+            var Text = CharacterSkills.FirstOrDefault(x => x.Type == type)?.Description;
             return Text;
         }
         IEnumerable<string> GetHighlightedSegments(string text)

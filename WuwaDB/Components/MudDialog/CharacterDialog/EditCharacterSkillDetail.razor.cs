@@ -60,7 +60,7 @@ namespace WuwaDB.Components.MudDialog.CharacterDialog
         }
         private async Task TextChangedSkillDetailName(string value)
         {
-            var matchSkillDetail = CharacterSkillDetails.First(x => x.SkillDetailsName == value);
+            var matchSkillDetail = CharacterSkillDetails.FirstOrDefault(x => x.SkillDetailsName == value);
             if (matchSkillDetail is not null)
             {
                 var matchSkillDetailNumbers = CharacterSkillDetailNumbers
@@ -89,8 +89,8 @@ namespace WuwaDB.Components.MudDialog.CharacterDialog
             else
             {
                 var matchSkillDetailLevel =
-                CharacterSkillDetailNumbers.Find(
-                    x => x.CharacterSkillDetailId == CharacterSkillDetails.Find(x => x.SkillDetailsName == CharacterSkillDetail.SkillDetailsName)?.Id && x.Level.ToString() == value) ?? null;
+                CharacterSkillDetailNumbers.FirstOrDefault(
+                    x => x.CharacterSkillDetailId == CharacterSkillDetails.Find(x => x.SkillDetailsName == CharacterSkillDetail.SkillDetailsName)?.Id && x.Level.ToString() == value);
                 if (matchSkillDetailLevel is not null)
                 {
                     CharacterSkillDetailNumber.NumberMultipliers = new List<NumberMultiplier>(matchSkillDetailLevel.NumberMultipliers);
@@ -101,7 +101,7 @@ namespace WuwaDB.Components.MudDialog.CharacterDialog
         {
             if (CharacterSkillDetails.Find(x => x.SkillDetailsName == CharacterSkillDetail.SkillDetailsName)
                 is not null)
-                CharacterSkillDetailNumber.CharacterSkillDetailId = CharacterSkillDetails.First(x => x.SkillDetailsName == CharacterSkillDetail.SkillDetailsName).Id;
+                CharacterSkillDetailNumber.CharacterSkillDetailId = CharacterSkillDetails.FirstOrDefault(x => x.SkillDetailsName == CharacterSkillDetail.SkillDetailsName).Id;
             else
             {
                 CharacterSkillDetail.CharacterSkillId = SkillId;
