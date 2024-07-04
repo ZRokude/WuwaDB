@@ -81,7 +81,7 @@ namespace WuwaDB.Components.Pages
             if (CharacterSkillDetails.Count > 0)
             {
                 CharacterSkillDetailNumbers = await UserRepository.GetToListAsync<Character_Skill_Detail_Number>
-                    (new { CharacterId = Character.Id }, new string[] { "Character_Skill_Detail", "Character_Skill" });
+                    (new { CharacterId = Character.Id }, new string[] { "Character_Skill_Detail", "Character_Skill" }, new string[] {"NumberMultipliers"});
             }
             if(CharacterStatBase is not null)
                 StatsCalculation();
@@ -95,9 +95,33 @@ namespace WuwaDB.Components.Pages
         }
         private string GetSkillDetailNumber(int level, Guid Id)
         {
-            var number = CharacterSkillDetailNumbers.Find(x => x.CharacterSkillDetailId == Id && x.Level == level)?.Number.ToString();
-            return number ?? null;
+            var numbers = CharacterSkillDetailNumbers.FirstOrDefault(x => x.CharacterSkillDetailId == Id && x.Level == level)?.NumberMultipliers;
+            int i = 0;
+            string numberJoin = "";
+            if(numbers is not null)
+            {
+                foreach (var number in numbers)
+                {
+                    if (i > 0)
+                        numberJoin = numberJoin + " + " + number.Number + "%";
+                    else
+                        numberJoin = number.Number + "%";
+                    if (number.Multiplier is not null)
+                        numberJoin = numberJoin + " * " + number.Multiplier;
+                    i++;
+                }
+            }
+            return numberJoin;
         }
+        //private string GetSkillDetailMultiplier(int level, Guid Id)
+        //{
+        //    var multiplier = CharacterSkillDetailNumbers.Find(x => x.CharacterSkillDetailId == Id && x.Level == level)?.Multiplier.ToString();
+        //    if(multiplier is not null)
+        //    {
+        //        return string.Join("*", multiplier);
+        //    }
+        //    return string.Empty;
+        //}
         private void SkillDetailLevelChanged(string value)
         {
             

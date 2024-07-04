@@ -40,21 +40,28 @@ namespace WuwaDB.DBAccess.Repository
         /// <param name="additionalProp"></param>
         /// <returns></returns>
         /// <exception cref="ArgumentException"></exception>
-        public async Task<List<T>> GetToListAsync<T>(object? propertyFilter = null, string[]? propertyInclude = null)where T:class
+        public async Task<List<T>> GetToListAsync<T>(object? propertyFilter = null, string[]? propertyClass = null, string[]? propertyInclude = null)where T:class
         {
 
             await using WuwaDbContext context = await _context.CreateDbContextAsync();
             IQueryable<T> query = context.Set<T>();
             if (propertyFilter is not null)
             {
-                var lambdaProperty = ShareRepository.GetObjectAsExpression<T>(propertyFilter, propertyInclude);
+                var lambdaProperty = ShareRepository.GetObjectAsExpression<T>(propertyFilter, propertyClass);
                 query = query.Where(lambdaProperty);
             }
-
+            if(propertyInclude is not null)
+            {
+                foreach (var include in propertyInclude)
+                {
+                    query = query.Include(include);
+                }
+                
+            }
             return await query.ToListAsync();
         }
         
-        public async Task<T> GetDataAsync<T>(object? propertyFilter = null) where T : class
+        public async Task<T> GetDataAsync<T>(object? propertyFilter = null, string[]? propertyInclude = null) where T : class
         {
             await using WuwaDbContext context = await _context.CreateDbContextAsync();
             IQueryable<T> query = context.Set<T>();
@@ -62,6 +69,11 @@ namespace WuwaDB.DBAccess.Repository
             {
                 var lambdaProperty = ShareRepository.GetObjectAsExpression<T>(propertyFilter);
                 query = query.Where(lambdaProperty);
+            }
+            if (propertyInclude is not null)
+            {
+                foreach (var include in propertyInclude)
+                    query = query.Include(include);
             }
             return await query.FirstOrDefaultAsync();
         }

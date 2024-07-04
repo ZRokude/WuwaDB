@@ -42,7 +42,7 @@ namespace WuwaDB.DBAccess.Repository
             context.Entry(entity).State = EntityState.Modified;
             await context.SaveChangesAsync();
         }
-        public async Task DeletAsync<T>(object propertyFilter) where T : class
+        public async Task DeleteAsync<T>(object propertyFilter) where T : class
         {
             await using WuwaDbContext context = await _context.CreateDbContextAsync();
             IQueryable<T> query = context.Set<T>();

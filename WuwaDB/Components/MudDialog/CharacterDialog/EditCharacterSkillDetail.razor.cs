@@ -19,14 +19,14 @@ namespace WuwaDB.Components.MudDialog.CharacterDialog
         private List<Character_Skill_Detail_Number?> CharacterSkillDetailNumbers { get; set; } = new();
         private List<Character_Skill_Detail> CharacterSkillDetails { get; set; } = new();
 
-        private string[] SkillDetailNames;
-        private int[] SkillLevels;
+        private string[]? SkillDetailNames;
+        private int[]? SkillLevels;
         protected override async void OnInitialized()
         {
             CharacterSkillDetails = await UserRepository.GetToListAsync<Character_Skill_Detail>
                 (new { CharacterSkillId = SkillId });
             CharacterSkillDetailNumbers = await UserRepository.GetToListAsync<Character_Skill_Detail_Number>
-                (new { CharacterSkillId = SkillId }, new string[] { "Character_Skill_Detail" });
+                (new { CharacterSkillId = SkillId }, new string[] { "Character_Skill_Detail"}, new string[] {"NumberMultipliers"});
             if (CharacterSkillDetails.Count > 0)
             {
                 SkillDetailNames = new string[CharacterSkillDetails.Count];
@@ -37,7 +37,10 @@ namespace WuwaDB.Components.MudDialog.CharacterDialog
             }
             StateHasChanged();
         }
-
+        private void AddIndexListNumber() =>
+            CharacterSkillDetailNumber.NumberMultipliers.Add(new NumberMultiplier { Number = 0, Multiplier = null});
+        private void MinIndexListNumber() =>
+            CharacterSkillDetailNumber.NumberMultipliers.RemoveAt(CharacterSkillDetailNumber.NumberMultipliers.Count - 1);
         private async Task<IEnumerable<string>> SearchSkillDetailName(string value)
         {
             if (string.IsNullOrEmpty(value))
@@ -57,7 +60,7 @@ namespace WuwaDB.Components.MudDialog.CharacterDialog
         }
         private async Task TextChangedSkillDetailName(string value)
         {
-            var matchSkillDetail = CharacterSkillDetails.FirstOrDefault(x => x.SkillDetailsName == value);
+            var matchSkillDetail = CharacterSkillDetails.First(x => x.SkillDetailsName == value);
             if (matchSkillDetail is not null)
             {
                 var matchSkillDetailNumbers = CharacterSkillDetailNumbers
@@ -71,8 +74,6 @@ namespace WuwaDB.Components.MudDialog.CharacterDialog
             if (string.IsNullOrEmpty(value))
             {
                 CharacterSkillDetailNumber.Level = 0;
-                CharacterSkillDetailNumber.Number = 0;
-                CharacterSkillDetailNumber.Multiplier = null;
                 SkillLevels = null;
             }
 
@@ -83,8 +84,7 @@ namespace WuwaDB.Components.MudDialog.CharacterDialog
             if (string.IsNullOrEmpty(value))
             {
                 CharacterSkillDetailNumber.Level = 0;
-                CharacterSkillDetailNumber.Number = 0;
-                CharacterSkillDetailNumber.Multiplier = null;
+                CharacterSkillDetailNumber.NumberMultipliers.Clear();
             }
             else
             {
@@ -93,14 +93,7 @@ namespace WuwaDB.Components.MudDialog.CharacterDialog
                     x => x.CharacterSkillDetailId == CharacterSkillDetails.Find(x => x.SkillDetailsName == CharacterSkillDetail.SkillDetailsName)?.Id && x.Level.ToString() == value) ?? null;
                 if (matchSkillDetailLevel is not null)
                 {
-                    var SkillDetailId =
-                        CharacterSkillDetails.First(x =>
-                            x.SkillDetailsName == CharacterSkillDetail.SkillDetailsName).Id;
-                    var matchSkillDetailNumbers = CharacterSkillDetailNumbers.Where(x =>
-                        x.Level.ToString() == value
-                        && x.CharacterSkillDetailId == SkillDetailId).ToList();
-                    CharacterSkillDetailNumber.Number = matchSkillDetailNumbers[0].Number;
-                    CharacterSkillDetailNumber.Multiplier = matchSkillDetailNumbers[0].Multiplier;
+                    CharacterSkillDetailNumber.NumberMultipliers = new List<NumberMultiplier>(matchSkillDetailLevel.NumberMultipliers);
                 }
             }
         }

@@ -14,7 +14,7 @@ namespace WuwaDB.Components.MudDialog.CharacterDialog
         [Parameter] public Guid CharacterId { get; set; }
         private async void Submit() 
         {
-            await AdminRepository.DeletAsync<Character>(new { Id = CharacterId });
+            await AdminRepository.DeleteAsync<Character>(new { Id = CharacterId });
             MudDialog.Close(DialogResult.Ok(true));
         }
         private async void Cancel() => MudDialog.Close(DialogResult.Cancel());
