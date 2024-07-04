@@ -81,7 +81,7 @@ namespace WuwaDB.Components.Pages
             if (CharacterSkillDetails.Count > 0)
             {
                 CharacterSkillDetailNumbers = await UserRepository.GetToListAsync<Character_Skill_Detail_Number>
-                    (new { CharacterId = Character.Id }, new string[] { "Character_Skill_Detail", "Character_Skill" });
+                    (new { CharacterId = Character.Id }, new string[] { "Character_Skill_Detail", "Character_Skill" }, new string[] {"NumberMultipliers"});
             }
             if(CharacterStatBase is not null)
                 StatsCalculation();
@@ -102,12 +102,12 @@ namespace WuwaDB.Components.Pages
             {
                 foreach (var number in numbers)
                 {
-                    if (i == 1)
-                        numberJoin = "+" + number.Number + "%";
+                    if (i > 0)
+                        numberJoin = numberJoin + " + " + number.Number + "%";
                     else
-                        numberJoin = number.Number.ToString() + "%";
+                        numberJoin = number.Number + "%";
                     if (number.Multiplier is not null)
-                        numberJoin = string.Join("*", number.Multiplier.ToString());
+                        numberJoin = numberJoin + " * " + number.Multiplier;
                     i++;
                 }
             }
