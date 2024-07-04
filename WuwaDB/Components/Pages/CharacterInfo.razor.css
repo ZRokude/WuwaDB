@@ -38,7 +38,7 @@
     width: auto; /* Adjusts width automatically */
 }
 ::deep .limited-width-container {
-    max-width: 360px; /* Adjust as needed */
+    max-width: 400px; /* Adjust as needed */
     margin: 0 auto; /* Center the container */
 }
 ::deep .highlight-description{
@@ -53,8 +53,10 @@
 ::deep .media-character{
    display:none 
 }
+
 @media (max-width: 750px)
 {
+
     ::deep .character-card-container {
         height: 45vh;
         width: auto;
