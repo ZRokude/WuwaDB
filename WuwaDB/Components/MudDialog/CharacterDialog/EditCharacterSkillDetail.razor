@@ -16,7 +16,11 @@
                 {
                     foreach(var numberMultiplier in CharacterSkillDetailNumber.NumberMultipliers)
                     {
-                        <MudNumericField T="double" Step="0.01" Label="Skill Detail Percentage" @bind-Value="numberMultiplier.Number" />
+                        <MudStack Row="true" Wrap="Wrap.Wrap" Spacing="5">
+                            <MudNumericField T="double" Step="0.01" Label="Skill Detail Percentage" @bind-Value="numberMultiplier.Number" />
+                            <MudCheckBox @bind-Value="numberMultiplier.IsPercentage"/>
+                        </MudStack>
+                        
                         <MudNumericField T="int?" Label="Skill Detail Multiplier" @bind-Value="numberMultiplier.Multiplier" />
                     }
                     <MudStack Row="true">
