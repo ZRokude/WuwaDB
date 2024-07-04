@@ -22,7 +22,7 @@
             <MudGrid Class="justify-mud-grid" Spacing="0">
                 <MudItem>
                     <MudStack AlignItems="AlignItems.End" Wrap="Wrap.Wrap" Class="limited-width-container">
-                        <MudPaper Elevation="5" Class=" custom-paper" Style="width:360px;">
+                        <MudPaper Elevation="5" Class=" custom-paper" Style="width:400px;">
                             <MudToolBar WrapContent="true" Class="justify-content-center">
                                 <MudText Align="Align.Center" Inline="true" GutterBottom="true" Style="color:#cfcfcf;">Character Stat</MudText>
                             </MudToolBar>
@@ -135,7 +135,7 @@
                                                         foreach (var skillDetail in skillDetails)
                                                         {
                                                             
-                                                            <MudStack Row="true" Spacing="2" Wrap="Wrap.Wrap" Justify="Justify.SpaceBetween" >
+                                                            <MudStack Row="true" Spacing="5" Wrap="Wrap.Wrap" Justify="Justify.SpaceBetween" >
                                                                 <MudText Style="color:#cfcfcf;font-family:HHenum-Regular;font-size:150%;"> @skillDetail.SkillDetailsName</MudText>
                                                                 <MudText Style="color:#cfcfcf;font-family:HHenum-Regular;font-size:150%;">
                                                                     @($"{GetSkillDetailNumber(SkillTypeLevelSlider[skillType], skillDetail.Id)}")
