@@ -65,7 +65,7 @@
                         @foreach (SkillType skillType in Enum.GetValues(typeof(SkillType)))
                         {
                             <MudStack AlignItems="AlignItems.End">
-                                <MudPaper Elevation="5" Class="custom-paper">
+                                <MudPaper Elevation="5" Class="custom-paper" Style="width:400px;">
                                     <MudToolBar WrapContent="true" Class="justify-content-center">
                                         <MudStack Row="true" AlignItems="AlignItems.End" Spacing="3">
                                             <MudTooltip Text="@GetSkillName(skillType)">
