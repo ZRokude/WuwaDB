@@ -39,7 +39,7 @@ namespace WuwaDB.Components.MudDialog.CharacterDialog
         {
             if (CharacterSkillDescriptions.Find(x => x.DescriptionTitle == value) is not null)
             {
-                CharacterSkillDescription.Description = CharacterSkillDescriptions.First(x => x.DescriptionTitle == value).Description;
+                CharacterSkillDescription.Description = CharacterSkillDescriptions.FirstOrDefault(x => x.DescriptionTitle == value).Description;
                 StateHasChanged();
             }
             else if (string.IsNullOrEmpty(value))
@@ -53,7 +53,7 @@ namespace WuwaDB.Components.MudDialog.CharacterDialog
             var Match = CharacterSkillDescriptions.Find(x => x.DescriptionTitle == CharacterSkillDescription.DescriptionTitle);
             if (Match is not null)
             {
-                CharacterSkillDescription.CharacterSkillId = CharacterSkillDescriptions.First(x => x.DescriptionTitle == CharacterSkillDescription.DescriptionTitle).CharacterSkillId;
+                CharacterSkillDescription.CharacterSkillId = CharacterSkillDescriptions.FirstOrDefault(x => x.DescriptionTitle == CharacterSkillDescription.DescriptionTitle).CharacterSkillId;
                 await AdminRepository.UpdatesAsync(CharacterSkillDescription);
             }
             else
