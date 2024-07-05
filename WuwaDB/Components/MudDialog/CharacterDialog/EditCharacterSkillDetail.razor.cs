@@ -36,7 +36,7 @@ namespace WuwaDB.Components.MudDialog.CharacterDialog
         {
             if (string.IsNullOrEmpty(value))
                 return CharacterSkillDetails.Select(c=>c.SkillDetailsName).ToArray();
-            return CharacterSkillDetails.Where(c=>c.SkillDetailsName.Contains(value, StringComparison.InvariantCulture)).Select(c=>c.SkillDetailsName).ToArray();
+            return CharacterSkillDetails.Where(c=>c.SkillDetailsName.Contains(value, StringComparison.InvariantCultureIgnoreCase)).Select(c=>c.SkillDetailsName).ToArray();
         }
         private async Task<IEnumerable<int>> SearchSkillLevel(string value)
         {
