@@ -9,32 +9,23 @@ namespace WuwaDB.Components.MudDialog.CharacterDialog
 {
     public partial class EditCharacterSkillDetail
     {
-        [Inject] WuwaDbContext context { get; set; }
         [Inject] UserRepository UserRepository { get; set; }
         [Inject] AdminRepository AdminRepository { get; set; }
+        [Inject] private IDialogService DialogService { get; set; }
+        [Inject] ISnackbar Snackbar { get; set; }
         [CascadingParameter] MudDialogInstance MudDialog { get; set; }
         [Parameter] public Guid SkillId { get; set; }
         private Character_Skill_Detail CharacterSkillDetail { get; set; } = new();
         private Character_Skill_Detail_Number CharacterSkillDetailNumber { get; set; } = new();
         private List<Character_Skill_Detail_Number?> CharacterSkillDetailNumbers { get; set; } = new();
         private List<Character_Skill_Detail> CharacterSkillDetails { get; set; } = new();
-
-        private string[]? SkillDetailNames;
         private int[]? SkillLevels;
         protected override async void OnInitialized()
         {
             CharacterSkillDetails = await UserRepository.GetToListAsync<Character_Skill_Detail>
                 (new { CharacterSkillId = SkillId });
             CharacterSkillDetailNumbers = await UserRepository.GetToListAsync<Character_Skill_Detail_Number>
-                (new { CharacterSkillId = SkillId }, new string[] { "Character_Skill_Detail"}, new string[] {"NumberMultipliers"});
-            if (CharacterSkillDetails.Count > 0)
-            {
-                SkillDetailNames = new string[CharacterSkillDetails.Count];
-                for (int i = 0; i < CharacterSkillDetails.Count; i++)
-                {
-                    SkillDetailNames[i] = CharacterSkillDetails[i].SkillDetailsName;
-                }
-            }
+                (new { CharacterSkillId = SkillId }, new string[] { "Character_Skill_Detail" }, new string[] { "NumberMultipliers" });
             StateHasChanged();
         }
         private void AddIndexListNumber() =>
@@ -44,16 +35,15 @@ namespace WuwaDB.Components.MudDialog.CharacterDialog
         private async Task<IEnumerable<string>> SearchSkillDetailName(string value)
         {
             if (string.IsNullOrEmpty(value))
-                return SkillDetailNames;
-            return SkillDetailNames.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
-
+                return CharacterSkillDetails.Select(c=>c.SkillDetailsName).ToArray();
+            return CharacterSkillDetails.Where(c=>c.SkillDetailsName.Contains(value, StringComparison.InvariantCulture)).Select(c=>c.SkillDetailsName).ToArray();
         }
         private async Task<IEnumerable<int>> SearchSkillLevel(string value)
         {
             if (Convert.ToInt32(value) == 0)
-                return SkillLevels;
+                return CharacterSkillDetailNumbers.Select(c=>c.Level).ToArray();
             if (int.TryParse(value, out int parsedValue))
-                return SkillLevels.Where(x => x.ToString().StartsWith(value));
+                return CharacterSkillDetailNumbers.Where(c=>c.Level == parsedValue && c.CharacterSkillDetailId == CharacterSkillDetail.Id).Select(c=>c.Level).ToArray();
             // If parsing fails, return an empty list
             return Enumerable.Empty<int>();
 
@@ -62,21 +52,12 @@ namespace WuwaDB.Components.MudDialog.CharacterDialog
         {
             var matchSkillDetail = CharacterSkillDetails.FirstOrDefault(x => x.SkillDetailsName == value);
             if (matchSkillDetail is not null)
-            {
-                var matchSkillDetailNumbers = CharacterSkillDetailNumbers
-                .Where(x => x.CharacterSkillDetailId == matchSkillDetail.Id)
-                .ToList();
-                SkillLevels = new int[matchSkillDetailNumbers.Count];
-                for (int i = 0; i < matchSkillDetailNumbers.Count; i++)
-                    SkillLevels[i] = matchSkillDetailNumbers[i].Level;
-            }
-
+                CharacterSkillDetail = matchSkillDetail;
             if (string.IsNullOrEmpty(value))
             {
                 CharacterSkillDetailNumber.Level = 0;
                 SkillLevels = null;
             }
-
         }
 
         private void TextChangedSkillLevel(string value)
@@ -92,9 +73,10 @@ namespace WuwaDB.Components.MudDialog.CharacterDialog
                 CharacterSkillDetailNumbers.FirstOrDefault(
                     x => x.CharacterSkillDetailId == CharacterSkillDetails.Find(x => x.SkillDetailsName == CharacterSkillDetail.SkillDetailsName)?.Id && x.Level.ToString() == value);
                 if (matchSkillDetailLevel is not null)
-                {
                     CharacterSkillDetailNumber.NumberMultipliers = new List<NumberMultiplier>(matchSkillDetailLevel.NumberMultipliers);
-                }
+                else
+                    CharacterSkillDetailNumber.NumberMultipliers.Clear();
+
             }
         }
         private async Task Save()
@@ -123,6 +105,24 @@ namespace WuwaDB.Components.MudDialog.CharacterDialog
             else
                 await AdminRepository.SavesAsync(CharacterSkillDetailNumber);
             MudDialog.Close(DialogResult.Ok(true));
+        }
+        private async Task Delete<T>(T entity) where T : class
+        {
+            var dialog = await DialogService.ShowAsync<ConfirmDialog>("Confirmation");
+            var result = await dialog.Result;
+            if (!result.Canceled)
+            {
+                try
+                {
+                    await AdminRepository.DeleteAsync<T>(entity);
+                }
+                catch (Exception ex)
+                {
+                    Snackbar.Add(ex.Message, Severity.Error, config => { config.HideIcon = true; });
+                }
+                Snackbar.Add("Delete Successful", Severity.Success, config => { config.HideIcon = true; });
+                StateHasChanged();
+            }
         }
     }
 }
