@@ -22,17 +22,18 @@
                         </MudStack>
                         
                         <MudNumericField T="int?" Label="Skill Detail Multiplier" @bind-Value="numberMultiplier.Multiplier" />
+                        <MudIconButton Icon="@Icons.Material.Filled.DeleteForever" OnClick="() => Delete(numberMultiplier)"/>
                     }
                     <MudStack Row="true">
                         <MudIconButton Icon="@Icons.Material.Filled.Add" OnClick="AddIndexListNumber" />
                         <MudIconButton Icon="@Icons.Material.Filled.Remove" OnClick="MinIndexListNumber" />
-
+                        
                     </MudStack>
                    
                 }
             </DialogContent>
             <DialogActions>
-                <MudButton StartIcon="@Icons.Material.Filled.DeleteForever" IconColor="Color.Error">
+                <MudButton StartIcon="@Icons.Material.Filled.DeleteForever" IconColor="Color.Error" OnClick="() => Delete(CharacterSkillDetail)">
                     Delete
                 </MudButton>
                 <MudButton StartIcon="@Icons.Material.Filled.Save" OnClick="Save">
