@@ -82,7 +82,7 @@
                                             </MudStack>
                                         </MudStack>
                                     </MudToolBar>
-                                    <MudStack Justify="Justify.Center" AlignItems="AlignItems.Center" Spacing="3">
+                                    <MudStack Justify="Justify.Center" AlignItems="AlignItems.Center">
                                         <MudCollapse Expanded="@IsCollapsed(skillType)">
                                             @if (SkillInfo(skillType) == true)
                                             {
@@ -104,12 +104,13 @@
                                                     var characterSkillDesc = CharacterSkillDescriptions.Where(x => x.CharacterSkillId == type.Id).ToList();
                                                     if (characterSkillDesc.Count > 0)
                                                     {
-                                                        foreach (var title in characterSkillDesc)
+                                                        @foreach (var title in characterSkillDesc)
                                                         {
+
                                                             <MudText Align="Align.Center" Style="color:#CDBC64;font-weight:bold;font-family:'HHenum-Italic';font-size:225%;">
                                                                 @title.DescriptionTitle
                                                             </MudText>
-                                                            foreach(var segment in GetHighlightedSegments(title.Description))
+                                                            @foreach (var segment in GetHighlightedSegments(title.Description))
                                                             {
                                                                 <MudText Align="Align.Center" Style="color:#D8D8D8;font-size:1.15rem;">
                                                                     <MudHighlighter HighlightedTexts="highLightedTexts" UntilNextBoundary="true"
@@ -117,9 +118,7 @@
                                                                                     Style="@($"{colorHighLight};font-size:1.4rem;")" Class="highlight-description" />
                                                                 </MudText>
                                                             }
-                                                            <br />
                                                         }
-                                                        
                                                     }
                                                 }
                                             }
@@ -132,17 +131,18 @@
                                                         x => x.CharacterSkillId == type.Id).ToList();
                                                     if (skillDetails.Count > 0)
                                                     {
-                                                        foreach (var skillDetail in skillDetails)
-                                                        {
-                                                            
-                                                            <MudStack Row="true" Spacing="2" Wrap="Wrap.Wrap" Justify="Justify.SpaceBetween" >
-                                                                <MudText Style="color:#cfcfcf;"> @skillDetail.SkillDetailsName</MudText>
-                                                                <MudText Style="color:#cfcfcf;">
-                                                                    @($"{GetSkillDetailNumber(SkillTypeLevelSlider[skillType], skillDetail.Id)}")
-                                                                </MudText>
-                                                            </MudStack>
+                                                        <MudStack Spacing="2">
+                                                            @foreach (var skillDetail in skillDetails)
+                                                            {
 
-                                                        }
+                                                                <MudStack Row="true" Spacing="2" Wrap="Wrap.Wrap" Justify="Justify.SpaceBetween">
+                                                                    <MudText Style="color:#cfcfcf;"> @skillDetail.SkillDetailsName</MudText>
+                                                                    <MudText Style="color:#cfcfcf;">
+                                                                        @($"{GetSkillDetailNumber(SkillTypeLevelSlider[skillType], skillDetail.Id)}")
+                                                                    </MudText>
+                                                                </MudStack>
+                                                            }
+                                                        </MudStack>
                                                         <MudSlider @bind-Value="SkillTypeLevelSlider[skillType]" Min="1" Max="20" Step="1" ValueLabel="true" Immediate="true" Style="color:#cfcfcf;">
                                                             <MudTextField T="int" @bind-Value="SkillTypeLevelSlider[skillType]" Style="display:none!important;"
                                                                           Disabled="true" TextChanged="SkillDetailLevelChanged">
