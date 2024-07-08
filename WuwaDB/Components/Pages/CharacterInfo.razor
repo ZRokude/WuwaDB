@@ -31,7 +31,7 @@
                                 if (property.Name != "Id" && property.Name != "CharacterId" && property.Name != "Character")
                                 {
                                     <MudStack Row="true" Justify="Justify.SpaceBetween">
-                                        <MudTooltip Text="@GetStatProp(property.Name)" style="color:#cfcfcf;">
+                                        <MudTooltip Text="@GetStatProp(property.Name)" Style="color:#cfcfcf;">
                                             <MudImage Style="width:40px;" Src=@($"Icon/AttributeStat/{property.Name}.png")/>
                                         </MudTooltip>
                                         @if (CharacterStatBase != null)
@@ -134,13 +134,15 @@
                                                         <MudStack Spacing="2">
                                                             @foreach (var skillDetail in skillDetails)
                                                             {
-
-                                                                <MudStack Row="true" Spacing="2" Wrap="Wrap.Wrap" Justify="Justify.SpaceBetween">
-                                                                    <MudText Style="color:#cfcfcf;"> @skillDetail.SkillDetailsName</MudText>
-                                                                    <MudText Style="color:#cfcfcf;">
-                                                                        @($"{GetSkillDetailNumber(SkillTypeLevelSlider[skillType], skillDetail.Id)}")
-                                                                    </MudText>
-                                                                </MudStack>
+                                                                <MudTooltip Text="@($"{skillDetail.SkillDetailsName}: {GetSkillDetailNumber(SkillTypeLevelSlider[skillType], skillDetail.Id)}")" Style="color:#cfcfcf;">
+                                                                    <MudStack Row="true" Spacing="2" Wrap="Wrap.NoWrap" Justify="Justify.SpaceBetween" Style="overflow:hidden;text-overflow:ellipsis;">
+                                                                        <MudText Style="color:#cfcfcf;"> @skillDetail.SkillDetailsName</MudText>
+                                                                        <MudText Style="color:#cfcfcf;">
+                                                                            @($"{GetSkillDetailNumber(SkillTypeLevelSlider[skillType], skillDetail.Id)}")
+                                                                        </MudText>
+                                                                    </MudStack>
+                                                                </MudTooltip>
+                                                                
                                                             }
                                                         </MudStack>
                                                         <MudSlider @bind-Value="SkillTypeLevelSlider[skillType]" Min="1" Max="20" Step="1" ValueLabel="true" Immediate="true" Style="color:#cfcfcf;">
