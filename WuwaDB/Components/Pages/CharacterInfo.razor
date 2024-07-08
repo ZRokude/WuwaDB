@@ -143,15 +143,16 @@
                                                             </MudStack>
 
                                                         }
+                                                        <MudSlider @bind-Value="SkillTypeLevelSlider[skillType]" Min="1" Max="20" Step="1" ValueLabel="true" Immediate="true" Style="color:#cfcfcf;">
+                                                            <MudTextField T="int" @bind-Value="SkillTypeLevelSlider[skillType]" Style="display:none!important;"
+                                                                          Disabled="true" TextChanged="SkillDetailLevelChanged">
+
+                                                            </MudTextField>
+                                                        </MudSlider>
                                                     }
                                                     
                                                 }
-                                                <MudSlider @bind-Value="SkillTypeLevelSlider[skillType]" Min="1" Max="20" Step="1" ValueLabel="true" Immediate="true" Style="color:#cfcfcf;">
-                                                    <MudTextField T="int" @bind-Value="SkillTypeLevelSlider[skillType]" Style="display:none!important;" 
-                                                                  Disabled="true" TextChanged="SkillDetailLevelChanged">
-
-                                                    </MudTextField>
-                                                </MudSlider>
+                                                
                                             }
                                         </MudCollapse>
                                     </MudStack>

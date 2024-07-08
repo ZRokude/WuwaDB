@@ -19,7 +19,7 @@ namespace WuwaDB.Components.MudDialog.CharacterDialog
         private Character_Skill_Detail_Number CharacterSkillDetailNumber { get; set; } = new();
         private List<Character_Skill_Detail_Number?> CharacterSkillDetailNumbers { get; set; } = new();
         private List<Character_Skill_Detail> CharacterSkillDetails { get; set; } = new();
-        private int[]? SkillLevels;
+        private Dictionary<int, Character_Skill_Detail_Number> CharacterSkillDetailNumberKey { get; set; } = new();
         protected override async void OnInitialized()
         {
             CharacterSkillDetails = await UserRepository.GetToListAsync<Character_Skill_Detail>
@@ -28,10 +28,13 @@ namespace WuwaDB.Components.MudDialog.CharacterDialog
                 (new { CharacterSkillId = SkillId }, new string[] { "Character_Skill_Detail" }, new string[] { "NumberMultipliers" });
             StateHasChanged();
         }
-        private void AddIndexListNumber() =>
-            CharacterSkillDetailNumber.NumberMultipliers.Add(new NumberMultiplier { Number = 0, Multiplier = null});
-        private void MinIndexListNumber() =>
-            CharacterSkillDetailNumber.NumberMultipliers.RemoveAt(CharacterSkillDetailNumber.NumberMultipliers.Count - 1);
+        private void AddCharacterSkillDetailNumberKey() =>
+            CharacterSkillDetailNumberKey[CharacterSkillDetailNumberKey.Count + 1] = new Character_Skill_Detail_Number();
+        private void AddIndexListNumber(int key) =>
+            CharacterSkillDetailNumberKey[key].NumberMultipliers.Add(new NumberMultiplier { Number = 0, Multiplier = null});
+        private void MinIndexListNumber(int key )=>
+                CharacterSkillDetailNumberKey[key].NumberMultipliers.RemoveAt(CharacterSkillDetailNumberKey[key].NumberMultipliers.Count - 1);
+            
         private async Task<IEnumerable<string>> SearchSkillDetailName(string value)
         {
             if (string.IsNullOrEmpty(value))
@@ -48,24 +51,24 @@ namespace WuwaDB.Components.MudDialog.CharacterDialog
             return Enumerable.Empty<int>();
 
         }
-        private async Task TextChangedSkillDetailName(string value)
+
+        private async void TextChangedSkillDetailName(string value)
         {
             var matchSkillDetail = CharacterSkillDetails.FirstOrDefault(x => x.SkillDetailsName == value);
             if (matchSkillDetail is not null)
                 CharacterSkillDetail = matchSkillDetail;
             if (string.IsNullOrEmpty(value))
             {
-                CharacterSkillDetailNumber.Level = 0;
-                SkillLevels = null;
+                CharacterSkillDetailNumberKey.Clear();
             }
         }
 
-        private void TextChangedSkillLevel(string value)
-        {
+        private void TextChangedSkillLevel(string value, int key)
+        { 
             if (string.IsNullOrEmpty(value))
             {
-                CharacterSkillDetailNumber.Level = 0;
-                CharacterSkillDetailNumber.NumberMultipliers.Clear();
+                CharacterSkillDetailNumberKey[key].Level = 0;
+                CharacterSkillDetailNumberKey[key].NumberMultipliers.Clear();
             }
             else
             {
@@ -73,37 +76,37 @@ namespace WuwaDB.Components.MudDialog.CharacterDialog
                 CharacterSkillDetailNumbers.FirstOrDefault(
                     x => x.CharacterSkillDetailId == CharacterSkillDetails.Find(x => x.SkillDetailsName == CharacterSkillDetail.SkillDetailsName)?.Id && x.Level.ToString() == value);
                 if (matchSkillDetailLevel is not null)
-                    CharacterSkillDetailNumber.NumberMultipliers = new List<NumberMultiplier>(matchSkillDetailLevel.NumberMultipliers);
+                    CharacterSkillDetailNumberKey[key].NumberMultipliers = new List<NumberMultiplier>(matchSkillDetailLevel.NumberMultipliers);
                 else
-                    CharacterSkillDetailNumber.NumberMultipliers.Clear();
+                    CharacterSkillDetailNumberKey[key].NumberMultipliers.Clear();
 
             }
         }
         private async Task Save()
         {
             if (CharacterSkillDetails.Find(x => x.SkillDetailsName == CharacterSkillDetail.SkillDetailsName)
-                is not null)
-                CharacterSkillDetailNumber.CharacterSkillDetailId = CharacterSkillDetails.FirstOrDefault(x => x.SkillDetailsName == CharacterSkillDetail.SkillDetailsName).Id;
-            else
+                is null)
             {
                 CharacterSkillDetail.CharacterSkillId = SkillId;
                 await AdminRepository.SavesAsync(CharacterSkillDetail);
-                CharacterSkillDetailNumber.CharacterSkillDetailId = CharacterSkillDetail.Id;
             }
-
-            var Match = CharacterSkillDetailNumbers.Find(x => x.Level == CharacterSkillDetailNumber.Level
-                                                                        && x.CharacterSkillDetailId == CharacterSkillDetailNumber.CharacterSkillDetailId);
-            if (Match is not null)
+            foreach (var key in CharacterSkillDetailNumberKey.Keys)
             {
-                await AdminRepository.UpdatesAsync(CharacterSkillDetailNumber);
-                foreach(var NumberMultiplier in CharacterSkillDetailNumber.NumberMultipliers)
+                if (CharacterSkillDetails.Find(x => x.SkillDetailsName == CharacterSkillDetail.SkillDetailsName) is not null)
+                    CharacterSkillDetailNumberKey[key].CharacterSkillDetailId = CharacterSkillDetail.Id;
+                var Match = CharacterSkillDetailNumbers.Find(x => x.Level == CharacterSkillDetailNumberKey[key].Level
+                                                                        && x.CharacterSkillDetailId == CharacterSkillDetailNumber.CharacterSkillDetailId);
+                if (Match is not null)
                 {
-                    await AdminRepository.UpdatesAsync(NumberMultiplier);
+                    await AdminRepository.UpdatesAsync(CharacterSkillDetailNumberKey[key]);
+                    foreach (var NumberMultiplier in CharacterSkillDetailNumberKey[key].NumberMultipliers)
+                    {
+                        await AdminRepository.UpdatesAsync(NumberMultiplier);
+                    }
                 }
+                else
+                    await AdminRepository.SavesAsync(CharacterSkillDetailNumberKey[key]);
             }
-                
-            else
-                await AdminRepository.SavesAsync(CharacterSkillDetailNumber);
             MudDialog.Close(DialogResult.Ok(true));
         }
         private async Task Delete<T>(T entity) where T : class

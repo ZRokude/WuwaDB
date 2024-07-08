@@ -6,33 +6,41 @@
                 <MudAutocomplete T="string" Label="Description Title" @bind-Value="CharacterSkillDetail.SkillDetailsName"
                                  CoerceValue="true" CoerceText="true" ResetValueOnEmptyText="true" MaxItems="4" Immediate="true"
                                  SelectOnClick="true" TextChanged="TextChangedSkillDetailName" SearchFunc="SearchSkillDetailName" />
-                @if(CharacterSkillDetail.SkillDetailsName is not null)
+                @foreach(var detailNumberKey in CharacterSkillDetailNumberKey.Keys)
                 {
-                    <MudAutocomplete T="int" Label="Level" @bind-Value="CharacterSkillDetailNumber.Level" HelperText="Please Put a Number"
-                                     CoerceValue="true" CoerceText="true" ResetValueOnEmptyText="true" MaxItems="4" Immediate="true"
-                                     SelectOnClick="true" TextChanged="TextChangedSkillLevel" SearchFunc="SearchSkillLevel" />
-                }
-                @if(CharacterSkillDetailNumber.Level > 0)
-                {
-                    foreach(var numberMultiplier in CharacterSkillDetailNumber.NumberMultipliers)
+                    @if (CharacterSkillDetail.SkillDetailsName is not null)
                     {
-                        <MudStack Row="true" Wrap="Wrap.Wrap" Spacing="5">
-                            <MudNumericField T="double" Step="0.01" Label="Skill Detail Percentage" @bind-Value="numberMultiplier.Number" />
-                            <MudCheckBox @bind-Value="numberMultiplier.IsPercentage"/>
-                        </MudStack>
-                        
-                        <MudNumericField T="int?" Label="Skill Detail Multiplier" @bind-Value="numberMultiplier.Multiplier" />
-                        <MudIconButton Icon="@Icons.Material.Filled.DeleteForever" OnClick="() => Delete(numberMultiplier)"/>
+                        <MudAutocomplete T="int" Label="Level" @bind-Value="CharacterSkillDetailNumberKey[detailNumberKey].Level" HelperText="Please Put a Number"
+                                         CoerceValue="true" CoerceText="true" ResetValueOnEmptyText="true" MaxItems="4" Immediate="true"
+                                         SelectOnClick="true" TextChanged="@(e => TextChangedSkillLevel(e,detailNumberKey))" SearchFunc="SearchSkillLevel"/>
                     }
-                    <MudStack Row="true">
-                        <MudIconButton Icon="@Icons.Material.Filled.Add" OnClick="AddIndexListNumber" />
-                        <MudIconButton Icon="@Icons.Material.Filled.Remove" OnClick="MinIndexListNumber" />
-                        
-                    </MudStack>
-                   
+                    @if (CharacterSkillDetailNumberKey[detailNumberKey].Level > 0)
+                    {
+                        foreach (var numberMultiplier in CharacterSkillDetailNumberKey[detailNumberKey].NumberMultipliers)
+                        {
+                            <MudStack Row="true" Wrap="Wrap.Wrap" Spacing="5">
+                                <MudNumericField T="double" Step="0.01" Label="Skill Detail Percentage" @bind-Value="numberMultiplier.Number" />
+                                <MudCheckBox @bind-Value="numberMultiplier.IsPercentage" />
+                            </MudStack>
+
+                            <MudNumericField T="int?" Label="Skill Detail Multiplier" @bind-Value="numberMultiplier.Multiplier" />
+                            <MudIconButton Icon="@Icons.Material.Filled.DeleteForever" OnClick="() => Delete(numberMultiplier)" />
+                        }
+                        <MudStack Row="true">
+                            <MudIconButton Icon="@Icons.Material.Filled.Add" OnClick="() => AddIndexListNumber(detailNumberKey)" />
+                            <MudIconButton Icon="@Icons.Material.Filled.Remove" OnClick="() => MinIndexListNumber(detailNumberKey)" />
+                        </MudStack>
+
+                    }
                 }
             </DialogContent>
             <DialogActions>
+                @if(CharacterSkillDetail.SkillDetailsName is not null)
+                {
+                    <MudButton StartIcon="@Icons.Material.Filled.Add" OnClick="AddCharacterSkillDetailNumberKey">
+                        Add Level
+                    </MudButton>
+                }
                 <MudButton StartIcon="@Icons.Material.Filled.DeleteForever" IconColor="Color.Error" OnClick="() => Delete(CharacterSkillDetail)">
                     Delete
                 </MudButton>
