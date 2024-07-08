@@ -19,9 +19,8 @@
     <a class="dismiss">🗙</a>
 </div>
 @code{
-   
     private readonly MudTheme customTheme = new()
-    {
+    {    
         Palette = new PaletteLight()
         {
             AppbarBackground = "#6F6D6D",
@@ -33,7 +32,20 @@
             AppbarBackground = "#292929",
             DrawerBackground = "#292929",
             Primary = "#518AE5"
+        },
+        Typography = new Typography()
+        {
+            Default = new Default()
+            {
+                FontFamily = new[] {"Sofia sans", "sans-serif"},
+                FontSize = "18px"
+            },
+            Body1 = new Body1()
+            {
+                FontSize = "1.15rem"
+            }
         }
+
     };
 
 }

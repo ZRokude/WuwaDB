@@ -9,8 +9,8 @@
 ::deep.main-grid {
     height: 100vh;
     display:inline-flex;
+    
 }
-
 ::deep.fixed-image-container {
     position: absolute;
     overflow: hidden;
@@ -45,7 +45,7 @@
     background-color:transparent;
     font-weight:bold;
     font-family: HHenum-Italic;
-    font-size: 18px
+    font-size:1.6rem;
 }
 ::deep .justify-mud-grid{
     justify-content:flex-end!important;
