@@ -92,8 +92,7 @@ namespace WuwaDB.Components.MudDialog.CharacterDialog
             }
             foreach (var key in CharacterSkillDetailNumberKey.Keys)
             {
-                if (CharacterSkillDetails.Find(x => x.SkillDetailsName == CharacterSkillDetail.SkillDetailsName) is not null)
-                    CharacterSkillDetailNumberKey[key].CharacterSkillDetailId = CharacterSkillDetail.Id;
+                CharacterSkillDetailNumberKey[key].CharacterSkillDetailId = CharacterSkillDetail.Id;
                 var Match = CharacterSkillDetailNumbers.Find(x => x.Level == CharacterSkillDetailNumberKey[key].Level
                                                                         && x.CharacterSkillDetailId == CharacterSkillDetailNumber.CharacterSkillDetailId);
                 if (Match is not null)
