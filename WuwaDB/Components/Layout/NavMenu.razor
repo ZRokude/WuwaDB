@@ -4,19 +4,19 @@
     <MudNavMenu Class="mud-width-full" Margin="Margin.None">
         <MudImage Src="Danjin_Angry_Chibi.png" Fluid="true" ObjectFit="ObjectFit.Cover" ObjectPosition="ObjectPosition.Center" Style="padding-bottom:2rem;"/>
         <MudNavLink Href="/Character/List" Icon="@Icons.Material.Outlined.Groups2" IconColor="Color.Primary">
-            <MudText Color="@Color.Secondary">
+            <MudText Color="@Color.Secondary" Style="text-shadow:-1px -1px 0 #000,1px -1px 0 #000,-1px 1px 0 #000,1px 1px 0 #000;">
                 Character List
             </MudText>
         </MudNavLink>
         <MudNavLink Href="/Weapon/List" Icon="@Katana2">
-            <MudText Color="@Color.Secondary">
+            <MudText Color="@Color.Secondary" Style="text-shadow:-1px -1px 0 #000,1px -1px 0 #000,-1px 1px 0 #000,1px 1px 0 #000;">
                 Weapon List
             </MudText>
         </MudNavLink>
         <Microsoft.AspNetCore.Components.Authorization.AuthorizeView Roles="Admin">
             <Authorized>
                 <MudNavLink @onclick="OpenRegisterDialog" Icon="@Icons.Material.Outlined.Create" IconColor="Color.Primary">
-                    <MudText Color="@Color.Secondary">
+                    <MudText Color="@Color.Secondary" Style="text-shadow:-1px -1px 0 #000,1px -1px 0 #000,-1px 1px 0 #000,1px 1px 0 #000;">
                         Register
                     </MudText>
                 </MudNavLink>
@@ -25,7 +25,7 @@
         <Microsoft.AspNetCore.Components.Authorization.AuthorizeView>
             <Authorized>
                 <MudNavLink @onclick="LogOutAsync" Icon="@Icons.Material.Outlined.Create" IconColor="Color.Primary">
-                    <MudText Color="@Color.Secondary">
+                    <MudText Color="@Color.Secondary" Style="text-shadow:-1px -1px 0 #000,1px -1px 0 #000,-1px 1px 0 #000,1px 1px 0 #000;">
                         LogOut
                     </MudText>
                 </MudNavLink>
@@ -34,7 +34,7 @@
         <Microsoft.AspNetCore.Components.Authorization.AuthorizeView Roles="Admin">
             <Authorized>
                 <MudNavLink @onclick="OpenCreateChar" IconColor="Color.Primary">
-                    <MudText Color="@Color.Secondary">
+                    <MudText Color="@Color.Secondary" Style="text-shadow:-1px -1px 0 #000,1px -1px 0 #000,-1px 1px 0 #000,1px 1px 0 #000;">
                         Create Character
                     </MudText>
                 </MudNavLink>
