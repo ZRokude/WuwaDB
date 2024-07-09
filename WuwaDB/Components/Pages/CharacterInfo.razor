@@ -82,7 +82,7 @@
                                             </MudStack>
                                         </MudStack>
                                     </MudToolBar>
-                                    <MudStack Justify="Justify.Center" AlignItems="AlignItems.Center">
+                                    <MudStack Justify="Justify.Center">
                                         <MudCollapse Expanded="@IsCollapsed(skillType)">
                                             @if (SkillInfo(skillType) == true)
                                             {
@@ -134,15 +134,11 @@
                                                         <MudStack Spacing="2">
                                                             @foreach (var skillDetail in skillDetails)
                                                             {
-                                                                <MudTooltip Text="@($"{skillDetail.SkillDetailsName}: {GetSkillDetailNumber(SkillTypeLevelSlider[skillType], skillDetail.Id)}")" Style="color:#cfcfcf;">
-                                                                    <MudStack Row="true" Spacing="2" Wrap="Wrap.NoWrap" Justify="Justify.SpaceBetween" Style="overflow:hidden;text-overflow:ellipsis;">
-                                                                        <MudText Style="color:#cfcfcf;"> @skillDetail.SkillDetailsName</MudText>
-                                                                        <MudText Style="color:#cfcfcf;">
-                                                                            @($"{GetSkillDetailNumber(SkillTypeLevelSlider[skillType], skillDetail.Id)}")
-                                                                        </MudText>
-                                                                    </MudStack>
-                                                                </MudTooltip>
-                                                                
+                                                                <MudStack Row="true" Spacing="2" Wrap="Wrap.NoWrap" Justify="Justify.SpaceBetween">
+                                                                    <MudText Style="color:#cfcfcf;">@skillDetail.SkillDetailsName</MudText>
+                                                                    <MudText Style="color:#cfcfcf;">@($"{GetSkillDetailNumber(SkillTypeLevelSlider[skillType], skillDetail.Id)}")</MudText>
+                                                                </MudStack>
+
                                                             }
                                                         </MudStack>
                                                         <MudSlider @bind-Value="SkillTypeLevelSlider[skillType]" Min="1" Max="20" Step="1" ValueLabel="true" Immediate="true" Style="color:#cfcfcf;">
