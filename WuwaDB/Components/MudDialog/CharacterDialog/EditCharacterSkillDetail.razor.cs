@@ -94,7 +94,7 @@ namespace WuwaDB.Components.MudDialog.CharacterDialog
             {
                 CharacterSkillDetailNumberKey[key].CharacterSkillDetailId = CharacterSkillDetail.Id;
                 var Match = CharacterSkillDetailNumbers.Find(x => x.Level == CharacterSkillDetailNumberKey[key].Level
-                                                                        && x.CharacterSkillDetailId == CharacterSkillDetailNumber.CharacterSkillDetailId);
+                                                                        && x.CharacterSkillDetailId == CharacterSkillDetailNumberKey[key].CharacterSkillDetailId);
                 if (Match is not null)
                 {
                     await AdminRepository.UpdatesAsync(CharacterSkillDetailNumberKey[key]);
