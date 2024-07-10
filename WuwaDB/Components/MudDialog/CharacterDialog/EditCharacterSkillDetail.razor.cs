@@ -16,6 +16,7 @@ namespace WuwaDB.Components.MudDialog.CharacterDialog
         [CascadingParameter] MudDialogInstance MudDialog { get; set; }
         [Parameter] public Guid SkillId { get; set; }
         private Character_Skill_Detail CharacterSkillDetail { get; set; } = new();
+        private Character_Skill_Detail NewCharacterSkillDetail { get; set; } = new();
         private Character_Skill_Detail_Number CharacterSkillDetailNumber { get; set; } = new();
         private List<Character_Skill_Detail_Number?> CharacterSkillDetailNumbers { get; set; } = new();
         private List<Character_Skill_Detail> CharacterSkillDetails { get; set; } = new();
@@ -49,7 +50,6 @@ namespace WuwaDB.Components.MudDialog.CharacterDialog
                 return CharacterSkillDetailNumbers.Where(c=>c.Level == parsedValue && c.CharacterSkillDetailId == CharacterSkillDetail.Id).Select(c=>c.Level).ToArray();
             // If parsing fails, return an empty list
             return Enumerable.Empty<int>();
-
         }
 
         private async void TextChangedSkillDetailName(string value)
@@ -82,6 +82,7 @@ namespace WuwaDB.Components.MudDialog.CharacterDialog
 
             }
         }
+        
         private async Task Save()
         {
             if (CharacterSkillDetails.Find(x => x.SkillDetailsName == CharacterSkillDetail.SkillDetailsName)
@@ -125,6 +126,16 @@ namespace WuwaDB.Components.MudDialog.CharacterDialog
                 Snackbar.Add("Delete Successful", Severity.Success, config => { config.HideIcon = true; });
                 StateHasChanged();
             }
+        }
+        private async void OpenEditCharacterSkillDetailName()
+        {
+            DialogOptions options = new DialogOptions { CloseOnEscapeKey = true, CloseButton = true };
+            var parameters = new DialogParameters<EditCharacterSkillDetailName>();
+            parameters.Add(nameof(EditCharacterSkillDetailName.CharacterSkillDetails), CharacterSkillDetails);
+            var dialog = await DialogService.ShowAsync<EditCharacterSkillDetailName>("Edit Character Skill Detail Name", parameters, options);
+            var result = dialog.Result;
+            if (!result.IsCanceled)
+                Snackbar.Add("Update Successful!", Severity.Success, config => { config.HideIcon = true; });
         }
     }
 }

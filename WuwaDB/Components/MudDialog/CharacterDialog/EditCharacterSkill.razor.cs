@@ -104,14 +104,14 @@ namespace WuwaDB.Components.MudDialog.CharacterDialog
 
         private void OpenSkillDetailDialog()
         {
-            var options = new DialogOptions { CloseButton = true, CloseOnEscapeKey = true };
+            var options = new DialogOptions { CloseButton = true, CloseOnEscapeKey = true, DisableBackdropClick = true };
             var parameters = new DialogParameters<EditCharacterSkillDetail>();
             parameters.Add(nameof(EditCharacterSkillDetail.SkillId), CharacterSkill.Id);
             DialogService.Show<EditCharacterSkillDetail>("Character Skill Detail", parameters, options);
         }
-        private async void OpenSkillDescriptionDialog()
+        private void OpenSkillDescriptionDialog()
         {
-            var options = new DialogOptions { CloseOnEscapeKey = true, CloseButton = true };
+            var options = new DialogOptions { CloseOnEscapeKey = true, CloseButton = true, DisableBackdropClick = true };
             var parameters = new DialogParameters<EditCharacterSkillDescription>();
             parameters.Add(nameof(EditCharacterSkillDescription.SkillId), CharacterSkill.Id);
             DialogService.Show<EditCharacterSkillDescription>("Character Skill Description", parameters, options);

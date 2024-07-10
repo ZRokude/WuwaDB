@@ -27,7 +27,7 @@ namespace WuwaDB.Components.MudDialog.CharacterDialog
         {
             var skillType = string.Join(" ",
                 type.ToString().Split("_").Select(w => w.Substring(0, 1).ToUpper() + w.Substring(1).ToLower()));
-            var options = new DialogOptions { CloseOnEscapeKey = true };
+            var options = new DialogOptions { CloseOnEscapeKey = true, DisableBackdropClick=true };
             var parameters = new DialogParameters<EditCharacterSkill>();
             parameters.Add(x=>x.CharacterId, CharacterId);
             parameters.Add(x=>x.SkillType, type);

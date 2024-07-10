@@ -1,4 +1,5 @@
-﻿@attribute [Authorize(Roles = "Admin")]
+﻿@using WuwaDB.DBAccess.Entities.Character
+@attribute [Authorize(Roles = "Admin")]
 <Microsoft.AspNetCore.Components.Authorization.AuthorizeView Roles="Admin">
     <Authorized>
         <MudDialog>
@@ -30,9 +31,9 @@
                             <MudIconButton Icon="@Icons.Material.Filled.Add" OnClick="() => AddIndexListNumber(detailNumberKey)" />
                             <MudIconButton Icon="@Icons.Material.Filled.Remove" OnClick="() => MinIndexListNumber(detailNumberKey)" />
                         </MudStack>
-
                     }
                 }
+               
             </DialogContent>
             <DialogActions>
                 @if(CharacterSkillDetail.SkillDetailsName is not null)
@@ -41,6 +42,9 @@
                         Add Level
                     </MudButton>
                 }
+                <MudButton StartIcon="@Icons.Material.Filled.ChangeHistory" OnClick="OpenEditCharacterSkillDetailName">
+                    Change Detail Name
+                </MudButton>
                 <MudButton StartIcon="@Icons.Material.Filled.DeleteForever" IconColor="Color.Error" OnClick="() => Delete(CharacterSkillDetail)">
                     Delete
                 </MudButton>
@@ -49,10 +53,7 @@
                 </MudButton>
             </DialogActions>
         </MudDialog>
+        
     </Authorized>
 </Microsoft.AspNetCore.Components.Authorization.AuthorizeView>
 
-
-@code {
-
-}

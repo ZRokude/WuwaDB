@@ -130,10 +130,6 @@ namespace WuwaDB.Components.Pages
         //    }
         //    return string.Empty;
         //}
-        private void SkillDetailLevelChanged(string value)
-        {
-            
-        }
         private string TextSkillInfo(SkillType type)
         {
             var Text = CharacterSkills.FirstOrDefault(x => x.Type == type)?.Description;

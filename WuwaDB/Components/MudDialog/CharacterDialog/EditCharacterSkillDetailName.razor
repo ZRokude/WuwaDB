@@ -1,0 +1,23 @@
+﻿@using WuwaDB.DBAccess.Entities.Character
+<MudDialog>
+    <DialogContent>
+        <MudSelect T="Character_Skill_Detail" Label="Skill Detail Name" ValueChanged="@((e) => NewCharacterSkillDetail = e)">
+            @if(CharacterSkillDetails.Count > 0)
+            {
+                @foreach (var skillDetail in CharacterSkillDetails)
+                {
+                    <MudSelectItem Value="skillDetail">@skillDetail.SkillDetailsName</MudSelectItem>
+                }
+            }
+        </MudSelect>
+        <MudTextField T="string" @bind-Value="NewCharacterSkillDetail.SkillDetailsName" Label="New Skill Detail Name" />
+    </DialogContent>
+    <DialogActions>
+        <MudButton StartIcon="@Icons.Material.Filled.Save" OnClick="UpdateSkillDetailName">Save</MudButton>
+        <MudButton StartIcon="@Icons.Material.Filled.Close" OnClick="@(() => MudDialog.Close())">Close</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+
+}
