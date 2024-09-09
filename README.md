@@ -1,0 +1,3 @@
+This is a website for Wuthering Waves game, I create this project with intending of making tools for game called Wuthering Waves. 
+Like Calculator of DMG in the game with various echo stat and weapon without building it first to find the precise of stat.
+And other tools as well...
